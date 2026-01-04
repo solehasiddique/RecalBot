@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sigin Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/pages.css">
+    <!-- <link rel="stylesheet" href="../css/practice.css"> -->
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+    <header>
+
+        <nav class="navbar">
+            <div class="logo">
+                RecallBot
+            </div>
+            <a href="../html/index.html" class="signin">Home</a>
+        </nav>
+        
+    </header>
+
+     <main>
+        <div class="signin-container">
+            <div class="signin-header">
+                <h1>Welcome Back</h1>
+                <!-- <p>Sign in to continue to RecallBot</p> -->
+            </div>
+
+            <div class="success-message" id="success-message">
+                Successfully signed in! Redirecting...
+            </div>
+
+            <form id="signinForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    <span class="error-message" id="email-error">Please enter a valid email</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <span class="error-message" id="password-error">Password is required</span>
+                </div>
+
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+
+            
+            
+
+            <div class="signup-link-bottom">
+                Don't have an account? <a href="../html/signup.html">Sign Up</a>
+            </div>
+        </div>
+    </main> 
+
+    
+
+    
+
+    <footer>
+        <div class="footer-container">
+
+            <!-- LEFT SIDE -->
+            <div class="footer-left">
+                <h3 class="footer-logo">RecallBot</h3>
+                <p class="tagline">Smarter Recall. Stronger Memory.</p>
+                <p class="badges">AI Powered • Research-Based • Student Focused</p>
+                <p class="copyright">© 2025 RecallBot</p>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="footer-right">
+                <h4>Get in Touch</h4>
+                <!-- <p class="email">support@recallbot.ai</p> -->
+
+                <div class="socials">
+                    <a href="#">GitHub</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Email</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MARQUEE INSIDE FOOTER -->
+        <div class="footer-marquee">
+            <p class="marquee-text">
+                
+                AI DRIVEN PERSONALIZED LEARNING AND MEMORY RETENTION SYSTEM 
+            </p>
+        </div>
+    </footer>
+
+
+
+    
+    
+
+    <!-- <img src="../images/logo.png" class="img" > -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+    <script src="../js/scriptForAnimation.js"></script>
+    <script src="../js/siginlogic.js"></script>
+</body>
+
+</html>

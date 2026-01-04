@@ -1,0 +1,324 @@
+/* Import Roboto Font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/* //Sign in and Sign Up  CSS */
+main {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #D6E4C9;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* // yha s start */
+.signup-container {
+    background-color: #FFFFFF;
+    border-radius: 16px;
+    padding: clamp(30px, 5vw, 50px);
+    max-width: 450px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(55, 85, 52, 0.1);
+}
+
+.signup-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.signup-header h1 {
+    color: #375534;
+    font-size: clamp(26px, 4vw, 32px);
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.signup-header p {
+    color: #6B9071;
+    font-size: clamp(14px, 2vw, 16px);
+    font-weight: 400;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #375534;
+    font-size: clamp(14px, 2vw, 16px);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #FFFFFF;
+    border: 2px solid #AEC3B0;
+    border-radius: 8px;
+    color: #375534;
+    font-size: clamp(14px, 2vw, 16px);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #6B9071;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(107, 144, 113, 0.1);
+}
+
+.form-group input::placeholder {
+    color: #AEC3B0;
+    font-weight: 400;
+}
+
+.password-strength {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #6B9071;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    margin: 20px 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: #375534;
+}
+
+.checkbox-group label {
+    color: #6B9071;
+    font-size: clamp(13px, 2vw, 14px);
+    font-weight: 400;
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+.checkbox-group label a {
+    color: #375534;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.checkbox-group label a:hover {
+    text-decoration: underline;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #375534;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: clamp(16px, 2vw, 18px);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.submit-btn:hover {
+    background-color: #2A4028;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(174, 195, 176, 0.6);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.signin-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #6B9071;
+    font-size: clamp(14px, 2vw, 15px);
+    font-weight: 400;
+}
+
+.signin-link a {
+    color: #375534;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.signin-link a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #D9534F;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 5px;
+    display: none;
+}
+
+.signup-link {
+    color: #6B9071;
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 500;
+    padding: clamp(6px, 1.5vw, 12px) clamp(12px, 2vw, 24px);
+    text-decoration: none;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.signup-link:hover {
+    color: #375534;
+    background-color: #E3EED4;
+}
+
+.signin-container {
+    background-color: #FFFFFF;
+    border-radius: 16px;
+    padding: clamp(30px, 5vw, 50px);
+    max-width: 450px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(55, 85, 52, 0.1);
+}
+
+.signin-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.signin-header h1 {
+    color: #375534;
+    font-size: clamp(26px, 4vw, 32px);
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.signin-header p {
+    color: #6B9071;
+    font-size: clamp(14px, 2vw, 16px);
+    font-weight: 400;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #375534;
+}
+
+.remember-me label {
+    color: #6B9071;
+    font-size: clamp(13px, 2vw, 14px);
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: #375534;
+    font-size: clamp(13px, 2vw, 14px);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.social-login {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.social-btn {
+    flex: 1;
+    padding: 12px;
+    background-color: #E3EED4;
+    border: 2px solid #AEC3B0;
+    border-radius: 8px;
+    color: #375534;
+    font-size: clamp(13px, 2vw, 14px);
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+    background-color: #FFFFFF;
+    border-color: #6B9071;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(107, 144, 113, 0.2);
+}
+
+.signup-link-bottom {
+    text-align: center;
+    margin-top: 20px;
+    color: #6B9071;
+    font-size: clamp(14px, 2vw, 15px);
+    font-weight: 400;
+}
+
+.signup-link-bottom a {
+    color: #375534;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.signup-link-bottom a:hover {
+    text-decoration: underline;
+}
+
+.success-message {
+    background-color: #E3EED4;
+    color: #375534;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+    display: none;
+    border-left: 4px solid #6B9071;
+}
+
+@media (max-width: 768px) {
+    .signup-container,
+    .signin-container {
+        padding: 30px 20px;
+    }
+
+    .social-login {
+        flex-direction: column;
+    }
+
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

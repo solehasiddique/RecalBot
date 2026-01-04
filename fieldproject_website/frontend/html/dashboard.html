@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashborad Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+    <header>
+
+        <nav class="navbar">
+            <div class="logo">
+                RecallBot
+            </div>
+            
+            <div class="nav-links">
+      <a href="../html/index.html" class="nav-item">Home</a>
+      <a href="../html/study.html" class="nav-item">Study</a>
+      <a href="../html/test.html" class="nav-item">Test</a>
+      <a href="../html/index.html" class="nav-item">Sign Out</a>
+    </div>
+        </nav>
+        
+        
+    </header>
+
+
+    <main>
+        <div class="dashboard-container">
+            <!-- LEFT SECTION -->
+            <div class="dashboard-left">
+                <!-- Welcome Card -->
+                <div class="welcome-card">
+                    <div class="welcome-img">
+                        
+                        <img src="../images/dashbboardimg.png">
+                    </div>
+                    <div class="welcome-text">
+                        <h2>Welcome back, Bob!👋</h2>
+                        <p>Track your progress, analyze performance, and plan your next revision.</p>
+                    </div>
+                </div>
+
+                <!-- Graphs -->
+                <div class="graphs-container">
+                    <div class="graph-card">
+                        <h3>Overall Performance</h3>
+                        <div class="graph-placeholder">
+                            Line Graph Placeholder
+                        </div>
+                    </div>
+                    <div class="graph-card">
+                        <h3>Consistency Graph</h3>
+                        <div class="graph-placeholder">
+                           Bar Graph Placeholder
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pie Charts -->
+                <div class="pie-charts-container">
+                    <div class="pie-card">
+                        <h3>Subject Pie Chart</h3>
+                        <div class="pie-placeholder">Pie Chart Placeholder</div>
+                    </div>
+                    <div class="pie-card">
+                        <h3>Pass/Fail/Miss Pie Chart</h3>
+                        <div class="pie-placeholder">Pie Chart Placeholder</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SECTION (STATS CARDS) -->
+            <div class="dashboard-right">
+                <!-- Streak Card (Special) -->
+                <div class="stat-card-streak">
+                    <h4>Current Streak</h4>
+                    <div class="value">
+                        🔥
+                        7
+                    </div>
+                    <div class="label">Days in a row!</div>
+                </div>
+
+                <div class="stat-card-total">
+                    <h4>Total Topics</h4>
+                    <div class="value">📃24</div>
+                    <div class="label">Subjects covered</div>
+                </div>
+
+                <div class="stat-card-tests">
+                    <h4>Tests Done</h4>
+                    <div class="value">🎯156</div>
+                    <div class="label">Completed</div>
+                </div>
+
+                <div class="stat-card-passed">
+                    <h4>Passed Tests</h4>
+                    <div class="value">✅132</div>
+                    <div class="label">Success rate: 85%</div>
+                </div>
+
+                <div class="stat-card-failed">
+                    <h4>Failed Tests</h4>
+                    <div class="value">❎18</div>
+                    <div class="label">Need improvement</div>
+                </div>
+
+                <div class="stat-card-missed">
+                    <h4>Missed Tests</h4>
+                    <div class="value">⚠️6</div>
+                    <div class="label">Incomplete</div>
+                </div>
+
+                <div class="stat-card-remaining">
+                    <h4>Remaining Tests</h4>
+                    <div class="value">📌42</div>
+                    <div class="label">To be completed</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+
+            <!-- LEFT SIDE -->
+            <div class="footer-left">
+                <h3 class="footer-logo">RecallBot</h3>
+                <p class="tagline">Smarter Recall. Stronger Memory.</p>
+                <p class="badges">AI Powered • Research-Based • Student Focused</p>
+                <p class="copyright">© 2025 RecallBot</p>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="footer-right">
+                <h4>Get in Touch</h4>
+                <!-- <p class="email">support@recallbot.ai</p> -->
+
+                <div class="socials">
+                    <a href="#">GitHub</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Email</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MARQUEE INSIDE FOOTER -->
+        <div class="footer-marquee">
+            <p class="marquee-text">
+                
+                AI DRIVEN PERSONALIZED LEARNING AND MEMORY RETENTION SYSTEM 
+            </p>
+        </div>
+    </footer>
+
+    <!-- <img src="../images/logo.png" class="img" > -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+    <script src="../js/scriptForAnimation.js"></script>
+</body>
+
+</html>

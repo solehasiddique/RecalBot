@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quesionary Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/questionary.css">
+</head>
+
+<body>
+    <header>
+
+        <nav class="navbar">
+            <div class="logo">
+                RecallBot
+            </div>
+            <a href="../html/index.html" class="signin">Sign Out</a>
+        </nav>
+
+    </header>
+
+
+    <main>
+        <div class="questionnaire-container">
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span class="current-question">Question <span id="currentQ">1</span> of 10</span>
+                    <span id="progressPercent">10%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressBar" style="width: 10%"></div>
+                </div>
+            </div>
+
+            <!-- Question Display Area -->
+            <div class="question-display" id="questionDisplay"></div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button class="btn btn-prev" id="prevBtn" onclick="previousQuestion()" disabled>Previous</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-container">
+
+            <!-- LEFT SIDE -->
+            <div class="footer-left">
+                <h3 class="footer-logo">RecallBot</h3>
+                <p class="tagline">Smarter Recall. Stronger Memory.</p>
+                <p class="badges">AI Powered • Research-Based • Student Focused</p>
+                <p class="copyright">© 2025 RecallBot</p>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="footer-right">
+                <h4>Get in Touch</h4>
+                <!-- <p class="email">support@recallbot.ai</p> -->
+
+                <div class="socials">
+                    <a href="#">GitHub</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Email</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MARQUEE INSIDE FOOTER -->
+        <div class="footer-marquee">
+            <p class="marquee-text">
+
+                AI DRIVEN PERSONALIZED LEARNING AND MEMORY RETENTION SYSTEM
+            </p>
+        </div>
+    </footer>
+
+    <!-- <img src="../images/logo.png" class="img" > -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+    <script src="../js/scriptForAnimation.js"></script>
+    <script src="../js/scriptForQuestionary.js"></script>
+</body>
+
+</html>
