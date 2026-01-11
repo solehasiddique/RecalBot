@@ -4,7 +4,6 @@ const confirmPassword = document.getElementById('confirm-password');
 const passwordStrength = document.getElementById('password-strength');
 const successMessage = document.getElementById('success-message');
 
-
 // Password strength indicator
 password.addEventListener('input', function () {
     const val = this.value;
@@ -28,8 +27,8 @@ password.addEventListener('input', function () {
     passwordStrength.style.color = color;
 });
 
-// Form validation
-form.addEventListener('submit', function (e) {
+// Form validation + fetch to backend
+form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     let isValid = true;
@@ -67,24 +66,40 @@ form.addEventListener('submit', function (e) {
         isValid = false;
     }
 
-
     if (isValid) {
-        successMessage.style.display = 'block';
+        try {
+            // Send data to backend
+            const res = await fetch("http://127.0.0.1:8000/api/auth/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: fullname,
+                    email: email,
+                    password: pwd
+                })
+            });
 
+            const data = await res.json();
 
+            if (res.ok) {
+                successMessage.textContent = "Signup successful! Redirecting...";
+                successMessage.style.display = 'block';
 
-        // wait, then redirect
-        setTimeout(() => {
-            form.reset();
-            passwordStrength.textContent = '';
-            window.location.href = '../html/questionary.html';
-        }, 1500); // 1.5 seconds delay
+                // wait, then redirect
+                setTimeout(() => {
+                    form.reset();
+                    passwordStrength.textContent = '';
+                    window.location.href = '../html/questionary.html';
+                }, 1500);
+            } else {
+                alert("Signup failed: " + data.message);
+            }
+
+        } catch (err) {
+            console.error("Signup error:", err);
+            alert("Signup failed. Check console.");
+        }
     }
-
-
 });
-
-
-
-
-
