@@ -2,64 +2,70 @@ const form = document.getElementById('signinForm');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const successMessage = document.getElementById('success-message');
+const rememberMeCheckbox = document.getElementById('remember');
 
 // Form validation and submission
-form.addEventListener('submit', function (e) {
-    e.preventDefault();
+form.addEventListener('submit', async function (e) {
+  e.preventDefault();
 
-    let isValid = true;
+  let isValid = true;
 
-    // Reset error messages
-    document.querySelectorAll('.error-message').forEach(msg => {
-        msg.style.display = 'none';
-    });
+  document.querySelectorAll('.error-message').forEach(msg => {
+    msg.style.display = 'none';
+  });
 
-    // Validate email
-    const email = emailInput.value.trim();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        document.getElementById('email-error').style.display = 'block';
-        isValid = false;
-    }
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+  const rememberMe = rememberMeCheckbox.checked;
 
-    // Validate password
-    const password = passwordInput.value;
-    if (password.length === 0) {
-        document.getElementById('password-error').style.display = 'block';
-        isValid = false;
-    }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    document.getElementById('email-error').style.display = 'block';
+    isValid = false;
+  }
 
-    
+  if (!password) {
+    document.getElementById('password-error').style.display = 'block';
+    isValid = false;
+  }
 
-    if (isValid) {
-        successMessage.style.display = 'block';
+  if (!isValid) return;
 
-        setTimeout(() => {
-            window.location.href = '../html/study.html';
-        }, 2000); // 2 seconds
-    }
-
+  try {
+    const res = await fetch("http://localhost:8000/api/auth/signin", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  credentials: "include",
+  body: JSON.stringify({ email, password, rememberMe }),
 });
 
-// Real-time email validation(check email error when outside)
+console.log("SIGNIN STATUS:", res.status);
+console.log("SIGNIN HEADERS:", [...res.headers]);
 
-emailInput.addEventListener('blur', function () {
-    const email = this.value.trim();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const errorMsg = document.getElementById('email-error');
+const data = await res.json();
+console.log("SIGNIN RESPONSE:", data);
 
-    if (email && !emailRegex.test(email)) {
-        errorMsg.style.display = 'block';
-    } else {
-        errorMsg.style.display = 'none';
+
+    if (!res.ok) {
+      alert(data.message || "Signin failed");
+      return;
     }
-});
 
-//Clear error on input(check email error while typing)
-emailInput.addEventListener('input', function () {
-    document.getElementById('email-error').style.display = 'none';
+    successMessage.style.display = "block";
+
+    setTimeout(() => {
+      window.location.href = "study.html"; // protected page
+    }, 1500);
+
+  } catch (err) {
+    console.error(err);
+    alert("Server error");
+  }
 });
-//check password
-passwordInput.addEventListener('input', function () {
-    document.getElementById('password-error').style.display = 'none';
-});
+// // Toggle password visibility
+// const togglePassword = document.getElementById('togglePassword');
+// togglePassword.addEventListener('click', function () {
+//   const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+//   passwordInput.setAttribute('type', type);
+//   this.textContent = type === 'password' ? 'Show' : 'Hide';
+// });
