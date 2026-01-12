@@ -31,11 +31,7 @@ export const signup = async (req, res) => {
 // SIGNIN
 export const signin = async (req, res) => {
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ message: "All fields required" });
-    }
+    const { email, password, rememberMe } = req.body;
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -53,18 +49,26 @@ export const signin = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    res.cookie("token", token, {
+    // 🔥 REMEMBER ME LOGIC
+    const cookieOptions = {
       httpOnly: true,
       sameSite: "lax",
-      secure: false, // true in production (HTTPS)
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+      secure: false,
+    };
+
+    if (rememberMe) {
+      cookieOptions.maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days
+    }
+    // else: session cookie (deleted on browser close)
+
+    res.cookie("token", token, cookieOptions);
 
     res.json({ message: "Signin successful" });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 
 
