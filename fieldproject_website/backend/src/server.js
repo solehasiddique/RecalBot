@@ -5,18 +5,30 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+console.log("ENV CHECK ⛳");
+console.log("EMAIL_USER:", process.env.MAIL_USER);
+console.log("EMAIL_PASS EXISTS:", !!process.env.MAIL_PASS);
+console.log("MONGO_URI EXISTS:", !!process.env.MONGO_URI);
+console.log("JWT_SECRET EXISTS:", !!process.env.JWT_SECRET);
+console.log("--------------------");
 
 
 const app = express();
+app.use(express.static(path.join(__dirname, "../frontend")));
 
 app.use(express.json());
 app.use(cookieParser());
 
 
 app.use(cors({
-  origin: "http://localhost:5500",
+  origin: ["http://localhost:5500", "http://127.0.0.1:5500"],
   credentials: true,
 }));
 
