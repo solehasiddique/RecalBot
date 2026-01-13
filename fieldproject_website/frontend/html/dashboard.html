@@ -51,15 +51,11 @@
                 <div class="graphs-container">
                     <div class="graph-card">
                         <h3>Overall Performance</h3>
-                        <div class="graph-placeholder">
-                            Line Graph Placeholder
-                        </div>
+                        <canvas id="overallPerformanceChart"></canvas>
                     </div>
                     <div class="graph-card">
                         <h3>Consistency Graph</h3>
-                        <div class="graph-placeholder">
-                           Bar Graph Placeholder
-                        </div>
+                        <canvas id="consistencyChart"></canvas>
                     </div>
                 </div>
 
@@ -67,11 +63,11 @@
                 <div class="pie-charts-container">
                     <div class="pie-card">
                         <h3>Subject Pie Chart</h3>
-                        <div class="pie-placeholder">Pie Chart Placeholder</div>
-                    </div>
+                        <canvas id="subjectPieChart"></canvas>
+    </div>
                     <div class="pie-card">
                         <h3>Pass/Fail/Miss Pie Chart</h3>
-                        <div class="pie-placeholder">Pie Chart Placeholder</div>
+                        <canvas id="passFailPieChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -166,6 +162,12 @@
      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
     <script src="../js/scriptForAnimation.js"></script>
+<script src="../js/dashboardDummy.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../js/dashboardCharts.js"></script>
+
+
+
 </body>
 
 </html>

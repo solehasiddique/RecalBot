@@ -3,8 +3,9 @@ const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const successMessage = document.getElementById('success-message');
 const rememberMeCheckbox = document.getElementById('remember');
+const togglePassword = document.getElementById("togglePassword");
+const passwordField = document.getElementById("password");
 
-// Form validation and submission
 form.addEventListener('submit', async function (e) {
   e.preventDefault();
 
@@ -33,39 +34,44 @@ form.addEventListener('submit', async function (e) {
 
   try {
     const res = await fetch("http://localhost:8000/api/auth/signin", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  credentials: "include",
-  body: JSON.stringify({ email, password, rememberMe }),
-});
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password, rememberMe }),
+    });
 
-console.log("SIGNIN STATUS:", res.status);
-console.log("SIGNIN HEADERS:", [...res.headers]);
+    const data = await res.json();
 
-const data = await res.json();
-console.log("SIGNIN RESPONSE:", data);
+    console.log("SIGNIN STATUS:", res.status);
+    console.log("SIGNIN RESPONSE:", data);
 
-
+    // ❌ Error handling (SMART PART)
     if (!res.ok) {
-      alert(data.message || "Signin failed");
+      if (data.code === "USER_NOT_FOUND") {
+        alert("Account not found. Please sign up first.");
+      } else if (data.code === "INVALID_PASSWORD") {
+        alert("Incorrect password. Please try again.");
+      } else {
+        alert(data.message || "Signin failed");
+      }
       return;
     }
 
+    // ✅ Success
     successMessage.style.display = "block";
 
     setTimeout(() => {
-      window.location.href = "study.html"; // protected page
+      window.location.href = "study.html";
     }, 1500);
 
   } catch (err) {
     console.error(err);
-    alert("Server error");
+    alert("Server error. Please try again later.");
   }
 });
-// // Toggle password visibility
-// const togglePassword = document.getElementById('togglePassword');
-// togglePassword.addEventListener('click', function () {
-//   const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-//   passwordInput.setAttribute('type', type);
-//   this.textContent = type === 'password' ? 'Show' : 'Hide';
-// });
+togglePassword.addEventListener("click", () => {
+  const isHidden = passwordField.type === "password";
+
+  passwordField.type = isHidden ? "text" : "password";
+  togglePassword.textContent = isHidden ? "Hide" : "Show";
+});

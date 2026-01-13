@@ -76,36 +76,57 @@ function initCalendar() {
     const isCurrentMonth = currentMonth === todayDate.getMonth() && currentYear === todayDate.getFullYear();
 
     // Add days
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dayDiv = document.createElement('div');
-        dayDiv.className = 'day';
+for (let day = 1; day <= daysInMonth; day++) {
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'day';
 
-        // Highlight today
-        if (isCurrentMonth && day === todayDate.getDate()) {
-            dayDiv.style.border = '2px solid #6B9071';
-        }
+    const cellDate = new Date(currentYear, currentMonth, day);
+    const todayDateOnly = new Date();
+    todayDateOnly.setHours(0, 0, 0, 0); // normalize time
 
-        const dayNumber = document.createElement('div');
-        dayNumber.className = 'day-number';
-        dayNumber.textContent = day;
-        dayDiv.appendChild(dayNumber);
+    // 🔒 Disable past dates
+    if (cellDate < todayDateOnly) {
+        dayDiv.classList.add('disabled-day');
+    } else {
+        dayDiv.classList.add('active-day');
 
-        // Add topics for this day (only for December 2025 with sample data)
-        const dateKey = `${currentYear}-${currentMonth + 1}-${day}`; // month +1 because JS months start at 0
+        // OPTIONAL: click handler only for allowed dates
+        dayDiv.addEventListener('click', () => {
+            console.log(
+              `Selected date: ${currentYear}-${currentMonth + 1}-${day}`
+            );
+        });
+    }
 
-        
-            if (calendarData[dateKey]) {
-    calendarData[dateKey].forEach(topic => {
-        const tag = document.createElement('div');
-        tag.className = 'topic-tag';
-        tag.style.background = getColorForType(topic.type);
-        tag.textContent = topic.name;
-        dayDiv.appendChild(tag);
-    });
+    // Highlight today
+    if (
+        day === todayDateOnly.getDate() &&
+        currentMonth === todayDateOnly.getMonth() &&
+        currentYear === todayDateOnly.getFullYear()
+    ) {
+        dayDiv.style.border = '2px solid #6B9071';
+    }
+
+    const dayNumber = document.createElement('div');
+    dayNumber.className = 'day-number';
+    dayNumber.textContent = day;
+    dayDiv.appendChild(dayNumber);
+
+    // Add topics
+    const dateKey = `${currentYear}-${currentMonth + 1}-${day}`;
+    if (calendarData[dateKey]) {
+        calendarData[dateKey].forEach(topic => {
+            const tag = document.createElement('div');
+            tag.className = 'topic-tag';
+            tag.style.background = getColorForType(topic.type);
+            tag.textContent = topic.name;
+            dayDiv.appendChild(tag);
+        });
+    }
+
+    calendar.appendChild(dayDiv);
 }
 
-        calendar.appendChild(dayDiv);
-    }
 }
 
 function changeMonth(direction) {
@@ -156,6 +177,11 @@ function initUpcomingTests() {
 // Form submission
 document.getElementById('topicForm').addEventListener('submit', function (e) {
     e.preventDefault();
+    
+    // Get uploaded files
+    const files = document.getElementById('uploadFile').files;
+    console.log(files); // FileList object, you can check in console
+
     const topic = {
         name: document.getElementById('topicName').value,
         subject: document.getElementById('subject').value,

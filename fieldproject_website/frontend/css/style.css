@@ -205,6 +205,24 @@ main {
   padding-left: 100%;
   letter-spacing: 4px;
 }
+.password-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.password-wrapper input {
+  flex: 1;
+}
+
+.toggle-password {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: #6b4eff; /* adjust to your theme */
+  margin-left: -55px;
+}
 
 /* ==================== MOBILE RESPONSIVE ==================== */
 

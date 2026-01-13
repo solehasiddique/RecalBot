@@ -33,40 +33,49 @@ export const signup = async (req, res) => {
 // SIGNIN
 export const signin = async (req, res) => {
   try {
-    const { email, password, rememberMe } = req.body;
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
     const user = await User.findOne({ email });
+
+    // ❌ Email not found
     if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(404).json({
+        code: "USER_NOT_FOUND",
+        message: "Account not found. Please sign up first.",
+      });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
+
+    // ❌ Password wrong
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(401).json({
+        code: "INVALID_PASSWORD",
+        message: "Incorrect password.",
+      });
     }
 
+    // ✅ Success
     const token = jwt.sign(
       { id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    // 🔥 REMEMBER ME LOGIC
-    const cookieOptions = {
+    res.cookie("token", token, {
       httpOnly: true,
       sameSite: "lax",
       secure: false,
-    };
-
-    if (rememberMe) {
-      cookieOptions.maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days
-    }
-    // else: session cookie (deleted on browser close)
-
-    res.cookie("token", token, cookieOptions);
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     res.json({ message: "Signin successful" });
   } catch (err) {
+    console.error("🔥 SIGNIN ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
