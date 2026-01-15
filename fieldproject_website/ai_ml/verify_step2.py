@@ -6,5 +6,6 @@ df = encode_target(df)
 
 X, y = encode_features(df)
 
-print("Features shape:", X.shape)
-print("Target unique values:", sorted(y.unique()))
+print("Rows:", X.shape[0])
+print("Features:", X.shape[1])
+print("Target values:", sorted(y.unique()))
