@@ -19,7 +19,6 @@ venv/
 # =====================
 ai_ml/models/*.pkl
 ai_ml/models/*.joblib
-ai_ml/data/processed_data.csv
 
 # (Optional: ignore raw data if sensitive)
 # ai_ml/data/raw_data.csv
