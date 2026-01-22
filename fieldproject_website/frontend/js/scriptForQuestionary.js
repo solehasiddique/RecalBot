@@ -210,11 +210,31 @@ function previousQuestion() {
     }
 }
 
-function submitAssessment() { 
-    console.log('Assessment Answers:', answers);
-    alert('Assessment submitted successfully! Your personalized learning plan is being generated.');
-    window.location.href = '../html/study.html';
+async function submitAssessment() {
+  try {
+    const res = await fetch("http://localhost:8000/api/auth/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify(answers)
+    });
+
+    if (!res.ok) {
+      alert("Session expired. Please sign in again.");
+      window.location.href = "signin.html";
+      return;
+    }
+
+    alert("Assessment submitted successfully! Your personalized learning plan is being generated.");
+    window.location.href = "../html/study.html";
+  } catch (err) {
+    alert("Failed to submit assessment.");
+    console.error(err);
+  }
 }
+
 
 // Initialize
 renderQuestion();

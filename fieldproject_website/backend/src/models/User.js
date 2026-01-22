@@ -1,5 +1,21 @@
 import mongoose from "mongoose";
 
+const learningProfileSchema = new mongoose.Schema(
+  {
+    q1: String,
+    q2: String,
+    q3: String,
+    q4: String,
+    q5: String,
+    q6: String,
+    q7: String,
+    q8: String,
+    q9: String,
+    q10: String,
+  },
+  { _id: false }
+);
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -25,13 +41,17 @@ const userSchema = new mongoose.Schema(
       enum: ["student", "admin"],
       default: "student",
     },
-    resetPasswordToken: {
-  type: String,
-},
-resetPasswordExpires: {
-  type: Date,
-},
 
+    // 🧠 NEW FIELDS
+    hasCompletedAssessment: {
+      type: Boolean,
+      default: false,
+    },
+
+    learningProfile: learningProfileSchema,
+
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
   },
   { timestamps: true }
 );

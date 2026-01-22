@@ -4,33 +4,75 @@ import User from "../models/User.js";
 import crypto from "crypto";
 import { sendEmail } from "../utils/sendEmail.js";
 
+// 🔐 Helper to set cookie
+const setTokenCookie = (res, token) => {
+  res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: "lax",   // works on localhost
+    secure: false,    // true in production (https)
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+};
+
+// ==========================
 // SIGNUP
+// ==========================
 export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    // 1. Validate input
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
+    // 2. Check if user exists
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: "User already exists" });
+    if (existingUser) {
+      return res.status(409).json({ message: "User already exists" });
+    }
 
+    // 3. Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({ name, email, password: hashedPassword });
+    // 4. Create user
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      hasCompletedAssessment: false,
+    });
 
+    // 5. Create token (MATCHES protect middleware)
+    const token = jwt.sign(
+      { id: user._id  },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    // 6. Set cookie
+    setTokenCookie(res, token);
+
+    // 7. Respond
     res.status(201).json({
       message: "Signup successful",
-      user: { id: user._id, name: user.name, email: user.email },
+      redirect: "/questionary.html",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        hasCompletedAssessment: user.hasCompletedAssessment,
+      },
     });
   } catch (err) {
-    console.error(err);
+    console.error("🔥 SIGNUP ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
+// ==========================
 // SIGNIN
+// ==========================
 export const signin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -41,7 +83,6 @@ export const signin = async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    // ❌ Email not found
     if (!user) {
       return res.status(404).json({
         code: "USER_NOT_FOUND",
@@ -51,7 +92,6 @@ export const signin = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    // ❌ Password wrong
     if (!isMatch) {
       return res.status(401).json({
         code: "INVALID_PASSWORD",
@@ -59,30 +99,32 @@ export const signin = async (req, res) => {
       });
     }
 
-    // ✅ Success
     const token = jwt.sign(
       { id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: false,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    setTokenCookie(res, token);
 
-    res.json({ message: "Signin successful" });
+    // 🎯 Decide where to send user
+    const redirect = user.hasCompletedAssessment
+      ? "/dashboard.html"
+      : "/questionary.html";
+
+    res.json({
+      message: "Signin successful",
+      redirect,
+    });
   } catch (err) {
     console.error("🔥 SIGNIN ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-
-
-
+// ==========================
+// PROFILE CHECK
+// ==========================
 export const profile = async (req, res) => {
   try {
     const token = req.cookies.token;
@@ -92,13 +134,62 @@ export const profile = async (req, res) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    res.json({ ok: true, userId: decoded.id });
+    const user = await User.findById(decoded.id).select(
+      "name email hasCompletedAssessment role"
+    );
+
+    res.json({ ok: true, user });
   } catch (err) {
     return res.status(401).json({ message: "Invalid token" });
   }
 };
 
+// ==========================
+// SUBMIT QUESTIONNAIRE
+// ==========================
+export const submitQuestionnaire = async (req, res) => {
+  try {
+    const userId = req.user.id; // from authMiddleware
 
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.learningProfile = req.body;
+    user.hasCompletedAssessment = true;
+
+    await user.save();
+
+    res.json({
+      message: "Assessment saved successfully",
+      redirect: "/dashboard.html",
+    });
+  } catch (err) {
+    console.error("🔥 QUESTIONNAIRE ERROR:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ==========================
+// LOGOUT
+// ==========================
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+    });
+
+    res.json({ message: "Logged out successfully" });
+  } catch (err) {
+    console.error("🔥 LOGOUT ERROR:", err);
+    res.status(500).json({ message: "Logout failed" });
+  }
+};
+
+// ==========================
+// FORGOT PASSWORD
+// ==========================
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -109,24 +200,17 @@ export const forgotPassword = async (req, res) => {
       return res.json({ message: "If user exists, email sent" });
     }
 
-    // 1️⃣ Generate RAW token
     const resetToken = crypto.randomBytes(32).toString("hex");
 
-    // 2️⃣ HASH the token
     const hashedToken = crypto
       .createHash("sha256")
       .update(resetToken)
       .digest("hex");
 
-    // 3️⃣ Save HASHED token in DB
     user.resetPasswordToken = hashedToken;
-    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 mins
+    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
     await user.save();
 
-    console.log("RAW TOKEN:", resetToken);
-    console.log("HASHED TOKEN:", hashedToken);
-
-    // 4️⃣ Send RAW token via email
     const resetUrl = `http://localhost:5500/fieldproject_website/frontend/html/reset-password.html?token=${resetToken}`;
 
     await sendEmail({
@@ -140,14 +224,15 @@ export const forgotPassword = async (req, res) => {
     });
 
     res.json({ message: "Reset email sent" });
-
   } catch (error) {
     console.error("🔥 FORGOT ERROR:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-
+// ==========================
+// RESET PASSWORD
+// ==========================
 export const resetPassword = async (req, res) => {
   try {
     const { token } = req.params;
@@ -157,7 +242,6 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ message: "Password is required" });
     }
 
-    // hash the token coming from URL
     const hashedToken = crypto
       .createHash("sha256")
       .update(token)
@@ -172,17 +256,13 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ message: "Invalid or expired token" });
     }
 
-    // ✅ HASH PASSWORD (THIS WAS MISSING)
     const hashedPassword = await bcrypt.hash(password, 10);
     user.password = hashedPassword;
 
-    // clear reset fields
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 
     await user.save();
-
-    console.log("✅ PASSWORD RESET & HASHED");
 
     res.json({ message: "Password reset successful" });
   } catch (err) {
