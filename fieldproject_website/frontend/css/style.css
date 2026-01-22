@@ -215,14 +215,51 @@ main {
   flex: 1;
 }
 
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Make space for the eye inside the input */
+.password-wrapper input {
+  width: 100%;
+  padding-right: 42px; /* room for the icon */
+  box-sizing: border-box;
+}
+#eyeClosed {
+  display: none;
+}
+
+
+/* Eye button sits inside the input */
 .toggle-password {
-  background: none;
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: transparent;
   border: none;
   cursor: pointer;
-  font-weight: 600;
-  color: #6b4eff; /* adjust to your theme */
-  margin-left: -55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: #666;
+  height: 22px;
+  width: 22px;
 }
+
+/* Make sure SVG never gets cut */
+.toggle-password svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.toggle-password:hover {
+  color: #000;
+}
+
 
 /* ==================== MOBILE RESPONSIVE ==================== */
 

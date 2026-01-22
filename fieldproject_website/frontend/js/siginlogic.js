@@ -5,6 +5,8 @@ const successMessage = document.getElementById('success-message');
 const rememberMeCheckbox = document.getElementById('remember');
 const togglePassword = document.getElementById("togglePassword");
 const passwordField = document.getElementById("password");
+const eyeOpen = document.getElementById("eyeOpen");
+const eyeClosed = document.getElementById("eyeClosed");
 
 form.addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -70,8 +72,9 @@ form.addEventListener('submit', async function (e) {
   }
 });
 togglePassword.addEventListener("click", () => {
-  const isHidden = passwordField.type === "password";
+  const isHidden = passwordInput.type === "password";
 
-  passwordField.type = isHidden ? "text" : "password";
-  togglePassword.textContent = isHidden ? "Hide" : "Show";
+  passwordInput.type = isHidden ? "text" : "password";
+  eyeOpen.style.display = isHidden ? "none" : "block";
+  eyeClosed.style.display = isHidden ? "block" : "none";
 });
