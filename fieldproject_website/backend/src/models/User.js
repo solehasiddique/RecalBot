@@ -42,11 +42,23 @@ const userSchema = new mongoose.Schema(
       default: "student",
     },
 
-    // 🧠 NEW FIELDS
+
     hasCompletedAssessment: {
       type: Boolean,
       default: false,
     },
+    studyStats: {
+  totalMinutes: { type: Number, default: 0 },
+  sessions: { type: Number, default: 0 },
+  streak: { type: Number, default: 0 }
+},
+sessionsLog: [
+  {
+    date: { type: Date, default: Date.now },
+    minutes: Number,
+    focusType: String
+  }
+],
 
     learningProfile: learningProfileSchema,
 

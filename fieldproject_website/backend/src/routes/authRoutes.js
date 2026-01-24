@@ -6,6 +6,8 @@ import {
   forgotPassword,
   resetPassword,
   submitQuestionnaire,
+  getStudyRecommendations,
+  saveStudySession,
   logout
 } from "../controllers/authController.js";
 
@@ -22,5 +24,8 @@ router.post("/reset-password/:token", resetPassword);
 // 🛡️ Protected
 router.post("/submit", authMiddleware, submitQuestionnaire);
 router.post("/logout", logout);
+router.get("/recommendations", authMiddleware, getStudyRecommendations);
+router.post("/session", authMiddleware, saveStudySession);
+
 
 export default router;

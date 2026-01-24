@@ -270,3 +270,62 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+// ==========================
+// study recomend
+// ==========================
+export const getStudyRecommendations = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    let duration = 25;
+    let personality = "Deep Focus";
+    let music = "Lo-fi Beats";
+
+    if (user?.learningProfile?.focus === "short") {
+      duration = 15;
+      personality = "Quick Sprint";
+      music = "Soft Piano";
+    }
+
+    res.json({
+      personality,
+      duration,
+      music,
+      background: "linear-gradient(135deg, #e0ecde, #cde0cd)"
+    });
+  } catch (err) {
+    res.status(500).json({ message: "AI engine offline" });
+  }
+};
+// ==========================
+// save the sessions 
+// ==========================
+export const saveStudySession = async (req, res) => {
+  try {
+    const { minutes, focusType } = req.body;
+    const user = await User.findById(req.user.id);
+
+    if (!user.studyStats) {
+  user.studyStats = { totalMinutes: 0, sessions: 0 };
+}
+
+if (!user.sessionsLog) {
+  user.sessionsLog = [];
+}
+
+user.studyStats.totalMinutes += minutes;
+user.studyStats.sessions += 1;
+
+user.sessionsLog.push({
+  minutes,
+  focusType
+});
+
+
+    await user.save();
+
+    res.json({ message: "Session saved" });
+  } catch (err) {
+    res.status(500).json({ message: "Could not save session" });
+  }
+};
