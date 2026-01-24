@@ -156,17 +156,6 @@ function initUpcomingTests() {
 // Form submission
 document.getElementById('topicForm').addEventListener('submit', function (e) {
     e.preventDefault();
-
-    const selectedDate = new Date(document.getElementById('endDate').value);
-const todayCheck = new Date();
-todayCheck.setHours(0, 0, 0, 0);
-
-if (selectedDate < todayCheck) {
-    alert("You cannot select a past end date.");
-    return;
-}
-
-    
     const topic = {
         name: document.getElementById('topicName').value,
         subject: document.getElementById('subject').value,
@@ -217,16 +206,6 @@ function submitTest() {
     closeModal();
 }
 
-
 // Initialize everything
 initCalendar();
 initUpcomingTests();
-//Disable calendar date selection
-const endDateInput = document.getElementById("endDate");
-
-const todayDate = new Date();
-const yyyy = todayDate.getFullYear();
-const mm = String(todayDate.getMonth() + 1).padStart(2, '0');
-const dd = String(todayDate.getDate()).padStart(2, '0');
-
-endDateInput.min = `${yyyy}-${mm}-${dd}`;

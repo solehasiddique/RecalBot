@@ -131,7 +131,6 @@
             gsap.from('#buttons button', { opacity: 0, y: 20, duration: 0.5,ease: "power2.out",clearProps: "all" });
         }
     }
-    
 
     async function init() {
         animate();
