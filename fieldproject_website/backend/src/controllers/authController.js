@@ -127,15 +127,8 @@ export const signin = async (req, res) => {
 // ==========================
 export const profile = async (req, res) => {
   try {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(401).json({ message: "No token" });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    const user = await User.findById(decoded.id).select(
-      "name email hasCompletedAssessment role"
+    const user = await User.findById(req.user.id).select(
+      "name email hasCompletedAssessment role studyStats"
     );
 
     res.json({ ok: true, user });
@@ -143,6 +136,7 @@ export const profile = async (req, res) => {
     return res.status(401).json({ message: "Invalid token" });
   }
 };
+
 
 // ==========================
 // SUBMIT QUESTIONNAIRE
@@ -311,6 +305,13 @@ export const saveStudySession = async (req, res) => {
 
 if (!user.sessionsLog) {
   user.sessionsLog = [];
+}
+
+const today = new Date().toDateString();
+const lastSession = user.sessionsLog.at(-1);
+
+if (!lastSession || new Date(lastSession.date).toDateString() !== today) {
+  user.studyStats.streak += 1;
 }
 
 user.studyStats.totalMinutes += minutes;

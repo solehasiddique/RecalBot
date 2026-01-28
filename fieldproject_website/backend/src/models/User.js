@@ -67,6 +67,8 @@ sessionsLog: [
   },
   { timestamps: true }
 );
+// 🔍 Indexes for performance
 
-const User = mongoose.model("User", userSchema);
-export default User;
+userSchema.index({ resetPasswordToken: 1 });
+
+export default mongoose.model("User", userSchema);
