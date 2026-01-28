@@ -126,20 +126,19 @@
     text-align: center;
 }
 
-.pie-placeholder {
-    width: 250px;
-    height: 250px;
-    margin: 0 auto;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #AEC3B0, #6B9071);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    color: #FFFFFF;
-    font-size: 14px;
-    font-weight: 500;
+
+
+.pie-wrapper {
+    width: 350px;   /* adjust this to make chart smaller or bigger */
+    height: 350px;  /* adjust this to make chart smaller or bigger */
+    margin: 0 auto; /* center horizontally */
 }
+
+.pie-wrapper canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
 
 /* ==================== RIGHT SECTION (STATS CARDS) ==================== */
 .dashboard-right {
@@ -200,8 +199,14 @@
     background: #F0AD4E;
     padding: 16px 18px;
     border-radius: 12px;
-    border: 2px solid #AEC3B0;
     box-shadow: 0 2px 8px rgba(174, 195, 176, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.stat-card-memory {
+    background: #2C6AB8;
+    padding: 16px 18px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #FFFFFF;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
