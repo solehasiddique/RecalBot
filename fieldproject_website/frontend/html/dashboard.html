@@ -17,16 +17,16 @@
             <div class="logo">
                 RecallBot
             </div>
-            
+
             <div class="nav-links">
-      <a href="../html/index.html" class="nav-item">Home</a>
-      <a href="../html/study.html" class="nav-item">Study</a>
-      <a href="../html/test.html" class="nav-item">Test</a>
-      <a href="../html/index.html" class="nav-item">Sign Out</a>
-    </div>
+                <a href="../html/index.html" class="nav-item">Home</a>
+                <a href="../html/study.html" class="nav-item">Study</a>
+                <a href="../html/test.html" class="nav-item">Test</a>
+                <a href="../html/index.html" class="nav-item">Sign Out</a>
+            </div>
         </nav>
-        
-        
+
+
     </header>
 
 
@@ -37,7 +37,7 @@
                 <!-- Welcome Card -->
                 <div class="welcome-card">
                     <div class="welcome-img">
-                        
+
                         <img src="../images/dashbboardimg.png">
                     </div>
                     <div class="welcome-text">
@@ -50,15 +50,11 @@
                 <div class="graphs-container">
                     <div class="graph-card">
                         <h3>Overall Performance</h3>
-                        <div class="graph-placeholder">
-                            Line Graph Placeholder
-                        </div>
+                        <canvas id="performanceLineChart"></canvas>
                     </div>
                     <div class="graph-card">
                         <h3>Consistency Graph</h3>
-                        <div class="graph-placeholder">
-                           Bar Graph Placeholder
-                        </div>
+                        <canvas id="consistencyBarChart"></canvas>
                     </div>
                 </div>
 
@@ -66,11 +62,15 @@
                 <div class="pie-charts-container">
                     <div class="pie-card">
                         <h3>Subject Pie Chart</h3>
-                        <div class="pie-placeholder">Pie Chart Placeholder</div>
+                        <div class="pie-wrapper">
+        <canvas id="subjectPieChart"></canvas>
+    </div>
                     </div>
                     <div class="pie-card">
                         <h3>Pass/Fail/Miss Pie Chart</h3>
-                        <div class="pie-placeholder">Pie Chart Placeholder</div>
+                        <div class="pie-wrapper">
+        <canvas id="resultPieChart"></canvas>
+    </div>
                     </div>
                 </div>
             </div>
@@ -122,6 +122,11 @@
                     <div class="value">📌42</div>
                     <div class="label">To be completed</div>
                 </div>
+                <div class="stat-card-memory">
+                    <h4>Memory Strength</h4>
+                    <div class="value">🧠75%</div>
+                    <div class="label">Focus & Retention</div>
+                </div>
             </div>
         </div>
     </main>
@@ -155,16 +160,18 @@
         <!-- MARQUEE INSIDE FOOTER -->
         <div class="footer-marquee">
             <p class="marquee-text">
-                
-                AI DRIVEN PERSONALIZED LEARNING AND MEMORY RETENTION SYSTEM 
+
+                AI DRIVEN PERSONALIZED LEARNING AND MEMORY RETENTION SYSTEM
             </p>
         </div>
     </footer>
 
     <!-- <img src="../images/logo.png" class="img" > -->
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/scriptForAnimation.js"></script>
+    <script src="../js/scriptForDashboard.js"></script>
 </body>
 
 </html>
