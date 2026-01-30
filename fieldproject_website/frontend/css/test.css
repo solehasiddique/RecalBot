@@ -306,21 +306,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.disabled-day {
-    opacity: 0.35;
-    pointer-events: none;
-    background: #e6e6e6;
-    cursor: not-allowed;
-}
-
-.active-day {
-    cursor: pointer;
-}
-
-.active-day:hover {
-    background: rgba(107, 144, 113, 0.15);
-}
-
 
 /* TEST MODAL */
 .test-modal {

@@ -230,3 +230,4 @@ const mm = String(todayDate.getMonth() + 1).padStart(2, '0');
 const dd = String(todayDate.getDate()).padStart(2, '0');
 
 endDateInput.min = `${yyyy}-${mm}-${dd}`;
+
