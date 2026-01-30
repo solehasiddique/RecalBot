@@ -6,3 +6,19 @@ seaborn
 fastapi
 uvicorn
 joblib
+
+
+# If she has uncommitted backend changes, do one:
+# git add .
+# git commit -m "WIP backend changes"
+
+# git fetch origin
+# git checkout -b ai_ml origin/ai_ml   # only if ai_ml not present
+# git checkout ai_ml                   # if already present
+# git pull origin 
+
+# python -m venv venv
+# venv\Scripts\activate
+# pip install -r ai_ml/requirements.txt
+# cd ai_ml
+# python train_processed.py
