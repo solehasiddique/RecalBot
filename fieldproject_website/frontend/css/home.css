@@ -1,6 +1,7 @@
 /* Import Roboto Font */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
+ 
 /* ==================== GLOBAL CSS ==================== */
 * {
   margin: 0;
@@ -33,6 +34,7 @@ main {
   position: relative;
 }
 
+
 .section1,
 .section2,
 .section3,
@@ -52,6 +54,7 @@ main {
   overflow-x: hidden;
   width: 100%;
   position: relative;
+  border-radius: 50px;
 }
 
 .section1 .lt {
@@ -61,7 +64,7 @@ main {
 }
 
 .section1 .lt h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
+font-size: clamp(0.9rem, 3vw, 3rem);
   font-weight: 700;
   margin-bottom: 20px;
   color: #375534;
@@ -71,13 +74,15 @@ main {
 }
 
 .section1 .lt p {
-  font-size: clamp(1rem, 2vw, 1.2rem);
+ font-size: clamp(1rem, 2vw, 20px);
   font-weight: 400;
   margin-bottom: 30px;
   line-height: 1.6;
   color: #6B9071;
   opacity: 0;
   transform: translateX(-50px);
+  
+
 }
 
 .section1 .lt a {
@@ -126,6 +131,10 @@ main {
   z-index: 1;
 }
 
+.big-word {
+  color:#6B9071
+}
+
 /* ==================== THOUGHTS STYLING ==================== */
 .thoughts-container {
   position: absolute;
@@ -149,9 +158,9 @@ main {
   white-space: normal;
   max-width: 200px;
   text-align: center;
-  color: #375534;
-  background: linear-gradient(135deg, #AEC3B0, #E3EED4);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #375534, #AEC3B0);
+  box-shadow: 0 5px 10px #D6E4C9;
   transition: all 0.3s ease;
   line-height: 1.4;
 }
@@ -351,6 +360,7 @@ main {
   /* padding: 80px 20px; */
   max-width: 1400px;
   margin: 0 auto;
+  border-radius:50px ;
 }
 
 /* LEFT - ABOUT TITLE */
@@ -368,12 +378,16 @@ main {
   position: relative;
   color: #375534;
   /* text always visible */
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(1.8rem, 4vw, 55px);
   font-weight: 700;
   letter-spacing: 2px;
   line-height: 1;
   cursor: pointer;
   z-index: 1;
+  font-family: 'Anton', sans-serif;
+  font-size: 55px;
+  text-transform: uppercase;
+  
 }
 
 /* Background strip (CENTERED, height animates) */
@@ -434,7 +448,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* horizontal center */
+ 
   text-align: center;
   padding: 0 20px;
 }
@@ -442,30 +456,50 @@ main {
 .vision {
   font-size: 2rem;
   font-weight: 700;
-  letter-spacing: 5px;
+  letter-spacing: 2px;
   color: #375534;
   margin-bottom: 50px;
-  /* space between title & text */
+  
   margin-top: 100px;
 }
 
 .vision-text {
   max-width: 900px;
-  font-size: 1.5rem;
-  font-weight: 400;
-  line-height: 1.9;
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+line-height: 1.6;
+  font-weight: bold;
+  text-align: center;
   color: #6B9071;
-  margin-bottom: 100px;
+  /* margin-bottom: 100px; */
+  text-align: center; 
+ margin: 0 auto 100px;
 }
 
-.vision-line {
+/* .vision-line {
   display: block;
-  /* makes each line appear on its own row */
+ 
   overflow: hidden;
-  /* hides during animation start */
+ 
   opacity: 0.2;
-  /* initial invisible for animation */
+ 
+
+} */
+
+.vision-line {
+  display: inline;
+  margin-bottom: 12px;
+   text-align: center;
 }
+
+.vision-line span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(15px);
+ 
+}
+
+
+
 
 /* ==================== RESPONSIVE DESIGN ==================== */
 

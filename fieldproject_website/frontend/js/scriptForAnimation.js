@@ -53,7 +53,7 @@ if (getStarted) {
     opacity: 1,
     y: 0,
     duration: 1,
-    delay: 1 + thoughts.length * 1.2 + 0.5,
+    delay: 1 ,
     ease: "power2.out"
   });
 }
@@ -186,23 +186,34 @@ if (section3Right) {
 }
 
 //home page (section4)
-const visionLines = document.querySelectorAll(".vision-line");
-if (visionLines.length > 0) {
-  gsap.registerPlugin(ScrollTrigger);
-  
-  gsap.to(".vision-line", {
-    opacity: 1,
-    y: 0,
-    stagger: 0.5,
-    scrollTrigger: {
-      trigger: ".section4",
-      start: "top 70%",
-      end: "top 30%",
-      scrub: 2
-    },
-    ease: "power2.out"
+
+
+document.querySelectorAll(".vision-line").forEach(line => {
+  const words = line.innerText.trim().split(" ");
+  line.innerHTML = "";
+
+  words.forEach(word => {
+    const span = document.createElement("span");
+    span.innerHTML = word + "&nbsp;"; // ✅ keeps space
+    line.appendChild(span);
   });
-}
+});
+
+gsap.to(".vision-line span", {
+  opacity: 1,
+  y: 0,
+  duration:1.5,          // ⏳ each word takes longer
+  stagger: 1.5,           // 🐢 delay between words
+  ease: "power1.out",     // softer than power2
+  scrollTrigger: {
+    trigger: ".section4",
+    start: "top 75%",
+    end: "top 25%",
+    scrub: 20          // 🐢 scroll-controlled slow motion
+  }
+});
+
+
 
 //Lenis smooth scroll
 if (typeof Lenis !== 'undefined') {
