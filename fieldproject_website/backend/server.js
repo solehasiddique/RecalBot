@@ -1,5 +1,6 @@
-
 import authRoutes from "./routes/authRoutes.js";
+import memoryRoutes from "./routes/memoryRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -36,6 +37,9 @@ app.use(cors({
 app.use("/api/auth", authRoutes);
 app.use(express.static(path.join(__dirname, "../frontend")));
 
+app.use("/api/memory", memoryRoutes);
+
+app.use("/api/dashboard", dashboardRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server is running");
@@ -50,4 +54,5 @@ mongoose
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Server running on port ${PORT}`);
+  console.log("Using Mongo URI:", process.env.MONGO_URI)
 });

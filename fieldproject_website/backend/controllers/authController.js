@@ -19,56 +19,53 @@ const setTokenCookie = (res, token) => {
 // ==========================
 export const signup = async (req, res) => {
   try {
+    console.log("🔥 SIGNUP HIT:", req.body);
+
     const { name, email, password } = req.body;
 
-    // 1. Validate input
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // 2. Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ message: "User already exists" });
     }
 
-    // 3. Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 4. Create user
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
-      hasCompletedAssessment: false,
+      hasCompletedAssessment: false
     });
 
-    // 5. Create token (MATCHES protect middleware)
     const token = jwt.sign(
-      { id: user._id  },
+      { id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    // 6. Set cookie
     setTokenCookie(res, token);
 
-    // 7. Respond
     res.status(201).json({
       message: "Signup successful",
-      redirect: "/questionary.html",
+      redirect: "/fieldproject_website/frontend/html/questionary.html",
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
-        hasCompletedAssessment: user.hasCompletedAssessment,
-      },
+        hasCompletedAssessment: user.hasCompletedAssessment
+      }
     });
+
   } catch (err) {
     console.error("🔥 SIGNUP ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // ==========================
 // SIGNIN
@@ -109,8 +106,8 @@ export const signin = async (req, res) => {
 
     // 🎯 Decide where to send user
     const redirect = user.hasCompletedAssessment
-      ? "/dashboard.html"
-      : "/questionary.html";
+      ? "/fieldproject_website/frontend/html/dashboard.html"
+      : "/fieldproject_website/frontend/html/questionary.html";
 
     res.json({
       message: "Signin successful",
@@ -155,7 +152,7 @@ export const submitQuestionnaire = async (req, res) => {
 
     res.json({
       message: "Assessment saved successfully",
-      redirect: "/dashboard.html",
+      redirect: "/fieldproject_website/frontend/html/dashboard.html",
     });
   } catch (err) {
     console.error("🔥 QUESTIONNAIRE ERROR:", err);

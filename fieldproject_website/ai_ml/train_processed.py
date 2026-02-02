@@ -1,9 +1,11 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
+import json
+import joblib
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 # ======================
 # 1. Load processed data
@@ -24,7 +26,7 @@ X = X.replace({True: 1, False: 0, "TRUE": 1, "FALSE": 0})
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
-    test_size=0.2,
+    test_size=0.2, 
     random_state=42,
     stratify=y
 )
@@ -34,49 +36,74 @@ X_train, X_test, y_train, y_test = train_test_split(
 # ======================
 models = {
     "Logistic Regression": LogisticRegression(
-        max_iter=1000,
-        class_weight="balanced"
+        max_iter=100, #this is the no of steps the model takes to learn
+        class_weight="balanced" #helps when we have imbalanced classes
     ),
 
-    "Decision Tree": DecisionTreeClassifier(
-        max_depth=6,
-        min_samples_leaf=15,
-        class_weight="balanced",
-        random_state=42
-    ),
+    #  "Decision Tree": DecisionTreeClassifier(
+    #      max_depth=6, #maximum depth of the tree and it helps to reduce complexity
+    #      min_samples_leaf=15, #minimum samples required to be at a leaf node and it avoids tiny, noicy decision trees
+    #      class_weight="balanced",
+    #      random_state=42
+    #  ),
 
-    "Random Forest": RandomForestClassifier(
-        n_estimators=300,
-        max_depth=8,
-        min_samples_leaf=10,
-        class_weight="balanced",
-        random_state=42
-    ),
-
-    # "Gradient Boosting": GradientBoostingClassifier(
-    #     n_estimators=200,
-    #     max_depth=3,
-    #     random_state=42
-    # )
+    #  "Random Forest": RandomForestClassifier(
+    #      n_estimators=300, #number of trees in the forest
+    #      max_depth=6, 
+    #      min_samples_leaf=15,
+    #      class_weight="balanced",
+    #      random_state=42
+    #  )
 }
 
 # ======================
-# 4. Train & evaluate
+# 4. Train, evaluate, cross-validate
 # ======================
-print("\nMODEL COMPARISON RESULTS (500 rows)\n")
-
-results = []
+print("\n===== MODEL EVALUATION RESULTS =====\n")
 
 for name, model in models.items():
-    model.fit(X_train, y_train)
-    preds = model.predict(X_test)
-    acc = accuracy_score(y_test, preds)
-    results.append((name, acc))
-    print(f"{name}: Accuracy = {acc:.3f}")
+    print(f"\n--- {name} ---")
 
-# ======================
-# 5. Best model
-# ======================
-best_model = max(results, key=lambda x: x[1])
-print("\nBEST MODEL:")
-print(best_model)
+    # Train
+    model.fit(X_train, y_train)
+
+    # Predictions
+    train_preds = model.predict(X_train)
+    test_preds = model.predict(X_test)
+
+    # Accuracy
+    train_acc = accuracy_score(y_train, train_preds)
+    test_acc = accuracy_score(y_test, test_preds)
+
+    print(f"Train Accuracy: {train_acc:.3f}") #Training accuracy
+    print(f"Test Accuracy : {test_acc:.3f}") #Testing accuracy
+
+# Not for now 
+    # # Classification report
+    print("\nClassification Report (Test):")
+    print(classification_report(y_test, test_preds))
+
+    # # Confusion matrix
+    # print("Confusion Matrix (Test):")
+    # print(confusion_matrix(y_test, test_preds))
+
+    # # Cross-validation
+    # cv_scores = cross_val_score(
+    #     model,
+    #     X,
+    #     y,
+    #     cv=5,
+    #     scoring="accuracy"
+    # )
+
+    # print("\nCross-Validation Accuracy:")
+    # print(f"Mean: {cv_scores.mean():.3f}")
+    # print(f"Std : {cv_scores.std():.3f}")
+    # print(f"Folds: {cv_scores}")
+
+joblib.dump(model, "model.pkl")
+
+with open("columns.json", "w") as f:
+    json.dump(list(X.columns), f)
+
+print("columns.json saved successfully")

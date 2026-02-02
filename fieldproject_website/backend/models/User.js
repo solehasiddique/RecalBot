@@ -13,7 +13,7 @@ const learningProfileSchema = new mongoose.Schema(
     q9: String,
     q10: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const userSchema = new mongoose.Schema(
@@ -42,30 +42,54 @@ const userSchema = new mongoose.Schema(
       default: "student",
     },
 
-
     hasCompletedAssessment: {
       type: Boolean,
       default: false,
     },
+
+    memoryScore: {
+      type: Number,
+      default: null,
+    },
+    memoryLabel: {
+      type: String,
+      default: null,
+    },
+    memoryPercentage: {
+      type: Number,
+      default: null,
+    },
+
     studyStats: {
-  totalMinutes: { type: Number, default: 0 },
-  sessions: { type: Number, default: 0 },
-  streak: { type: Number, default: 0 }
-},
-sessionsLog: [
-  {
-    date: { type: Date, default: Date.now },
-    minutes: Number,
-    focusType: String
-  }
-],
+      totalMinutes: { type: Number, default: 0 },
+      sessions: { type: Number, default: 0 },
+      streak: { type: Number, default: 0 },
+    },
+    sessionsLog: [
+      {
+        date: { type: Date, default: Date.now },
+        minutes: Number,
+        focusType: String,
+      },
+    ],
 
     learningProfile: learningProfileSchema,
+
+    memoryProfile: {
+      type: String,
+      enum: ["WEAK", "MEDIUM", "STRONG"],
+      default: null,
+    },
+
+
+    memoryInitializedAt: {
+      type: Date,
+    },
 
     resetPasswordToken: String,
     resetPasswordExpires: Date,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 // 🔍 Indexes for performance
 

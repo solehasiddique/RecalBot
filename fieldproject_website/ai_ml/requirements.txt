@@ -6,9 +6,9 @@ seaborn
 fastapi
 uvicorn
 joblib
+flask
 
-
-# If she has uncommitted backend changes, do one:
+# If there are uncommitted backend changes, do one:
 # git add .
 # git commit -m "WIP backend changes"
 

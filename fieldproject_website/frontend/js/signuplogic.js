@@ -4,87 +4,98 @@ const confirmPassword = document.getElementById('confirm-password');
 const passwordStrength = document.getElementById('password-strength');
 const successMessage = document.getElementById('success-message');
 
-
-// Password strength indicator
+// ========================
+// Password strength
+// ========================
 password.addEventListener('input', function () {
-    const val = this.value;
-    let strength = '';
-    let color = '';
+  const val = this.value;
+  let strength = '';
+  let color = '';
 
-    if (val.length === 0) {
-        strength = '';
-    } else if (val.length < 6) {
-        strength = 'Weak';
-        color = '#ff6b6b';
-    } else if (val.length < 10) {
-        strength = 'Medium';
-        color = '#ffd93d';
-    } else {
-        strength = 'Strong';
-        color = '#6B9704';
-    }
+  if (val.length === 0) {
+    strength = '';
+  } else if (val.length < 6) {
+    strength = 'Weak';
+    color = '#ff6b6b';
+  } else if (val.length < 10) {
+    strength = 'Medium';
+    color = '#ffd93d';
+  } else {
+    strength = 'Strong';
+    color = '#6B9704';
+  }
 
-    passwordStrength.textContent = strength ? `Password strength: ${strength}` : '';
-    passwordStrength.style.color = color;
+  passwordStrength.textContent = strength
+    ? `Password strength: ${strength}`
+    : '';
+  passwordStrength.style.color = color;
 });
 
-// Form validation
-form.addEventListener('submit', function (e) {
-    e.preventDefault();
+// ========================
+// Signup submit
+// ========================
+form.addEventListener('submit', async function (e) {
+  e.preventDefault();
 
-    let isValid = true;
+  let isValid = true;
+  document.querySelectorAll('.error-message').forEach(msg => {
+    msg.style.display = 'none';
+  });
 
-    // Reset error messages
-    document.querySelectorAll('.error-message').forEach(msg => {
-        msg.style.display = 'none';
+  const fullname = document.getElementById('fullname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const pwd = password.value;
+
+  if (fullname.length < 2) {
+    document.getElementById('fullname-error').style.display = 'block';
+    isValid = false;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    document.getElementById('email-error').style.display = 'block';
+    isValid = false;
+  }
+
+  if (pwd.length < 3) {
+    document.getElementById('password-error').style.display = 'block';
+    isValid = false;
+  }
+
+  if (pwd !== confirmPassword.value) {
+    document.getElementById('confirm-error').style.display = 'block';
+    isValid = false;
+  }
+
+  if (!isValid) return;
+
+  try {
+    const res = await fetch("http://localhost:8000/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include", // 🔴 REQUIRED
+      body: JSON.stringify({
+        name: fullname,
+        email,
+        password: pwd
+      })
     });
 
-    // Validate full name
-    const fullname = document.getElementById('fullname').value.trim();
-    if (fullname.length < 2) {
-        document.getElementById('fullname-error').style.display = 'block';
-        isValid = false;
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "Signup failed");
+      return;
     }
 
-    // Validate email
-    const email = document.getElementById('email').value.trim();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        document.getElementById('email-error').style.display = 'block';
-        isValid = false;
-    }
+    successMessage.style.display = 'block';
 
-    // Validate password
-    const pwd = password.value;
-    if (pwd.length < 3) {
-        document.getElementById('password-error').style.display = 'block';
-        isValid = false;
-    }
+    setTimeout(() => {
+      window.location.href = data.redirect || "fieldproject_website/frontend/questionary.html";
+    }, 1000);
 
-    // Validate password match
-    if (pwd !== confirmPassword.value) {
-        document.getElementById('confirm-error').style.display = 'block';
-        isValid = false;
-    }
-
-
-    if (isValid) {
-        successMessage.style.display = 'block';
-
-
-
-        // wait, then redirect
-        setTimeout(() => {
-            form.reset();
-            passwordStrength.textContent = '';
-            window.location.href = '../html/questionary.html';
-        }, 1500); // 1.5 seconds delay
-    }
-
-
+  } catch (err) {
+    console.error("Signup error:", err);
+    alert("Server error during signup");
+  }
 });
-
-
-
-
-
