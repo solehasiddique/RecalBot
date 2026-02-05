@@ -1,6 +1,7 @@
 import authRoutes from "./routes/authRoutes.js";
 import memoryRoutes from "./routes/memoryRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
+import topicRoutes from "./routes/topicRoutes.js"; 
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -8,6 +9,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
+
 
 
 dotenv.config();
@@ -40,6 +42,8 @@ app.use(express.static(path.join(__dirname, "../frontend")));
 app.use("/api/memory", memoryRoutes);
 
 app.use("/api/dashboard", dashboardRoutes);
+
+app.use("/api/topics", topicRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server is running");

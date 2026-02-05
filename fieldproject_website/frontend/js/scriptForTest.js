@@ -1,37 +1,83 @@
 /***********************
  * GLOBAL STATE
  ***********************/
-const topics = [];
-const upcomingTests = [];
+let calendarData = {};
+let upcomingTests = [];
 
 let currentDate = new Date();
 let currentMonth = currentDate.getMonth();
 let currentYear = currentDate.getFullYear();
 
-/***********************
- * SAMPLE CALENDAR DATA
- ***********************/
-const calendarData = {
-  "2025-12-1": [{ name: "Arrays", type: "studied" }],
-  "2025-12-3": [{ name: "Linked Lists", type: "studied" }],
-  "2025-12-5": [{ name: "Arrays", type: "completed" }],
-  "2025-12-8": [{ name: "Stacks", type: "studied" }],
-  "2025-12-10": [{ name: "Linked Lists", type: "missed" }],
-  "2025-12-12": [{ name: "Queues", type: "studied" }],
-  "2025-12-15": [{ name: "Stacks", type: "completed" }],
-  "2025-12-17": [{ name: "Trees", type: "studied" }],
-  "2025-12-18": [{ name: "Arrays", type: "failed" }],
-  "2025-12-20": [{ name: "Graphs", type: "studied" }],
-  "2025-12-22": [{ name: "Queues", type: "reschedule" }],
-  "2025-12-24": [{ name: "Hashing", type: "studied" }],
-  "2025-12-26": [{ name: "Trees", type: "completed" }],
-  "2025-12-28": [{ name: "DP", type: "studied" }],
-};
-
 const monthNames = [
   "January","February","March","April","May","June",
   "July","August","September","October","November","December",
 ];
+
+/***********************
+ * LOAD CALENDAR FROM DB (SINGLE SOURCE)
+ ***********************/
+async function loadCalendarFromDB() {
+  try {
+    calendarData = {};
+    upcomingTests = [];
+
+    const res = await fetch("http://localhost:8000/api/topics", {
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    const topics = data.topics || data;
+
+    topics.forEach(topic => {
+
+      /* ===============================
+         1️⃣ STUDIED DATE (GREEN TAG)
+      =============================== */
+      const studiedDate = new Date(topic.createdAt);
+      const studiedKey = `${studiedDate.getFullYear()}-${studiedDate.getMonth() + 1}-${studiedDate.getDate()}`;
+
+      if (!calendarData[studiedKey]) calendarData[studiedKey] = [];
+      calendarData[studiedKey].push({
+        name: topic.title,
+        type: "studied"
+      });
+
+      /* ===============================
+         2️⃣ REVISIONS
+      =============================== */
+      topic.revisions.forEach(rev => {
+        const d = new Date(rev.scheduledAt);
+        const key = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+
+        let type = "reschedule";
+
+        if (rev.completed) type = "completed";
+        else if (d < new Date()) type = "missed";
+
+        if (!calendarData[key]) calendarData[key] = [];
+        calendarData[key].push({
+          name: topic.title,
+          type
+        });
+
+        // upcoming test = next incomplete revision
+        if (!rev.completed && d >= new Date()) {
+          upcomingTests.push({
+            name: topic.title,
+            date: d.toDateString(),
+          });
+        }
+      });
+    });
+
+    initCalendar();
+    initUpcomingTests();
+
+  } catch (err) {
+    console.error("Calendar load failed:", err);
+  }
+}
+
 
 /***********************
  * CALENDAR
@@ -60,7 +106,9 @@ function initCalendar() {
   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-  for (let i = 0; i < firstDay; i++) calendar.appendChild(document.createElement("div"));
+  for (let i = 0; i < firstDay; i++) {
+    calendar.appendChild(document.createElement("div"));
+  }
 
   const today = new Date();
   const isCurrentMonth =
@@ -81,12 +129,13 @@ function initCalendar() {
     dayDiv.appendChild(num);
 
     const key = `${currentYear}-${currentMonth + 1}-${day}`;
+
     if (calendarData[key]) {
-      calendarData[key].forEach(t => {
+      calendarData[key].forEach(item => {
         const tag = document.createElement("div");
         tag.className = "topic-tag";
-        tag.style.background = getColorForType(t.type);
-        tag.textContent = t.name;
+        tag.style.background = getColorForType(item.type);
+        tag.textContent = item.name;
         dayDiv.appendChild(tag);
       });
     }
@@ -109,7 +158,7 @@ function getColorForType(type) {
     missed: "#b2a63bff",
     failed: "#D9534F",
     reschedule: "#F0AD4E",
-  }[type] || "#375534";
+  }[type] || "#F0AD4E";
 }
 
 /***********************
@@ -125,112 +174,90 @@ function initUpcomingTests() {
     div.innerHTML = `
       <div class="test-info">
         <div class="test-name">${test.name}</div>
-        <div class="test-date">${test.subject} • ${test.date}</div>
+        <div class="test-date">${test.date}</div>
       </div>
-      <button class="start-test-btn"
-        onclick="openModal('${test.name}','${test.subject}')">
-        Start Test
-      </button>
+      <button class="start-test-btn">Start Test</button>
     `;
     list.appendChild(div);
   });
 }
 
 /***********************
- * ADD TOPIC
+ * DOM READY
  ***********************/
-document.getElementById("topicForm").addEventListener("submit", function (e) {
-  e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
 
-  const topic = {
-    name: topicName.value,
-    subject: subject.value,
-    description: description.value,
-    endDate: endDate.value,
-    confidence: confidence.value,
-  };
+  const endDateInput = document.getElementById("endDate");
 
-  topics.push(topic);
+  const t = new Date();
+  endDateInput.min = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`;
 
-  upcomingTests.push({
-    name: topic.name,
-    subject: topic.subject,
-    date: new Date(topic.endDate).toDateString(),
+  /***********************
+   * ADD TOPIC
+   ***********************/
+  document.getElementById("topicForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const title = topicName.value;
+    const description = document.getElementById("description").value;
+    const endDate = endDateInput.value;
+
+    try {
+      const res = await fetch("http://localhost:8000/api/topics/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ title, description, endDate }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.message || "Failed to create topic");
+        return;
+      }
+
+      const topic = data.topic;
+
+      const createdAt = new Date(topic.createdAt);
+      const todayKey = `${createdAt.getFullYear()}-${createdAt.getMonth()+1}-${createdAt.getDate()}`;
+
+      if (!calendarData[todayKey]) calendarData[todayKey] = [];
+      calendarData[todayKey].push({
+        name: topic.title,
+        type: "studied"
+      });
+
+      topic.revisions.forEach(r => {
+        const d = new Date(r.scheduledAt);
+        const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+
+        if (!calendarData[key]) calendarData[key] = [];
+        calendarData[key].push({
+          name: topic.title,
+          type: r.status || "reschedule"
+        });
+
+        upcomingTests.push({
+          name: topic.title,
+          date: d.toDateString(),
+        });
+      });
+
+      initCalendar();
+      initUpcomingTests();
+
+      alert("Topic added & revisions scheduled!");
+      this.reset();
+
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+    }
   });
 
-  initUpcomingTests(); // ✅ IMPORTANT
-
-  const today = new Date();
-  const key = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-
-  if (!calendarData[key]) calendarData[key] = [];
-  calendarData[key].push({ name: topic.name, type: "studied" });
-
   initCalendar();
-  alert(`Topic "${topic.name}" added successfully!`);
-  this.reset();
+  initUpcomingTests();
+  loadCalendarFromDB();
 });
 
-/***********************
- * TEST MODAL
- ***********************/
-function openModal(topicName, subject) {
-  modalTopicName.textContent = topicName;
-  modalSubject.textContent = subject;
-  testModal.classList.add("active");
-}
 
-function closeModal() {
-  testModal.classList.remove("active");
-}
-
-function submitTest() {
-  fetch("http://localhost:8000/api/memory/predict", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({
-      "Age_18 - 21": 1,
-      "Gender_Male": 1,
-    }),
-  })
-    .then(res => res.json())
-    .then(data => {
-      alert(`Memory Strength: ${data.label} (${data.percentage}%)`);
-      generateRevisionDates(data.label);
-    });
-
-  closeModal();
-}
-
-/***********************
- * REVISION SCHEDULING
- ***********************/
-function generateRevisionDates(label) {
-  const today = new Date();
-  const gaps =
-    label === "WEAK" ? [1,3,7,14] :
-    label === "MEDIUM" ? [3,7,14,30] :
-    [7,21,45];
-
-  gaps.forEach(d => {
-    const date = new Date(today);
-    date.setDate(date.getDate() + d);
-    const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-
-    if (!calendarData[key]) calendarData[key] = [];
-    calendarData[key].push({ name: "Revision", type: "reschedule" });
-  });
-
-  initCalendar();
-}
-
-/***********************
- * INIT
- ***********************/
-initCalendar();
-initUpcomingTests();
-
-const endDateInput = document.getElementById("endDate");
-const t = new Date();
-endDateInput.min = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`;

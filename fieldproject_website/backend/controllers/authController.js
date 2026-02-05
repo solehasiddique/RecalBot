@@ -125,12 +125,16 @@ export const signin = async (req, res) => {
 export const profile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select(
-      "name email hasCompletedAssessment role studyStats"
+      "name email role hasCompletedAssessment studyStats memoryProfile memoryScore memoryPercentage memoryInitializedAt"
     );
 
-    res.json({ ok: true, user });
+    res.json({
+      ok: true,
+      user
+    });
   } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
+    console.error("PROFILE ERROR:", err);
+    res.status(401).json({ message: "Invalid token" });
   }
 };
 
