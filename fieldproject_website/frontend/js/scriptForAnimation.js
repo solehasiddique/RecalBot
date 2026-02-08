@@ -58,161 +58,75 @@ if (getStarted) {
   });
 }
 
-//animation home page (2nd section)
-const cards = document.querySelectorAll('.card');
-const steps = document.querySelectorAll('.step');
-const total = cards.length;
-let current = 0;
 
-if (cards.length > 0 && steps.length > 0) {
-  function updateStack() {
-    cards.forEach((card, i) => {
-      let offset = (i - current + total) % total;
-      if (offset > total / 2) offset -= total;
-
-      if (offset === 0) {
-        card.classList.add('top-card');
-        card.style.zIndex = total;
-        card.style.transform = 'translate(-50%, -50%) scale(1) rotateX(0deg)';
-        card.style.opacity = '1';
-      } else {
-        card.classList.remove('top-card');
-        const depth = Math.abs(offset) * 35;
-        const scale = 1 - (Math.abs(offset) * 0.055);
-        const direction = offset > 0 ? 1 : -1;
-        card.style.zIndex = total - Math.abs(offset);
-        card.style.transform = `translate(-50%, -50%) translateY(${direction * depth}px) scale(${scale}) rotateX(${offset * 2.5}deg)`;
-        card.style.opacity = Math.max(0.35, 1 - Math.abs(offset) * 0.13);
-      }
-    });
-
-    // ---------- STEPS ----------
-    let activeStep = document.querySelector('.step.active');
-
-    if (activeStep) {
-      activeStep.classList.remove('active');
-
-      setTimeout(() => {
-        activeStep.style.display = 'none';
-
-        let nextStep = steps[current];
-        nextStep.style.display = 'block';
-        nextStep.offsetHeight;
-        nextStep.classList.add('active');
-      }, 400);
-    } else {
-      let firstStep = steps[current];
-      firstStep.style.display = 'block';
-      firstStep.offsetHeight;
-      firstStep.classList.add('active');
-    }
-  }
-
-  function nextCard() {
-    current = (current + 1) % total;
-    updateStack();
-  }
-
-  function prevCard() {
-    current = (current - 1 + total) % total;
-    updateStack();
-  }
-
-  // Click to select
-  cards.forEach((card, i) => card.addEventListener('click', () => {
-    current = i;
-    updateStack();
-  }));
-
-  // Button event listeners
-  const prevBtn = document.querySelector('.prev-btn');
-  const nextBtn = document.querySelector('.next-btn');
-  
-  if (prevBtn) prevBtn.addEventListener('click', prevCard);
-  if (nextBtn) nextBtn.addEventListener('click', nextCard);
-
-  updateStack();
-}
-
-// Section 2 animations
-const workingLt = document.querySelector(".section2 .working_lt");
-if (workingLt) {
-  gsap.to(".section2 .working_lt", {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    ease: "power3.out",
-    scrollTrigger: {
-      trigger: ".section2",
-      start: "top 80%",
-      toggleActions: "play none none none"
-    }
-  });
-}
-
-const workingRt = document.querySelector(".section2 .working_rt");
-if (workingRt) {
-  gsap.to(".section2 .working_rt", {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    delay: 0.2,
-    ease: "power3.out",
-    scrollTrigger: {
-      trigger: ".section2",
-      start: "top 80%",
-      toggleActions: "play none none none"
-    }
-  });
-}
 
 //home page (section3)
-const section3Right = document.querySelector(".section3_right");
-if (section3Right) {
-  gsap.registerPlugin(ScrollTrigger);
-  
-  gsap.to(".section3_right", {
-    opacity: 1,
-    y: 0,
-    duration: 5,
-    ease: "slow",
-    scrollTrigger: {
-      trigger: ".section3",
-      start: "top 70%",
-      end: "top 60%",
-      scrub: 2
-    }
-  });
-}
 
 //home page (section4)
 
 
-document.querySelectorAll(".vision-line").forEach(line => {
-  const words = line.innerText.trim().split(" ");
-  line.innerHTML = "";
+gsap.registerPlugin(ScrollTrigger);
 
-  words.forEach(word => {
-    const span = document.createElement("span");
-    span.innerHTML = word + "&nbsp;"; // ✅ keeps space
-    line.appendChild(span);
-  });
-});
+/* ========= TEXT CONTENT ========= */
 
-gsap.to(".vision-line span", {
-  opacity: 1,
-  y: 0,
-  duration:1.5,          // ⏳ each word takes longer
-  stagger: 1.5,           // 🐢 delay between words
-  ease: "power1.out",     // softer than power2
-  scrollTrigger: {
-    trigger: ".section4",
-    start: "top 75%",
-    end: "top 25%",
-    scrub: 20          // 🐢 scroll-controlled slow motion
+const texts = [
+  "To create a future where every student truly remembers what they learn.",
+  "RecallBot adapts to each learner, making revision effortless and knowledge lasting.",
+  "We envision a world where every study session leads to mastery, not forgetfulness."
+];
+
+const lines = document.querySelectorAll(".vision-line");
+let lineIndex = 0;
+let charIndex = 0;
+
+function typeLine() {
+  if (lineIndex >= texts.length) return;
+
+  if (charIndex < texts[lineIndex].length) {
+    lines[lineIndex].textContent += texts[lineIndex][charIndex];
+    charIndex++;
+    setTimeout(typeLine, 28);
+  } else {
+    lineIndex++;
+    charIndex = 0;
+    setTimeout(typeLine, 200);
+  }
+}
+
+/* ========= INITIAL STATES ========= */
+
+gsap.set(".vision", {opacity:0, y:20});
+gsap.set(".vision-line", {opacity:1});
+gsap.set(".image-container", {opacity:0, rotation:-30, scale:0.85});
+
+/* ========= SCROLL TRIGGER ========= */
+
+ScrollTrigger.create({
+  trigger: ".section4",
+  start: "top 70%",
+  once: true,
+  onEnter: () => {
+
+    // title appear
+    gsap.to(".vision", {
+      opacity:1,
+      y:0,
+      duration:0.6
+    });
+
+    // image tilt → straight FIRST
+    gsap.to(".image-container", {
+      opacity:1,
+      rotation:0,
+      scale:1,
+      duration:2.0,
+      ease:"back.out(1.7)"
+    });
+
+    // start typing after small delay
+    setTimeout(typeLine, 700);
   }
 });
-
 
 
 //Lenis smooth scroll
