@@ -98,3 +98,36 @@ if (section3 && typedTextElement) {
   // Start observing the section
   section3Observer.observe(section3);
 }
+
+async function checkAuth() {
+  try {
+    const res = await fetch("http://localhost:8000/api/auth/profile", {
+      credentials: "include"
+    });
+
+    if (!res.ok) return;
+
+    const data = await res.json();
+
+    const navAuth = document.getElementById("nav-auth");
+
+    navAuth.innerHTML = `
+      <a href="../html/dashboard.html" class="signin">Dashboard</a>
+      <a href="#" id="logoutBtn" class="signin">Logout</a>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await fetch("http://localhost:8000/api/auth/logout", {
+        method: "POST",
+        credentials: "include"
+      });
+
+      location.reload();
+    });
+
+  } catch (err) {
+    // not logged in → do nothing
+  }
+}
+
+checkAuth();
