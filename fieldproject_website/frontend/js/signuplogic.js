@@ -38,6 +38,7 @@ form.addEventListener('submit', async function (e) {
   e.preventDefault();
 
   let isValid = true;
+
   document.querySelectorAll('.error-message').forEach(msg => {
     msg.style.display = 'none';
   });
@@ -73,7 +74,7 @@ form.addEventListener('submit', async function (e) {
     const res = await fetch("http://localhost:8000/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include", // 🔴 REQUIRED
+      credentials: "include",
       body: JSON.stringify({
         name: fullname,
         email,
@@ -83,15 +84,28 @@ form.addEventListener('submit', async function (e) {
 
     const data = await res.json();
 
+    // 🔴 If user already exists
+    if (res.status === 409) {
+      alert("User already exists. Please sign in.");
+
+      setTimeout(() => {
+        window.location.href = "signin.html";
+      }, 1000);
+
+      return;
+    }
+
+    // 🔴 Any other error
     if (!res.ok) {
       alert(data.message || "Signup failed");
       return;
     }
 
+    // 🟢 Success
     successMessage.style.display = 'block';
 
     setTimeout(() => {
-      window.location.href = data.redirect || "fieldproject_website/frontend/questionary.html";
+      window.location.href = data.redirect || "questionary.html";
     }, 1000);
 
   } catch (err) {

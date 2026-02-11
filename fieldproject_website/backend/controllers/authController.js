@@ -173,11 +173,11 @@ export const logout = async (req, res) => {
       httpOnly: true,
       sameSite: "lax",
       secure: false,
+      path: "/"   // 🔥 important
     });
 
-    res.json({ message: "Logged out successfully" });
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
-    console.error("🔥 LOGOUT ERROR:", err);
     res.status(500).json({ message: "Logout failed" });
   }
 };
@@ -280,7 +280,7 @@ export const getStudyRecommendations = async (req, res) => {
 
     // 🔥 Map questionnaire answer → duration
     if (focusAnswer === "Less than 15 minutes") {
-      duration = 15;
+      duration = 2;
       personality = "Quick Sprint";
     } 
     else if (focusAnswer === "15–25 minutes") {
@@ -342,7 +342,7 @@ export const saveStudySession = async (req, res) => {
 
     const focusAnswer = user?.learningProfile?.q1;
 
-    if (focusAnswer === "Less than 15 minutes") requiredDuration = 15;
+    if (focusAnswer === "Less than 15 minutes") requiredDuration = 2;
     if (focusAnswer === "15–25 minutes") requiredDuration = 20;
     if (focusAnswer === "25–40 minutes") requiredDuration = 30;
     if (focusAnswer === "More than 40 minutes") requiredDuration = 45;

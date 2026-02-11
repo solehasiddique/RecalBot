@@ -8,7 +8,7 @@ const eyeOpen = document.getElementById("eyeOpen");
 const eyeClosed = document.getElementById("eyeClosed");
 
 // Form validation and submission
-form.addEventListener('submit', function (e) {
+form.addEventListener('submit', async function (e) {
   e.preventDefault();
 
   let isValid = true;
@@ -34,12 +34,36 @@ form.addEventListener('submit', function (e) {
   }
 
   if (isValid) {
+  try {
+    const res = await fetch("http://localhost:8000/api/auth/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "Invalid credentials");
+      return;
+    }
+
     successMessage.style.display = 'block';
 
     setTimeout(() => {
-      window.location.href = '../html/study.html';
-    }, 2000);
+      window.location.href = data.redirect;
+    }, 1000);
+
+  } catch (err) {
+    console.error("Login error:", err);
+    alert("Server error during login");
   }
+}
+
 });
 
 // Real-time email validation (on blur)
