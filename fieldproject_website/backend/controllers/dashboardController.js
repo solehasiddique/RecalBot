@@ -20,7 +20,8 @@ export const getDashboardData = async (req, res) => {
       stats: {
       totalTopics: user.studyStats?.totalTopics || 0,
       totalSessions: user.studyStats?.sessions || 0,
-      streak: user.studyStats?.streak || 0
+      streak: user.studyStats?.streak || 0,
+      totalMinutes: user.studyStats?.totalMinutes || 0
     }
     });
 
