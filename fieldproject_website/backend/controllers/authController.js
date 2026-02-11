@@ -8,9 +8,10 @@ import { sendEmail } from "../utils/sendEmail.js";
 const setTokenCookie = (res, token) => {
   res.cookie("token", token, {
     httpOnly: true,
-    sameSite: "lax",   // works on localhost
-    secure: false,    // true in production (https)
+    sameSite: "lax",
+    secure: false,
     maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: "/", // 🔥 ADD THIS
   });
 };
 
@@ -38,14 +39,12 @@ export const signup = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      hasCompletedAssessment: false
+      hasCompletedAssessment: false,
     });
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     setTokenCookie(res, token);
 
@@ -56,16 +55,14 @@ export const signup = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        hasCompletedAssessment: user.hasCompletedAssessment
-      }
+        hasCompletedAssessment: user.hasCompletedAssessment,
+      },
     });
-
   } catch (err) {
     console.error("🔥 SIGNUP ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
-
 
 // ==========================
 // SIGNIN
@@ -96,11 +93,9 @@ export const signin = async (req, res) => {
       });
     }
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     setTokenCookie(res, token);
 
@@ -125,19 +120,18 @@ export const signin = async (req, res) => {
 export const profile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select(
-      "name email role hasCompletedAssessment studyStats memoryProfile memoryScore memoryPercentage memoryInitializedAt"
+      "name email role hasCompletedAssessment studyStats memoryProfile memoryScore memoryPercentage memoryInitializedAt",
     );
 
     res.json({
       ok: true,
-      user
+      user,
     });
   } catch (err) {
     console.error("PROFILE ERROR:", err);
     res.status(401).json({ message: "Invalid token" });
   }
 };
-
 
 // ==========================
 // SUBMIT QUESTIONNAIRE
@@ -169,18 +163,22 @@ export const submitQuestionnaire = async (req, res) => {
 // ==========================
 export const logout = async (req, res) => {
   try {
-    res.clearCookie("token", {
+    res.cookie("token", "", {
       httpOnly: true,
       sameSite: "lax",
       secure: false,
-      path: "/"   // 🔥 important
+      expires: new Date(0),
+      path: "/",          // 🔥 MUST MATCH LOGIN
     });
 
-    res.status(200).json({ message: "Logged out successfully" });
+    return res.status(200).json({ message: "Logged out" });
+
   } catch (err) {
-    res.status(500).json({ message: "Logout failed" });
+    console.error("Logout error:", err);
+    return res.status(500).json({ message: "Logout failed" });
   }
 };
+
 
 // ==========================
 // FORGOT PASSWORD
@@ -237,10 +235,7 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ message: "Password is required" });
     }
 
-    const hashedToken = crypto
-      .createHash("sha256")
-      .update(token)
-      .digest("hex");
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
     const user = await User.findOne({
       resetPasswordToken: hashedToken,
@@ -282,14 +277,11 @@ export const getStudyRecommendations = async (req, res) => {
     if (focusAnswer === "Less than 15 minutes") {
       duration = 2;
       personality = "Quick Sprint";
-    } 
-    else if (focusAnswer === "15–25 minutes") {
+    } else if (focusAnswer === "15–25 minutes") {
       duration = 20;
-    } 
-    else if (focusAnswer === "25–40 minutes") {
+    } else if (focusAnswer === "25–40 minutes") {
       duration = 30;
-    } 
-    else if (focusAnswer === "More than 40 minutes") {
+    } else if (focusAnswer === "More than 40 minutes") {
       duration = 45;
       personality = "Deep Work Mode";
     }
@@ -305,9 +297,8 @@ export const getStudyRecommendations = async (req, res) => {
       personality,
       duration,
       music,
-      background: "linear-gradient(135deg, #e0ecde, #cde0cd)"
+      background: "linear-gradient(135deg, #e0ecde, #cde0cd)",
     });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "AI engine offline" });
@@ -315,7 +306,7 @@ export const getStudyRecommendations = async (req, res) => {
 };
 
 // ==========================
-// save the sessions 
+// save the sessions
 // ==========================
 export const saveStudySession = async (req, res) => {
   try {
@@ -326,7 +317,7 @@ export const saveStudySession = async (req, res) => {
       user.studyStats = {
         totalMinutes: 0,
         sessions: 0,
-        streak: 0
+        streak: 0,
       };
     }
 
@@ -349,7 +340,7 @@ export const saveStudySession = async (req, res) => {
 
     // Calculate full sessions
     const newSessions = Math.floor(
-      user.studyStats.totalMinutes / requiredDuration
+      user.studyStats.totalMinutes / requiredDuration,
     );
 
     const previousSessions = user.studyStats.sessions;
@@ -358,30 +349,27 @@ export const saveStudySession = async (req, res) => {
 
     // 🔥 STREAK LOGIC
     const today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
 
     const lastSession = user.sessionsLog.at(-1);
     let lastDate = null;
 
     if (lastSession) {
       lastDate = new Date(lastSession.date);
-      lastDate.setHours(0,0,0,0);
+      lastDate.setHours(0, 0, 0, 0);
     }
 
     // Increase streak only if at least 1 new session completed
     if (newSessions > previousSessions) {
-
       if (!lastDate) {
         user.studyStats.streak = 1;
-      } 
-      else {
+      } else {
         const yesterday = new Date(today);
         yesterday.setDate(today.getDate() - 1);
 
         if (lastDate.getTime() === yesterday.getTime()) {
           user.studyStats.streak += 1;
-        } 
-        else if (lastDate.getTime() !== today.getTime()) {
+        } else if (lastDate.getTime() !== today.getTime()) {
           user.studyStats.streak = 1;
         }
       }
@@ -389,7 +377,7 @@ export const saveStudySession = async (req, res) => {
 
     user.sessionsLog.push({
       date: new Date(),
-      minutes
+      minutes,
     });
 
     await user.save();
@@ -397,9 +385,8 @@ export const saveStudySession = async (req, res) => {
     res.json({
       totalMinutes: user.studyStats.totalMinutes,
       sessions: user.studyStats.sessions,
-      streak: user.studyStats.streak
+      streak: user.studyStats.streak,
     });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Could not save session" });
