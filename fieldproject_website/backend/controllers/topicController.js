@@ -1,6 +1,7 @@
 import Topic from "../models/Topic.js";
 import User from "../models/User.js";
 import { generateInitialRevisions } from "../utils/revisionScheduler.js";
+import { generateNextRevision } from "../utils/revisionScheduler.js";
 
 export const createTopic = async (req, res) => {
   try {
@@ -25,8 +26,8 @@ export const createTopic = async (req, res) => {
     }
 
     const { revisions, nextRevisionAt } = generateInitialRevisions(
-      user.memoryPercentage,
-      req.body.endDate,
+      user.memoryProfile,
+      endDate,
     );
 
     const topic = await Topic.create({
@@ -55,5 +56,47 @@ export const getUserTopics = async (req, res) => {
     res.json({ topics });
   } catch (err) {
     res.status(500).json({ message: "Failed to load topics" });
+  }
+};
+
+export const completeRevision = async (req, res) => {
+  try {
+    const { topicId, revisionNumber, score } = req.body;
+
+    const topic = await Topic.findById(topicId);
+    if (!topic) {
+      return res.status(404).json({ message: "Topic not found" });
+    }
+
+    const revision = topic.revisions.find(
+      (r) => r.revisionNumber === revisionNumber
+    );
+
+    if (!revision) {
+      return res.status(404).json({ message: "Revision not found" });
+    }
+
+    // Mark current revision completed
+    revision.status = "completed";
+    revision.completedAt = new Date();
+    revision.scoreAfterRevision = score;
+
+    // Generate next revision dynamically
+    const newRevision = generateNextRevision(revision.scheduledAt, score);
+
+    topic.revisions.push({
+      revisionNumber: topic.revisions.length + 1,
+      ...newRevision
+    });
+
+    topic.nextRevisionAt = newRevision.scheduledAt;
+
+    await topic.save();
+
+    res.json({ message: "Revision completed & next scheduled", topic });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to complete revision" });
   }
 };

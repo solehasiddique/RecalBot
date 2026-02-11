@@ -9,9 +9,9 @@ export const generateInitialRevisions = (memoryProfile, endDate) => {
 
   // 📌 Spacing logic (days gap)
   const patterns = {
-    WEAK:   [1, 3, 7, 14],
+    WEAK: [1, 3, 7, 14],
     MEDIUM: [3, 7, 14],
-    STRONG: [7, 21]
+    STRONG: [7, 21],
   };
 
   const gaps = patterns[memoryProfile] || patterns.MEDIUM;
@@ -28,8 +28,10 @@ export const generateInitialRevisions = (memoryProfile, endDate) => {
 
     revisions.push({
       revisionNumber,
-      scheduledAt: revisionDate, // ✅ MUST be Date object
-      completed: false
+      scheduledAt: revisionDate,
+      status: "scheduled",
+      completedAt: null,
+      scoreAfterRevision: null,
     });
 
     revisionNumber++;
@@ -37,6 +39,27 @@ export const generateInitialRevisions = (memoryProfile, endDate) => {
 
   return {
     revisions,
-    nextRevisionAt: revisions.length ? revisions[0].scheduledAt : null
+    nextRevisionAt: revisions.length ? revisions[0].scheduledAt : null,
+  };
+};
+
+export const calculateDynamicGap = (score) => {
+  if (score >= 85) return 21;
+  if (score >= 70) return 14;
+  if (score >= 50) return 7;
+  return 3;
+};
+
+export const generateNextRevision = (lastRevisionDate, score) => {
+  const gap = calculateDynamicGap(score);
+
+  const nextDate = new Date(lastRevisionDate);
+  nextDate.setDate(nextDate.getDate() + gap);
+
+  return {
+    scheduledAt: nextDate,
+    status: "scheduled",
+    completedAt: null,
+    scoreAfterRevision: null
   };
 };
