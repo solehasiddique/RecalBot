@@ -88,9 +88,9 @@ function initCalendar() {
 
   calendarHeader.innerHTML = `
     <div style="display:flex;align-items:center;gap:15px;">
-      <button onclick="changeMonth(-1)">←</button>
+      <button onclick="changeMonth(-1)" style="background: #375534; border: none; color: #E3EED4; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 18px;">←</button>
       <span>📅 ${monthNames[currentMonth]} ${currentYear}</span>
-      <button onclick="changeMonth(1)">→</button>
+      <button onclick="changeMonth(1)" style="background: #375534; border: none; color: #E3EED4; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 18px;">→</button>
     </div>
   `;
 
