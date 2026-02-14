@@ -4,6 +4,24 @@ const confirmPassword = document.getElementById('confirm-password');
 const passwordStrength = document.getElementById('password-strength');
 const successMessage = document.getElementById('success-message');
 
+const fullnameInput = document.getElementById("fullname");
+const fullnameError = document.getElementById("fullname-error");
+
+
+// ========================
+// Full Name Live Validation
+// ========================
+fullnameInput.addEventListener("input", function () {
+  const nameRegex = /^[A-Za-z ]*$/;
+
+  if (!nameRegex.test(this.value)) {
+    fullnameError.textContent = "Only letters and spaces allowed";
+    fullnameError.style.display = "block";
+  } else {
+    fullnameError.style.display = "none";
+  }
+});
+
 // ========================
 // Password strength
 // ========================
@@ -47,29 +65,35 @@ form.addEventListener('submit', async function (e) {
   const email = document.getElementById('email').value.trim();
   const pwd = password.value;
 
-  if (fullname.length < 2) {
-    document.getElementById('fullname-error').style.display = 'block';
+  // Name validation
+  const nameRegex = /^[A-Za-z ]+$/;
+  if (!nameRegex.test(fullname) || fullname.length < 2) {
+    fullnameError.textContent = "Name must contain only letters";
+    fullnameError.style.display = "block";
     isValid = false;
   }
 
+  //Email Validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     document.getElementById('email-error').style.display = 'block';
     isValid = false;
   }
 
+  //Password Validation
   if (pwd.length < 3) {
     document.getElementById('password-error').style.display = 'block';
     isValid = false;
   }
-
+//Confirm password validation
   if (pwd !== confirmPassword.value) {
     document.getElementById('confirm-error').style.display = 'block';
     isValid = false;
   }
 
   if (!isValid) return;
-
+  
+//api call
   try {
     const res = await fetch("http://localhost:8000/api/auth/signup", {
       method: "POST",
