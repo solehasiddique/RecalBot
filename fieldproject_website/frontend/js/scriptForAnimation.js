@@ -76,23 +76,25 @@ const texts = [
 ];
 
 const lines = document.querySelectorAll(".vision-line");
-let lineIndex = 0;
-let charIndex = 0;
 
-function typeLine() {
-  if (lineIndex >= texts.length) return;
+if (lines.length > 0) {
+  let lineIndex = 0;
+  let charIndex = 0;
 
-  if (charIndex < texts[lineIndex].length) {
-    lines[lineIndex].textContent += texts[lineIndex][charIndex];
-    charIndex++;
-    setTimeout(typeLine, 28);
-  } else {
-    lineIndex++;
-    charIndex = 0;
-    setTimeout(typeLine, 200);
+  function typeLine() {
+    if (lineIndex >= texts.length) return;
+
+    if (charIndex < texts[lineIndex].length) {
+      lines[lineIndex].textContent += texts[lineIndex][charIndex];
+      charIndex++;
+      setTimeout(typeLine, 28);
+    } else {
+      lineIndex++;
+      charIndex = 0;
+      setTimeout(typeLine, 200);
+    }
   }
 }
-
 /* ========= INITIAL STATES ========= */
 
 gsap.set(".vision", {opacity:0, y:20});
@@ -102,26 +104,19 @@ gsap.set(".image-container", {opacity:0, rotation:-30, scale:0.85});
 /* ========= SCROLL TRIGGER ========= */
 
 ScrollTrigger.create({
-  trigger: ".section4",
-  start: "top 70%",
-  once: true,
-  onEnter: () => {
+    trigger: ".section4",
+    start: "top 70%",
+    once: true,
+    onEnter: () => {
+      gsap.to(".vision", { opacity: 1, y: 0, duration: 0.6 });
+      gsap.to(".image-container", {
+        opacity: 1,
+        rotation: 0,
+        scale: 1,
+        duration: 2,
+        ease: "bac.out(1.7)"
+      });
 
-    // title appear
-    gsap.to(".vision", {
-      opacity:1,
-      y:0,
-      duration:0.6
-    });
-
-    // image tilt → straight FIRST
-    gsap.to(".image-container", {
-      opacity:1,
-      rotation:0,
-      scale:1,
-      duration:2.0,
-      ease:"back.out(1.7)"
-    });
 
     // start typing after small delay
     setTimeout(typeLine, 700);
