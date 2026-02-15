@@ -23,6 +23,14 @@ export const signup = async (req, res) => {
     console.log("🔥 SIGNUP HIT:", req.body);
 
     const { name, email, password } = req.body;
+    // Full name validation (backend safety)
+const nameRegex = /^[A-Za-z]+( [A-Za-z]+)+$/;
+
+if (!nameRegex.test(name)) {
+  return res.status(400).json({
+    message: "Please enter your full name (first and last name)"
+  });
+}
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
