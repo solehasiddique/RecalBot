@@ -31,6 +31,11 @@ const revisionSchema = new mongoose.Schema(
       type: Number,
       default: null,
     },
+
+    questions: {
+      type: [mongoose.Schema.Types.Mixed],
+      default: [],
+    }
   },
   { _id: false },
 );

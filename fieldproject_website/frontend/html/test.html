@@ -70,7 +70,10 @@
                   <option value="confident">Hard</option>
                 </select>
               </div>
-              <button type="submit" class="add-btn">Add Topic</button>
+              <div id="quiz-container"></div>
+              <button type="submit" class="add-btn" id="submit-btn">
+                Add Topic
+              </button>
             </form>
           </div>
         </div>
@@ -192,5 +195,127 @@
     <script src="../js/scriptForAnimation.js"></script>
     <script src="../js/scriptForTest.js"></script>
     <script src="../js/navbarLoader.js"></script>
+    <script>
+      function renderQuestions(questions) {
+        const modal = document.getElementById("testModal");
+        const modalContent = modal.querySelector(".modal-content");
+
+        if (!questions || questions.length === 0) {
+          alert("No questions available");
+          return;
+        }
+
+        const q = questions[0]; // show first question for now
+
+        modalContent.innerHTML = `
+      <h3>Revision Test</h3>
+
+      <div class="question">
+        <p><strong>Question:</strong> ${q.question}</p>
+      </div>
+
+      <div class="options">
+        ${q.options
+          .map(
+            (option, index) => `
+              <label class="option">
+                <input type="radio" name="answer" value="${option}" />
+                ${option}
+              </label>
+            `,
+          )
+          .join("")}
+      </div>
+
+      <div class="modal-buttons">
+        <button class="submit-btn" onclick="submitTest('${q.answer}')">
+          Submit Answer
+        </button>
+        <button class="cancel-btn" onclick="closeModal()">
+          Cancel
+        </button>
+      </div>
+    `;
+
+        modal.style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("testModal").style.display = "none";
+      }
+
+      function submitTest(correctAnswer) {
+        const selected = document.querySelector('input[name="answer"]:checked');
+
+        if (!selected) {
+          alert("Please select an answer.");
+          return;
+        }
+
+        const userAnswer = selected.value;
+
+        if (userAnswer === correctAnswer) {
+          alert("Correct! 🎉");
+        } else {
+          alert("Wrong ❌ Correct answer: " + correctAnswer);
+        }
+
+        closeModal();
+      }
+
+      async function loadTestForTopic(topicName) {
+        try {
+          const res = await fetch("http://localhost:8000/api/topics", {
+            credentials: "include",
+          });
+
+          const data = await res.json();
+          const topics = data.topics || data;
+
+          const topic = topics.find((t) => t.title === topicName);
+          if (!topic) {
+            alert("Topic not found");
+            return;
+          }
+
+          const nextRevision = topic.revisions.find(
+            (r) => r.status === "scheduled",
+          );
+
+          if (!nextRevision) {
+            alert("No scheduled revision found");
+            return;
+          }
+
+          const response = await fetch(
+            "http://localhost:8000/api/topics/start-revision",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+              body: JSON.stringify({
+                topicId: topic._id,
+                revisionNumber: nextRevision.revisionNumber,
+              }),
+            },
+          );
+
+          const result = await response.json();
+          console.log("Revision Response:", result);
+
+          if (!result.questions || result.questions.length === 0) {
+            alert("Failed to generate questions");
+            return;
+          }
+
+          renderQuestions(result.questions);
+        } catch (err) {
+          console.error(err);
+          alert("Something went wrong");
+        }
+      }
+    </script>
   </body>
 </html>

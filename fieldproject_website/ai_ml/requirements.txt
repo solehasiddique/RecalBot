@@ -8,6 +8,10 @@ uvicorn
 joblib
 flask
 axios
+pydantic
+transformers
+torch
+accelerate
 
 # If there are uncommitted backend changes, do one:
 # git add .

@@ -24,13 +24,13 @@ export const signup = async (req, res) => {
 
     const { name, email, password } = req.body;
     // Full name validation (backend safety)
-const nameRegex = /^[A-Za-z]+( [A-Za-z]+)+$/;
+    const nameRegex = /^[A-Za-z]+( [A-Za-z]+)+$/;
 
-if (!nameRegex.test(name)) {
-  return res.status(400).json({
-    message: "Please enter your full name (first and last name)"
-  });
-}
+    if (!nameRegex.test(name)) {
+      return res.status(400).json({
+        message: "Please enter your full name (first and last name)",
+      });
+    }
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
@@ -115,6 +115,7 @@ export const signin = async (req, res) => {
     res.json({
       message: "Signin successful",
       redirect,
+      token, // 🔥 ADD THIS
     });
   } catch (err) {
     console.error("🔥 SIGNIN ERROR:", err);
@@ -176,11 +177,10 @@ export const logout = async (req, res) => {
       sameSite: "lax",
       secure: false,
       expires: new Date(0),
-      path: "/",          // 🔥 MUST MATCH LOGIN
+      path: "/", // 🔥 MUST MATCH LOGIN
     });
 
     return res.status(200).json({ message: "Logged out" });
-
   } catch (err) {
     console.error("Logout error:", err);
     return res.status(500).json({ message: "Logout failed" });
