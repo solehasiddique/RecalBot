@@ -52,25 +52,32 @@ async function loadCalendarFromDB() {
       });
 
       /* ===============================
-         2️⃣ REVISIONS
-      =============================== */
+   2️⃣ REVISIONS
+================================ */
       topic.revisions.forEach((rev) => {
         const d = new Date(rev.scheduledAt);
         const key = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 
         let type = "reschedule";
 
-        if (rev.completed) type = "completed";
-        else if (d < new Date()) type = "missed";
+        // ✅ Correct status-based logic
+        if (rev.status === "completed") {
+          type = "completed";
+        } else if (rev.status === "missed") {
+          type = "missed";
+        } else if (rev.status === "scheduled" && d < new Date()) {
+          type = "missed";
+        }
 
         if (!calendarData[key]) calendarData[key] = [];
+
         calendarData[key].push({
           name: topic.title,
           type,
         });
 
-        // upcoming test = next incomplete revision
-        if (!rev.completed && d >= new Date()) {
+        // ✅ Upcoming tests should only show scheduled future revisions
+        if (rev.status === "scheduled" && d >= new Date()) {
           upcomingTests.push({
             name: topic.title,
             date: d.toDateString(),
@@ -234,11 +241,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const endDate = endDateInput.value;
 
       try {
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("endDate", endDate);
+
+        const fileInput = document.getElementById("notesFile");
+        if (fileInput.files[0]) {
+          formData.append("notesFile", fileInput.files[0]);
+        }
+
         const res = await fetch("http://localhost:8000/api/topics/create", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body: JSON.stringify({ title, description, endDate }),
+          body: formData,
         });
 
         const data = await res.json();

@@ -2,12 +2,12 @@ import express from "express";
 import {
   createTopic,
   getUserTopics,
-  completeRevision
+  completeRevision,
 } from "../controllers/topicController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import { generateQuestions } from "../services/aiService.js";
 import { startRevisionTest } from "../controllers/topicController.js";
-
+import { upload } from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
@@ -19,14 +19,13 @@ const router = express.Router();
 router.post("/complete", authMiddleware, completeRevision);
 
 // Create new topic
-router.post("/create", authMiddleware, createTopic);
+router.post("/create", authMiddleware, upload.single("notesFile"), createTopic);
 
 // Get logged-in user's topics
 router.get("/", authMiddleware, getUserTopics);
 
 // Start revision test
 router.post("/start-revision", authMiddleware, startRevisionTest);
-
 
 /* ===============================
    🤖 AI Test Route (Temporary)
@@ -40,20 +39,19 @@ router.post("/ai-test", async (req, res) => {
     if (!notes) {
       return res.status(400).json({
         success: false,
-        error: "Notes are required"
+        error: "Notes are required",
       });
     }
 
     const result = await generateQuestions(notes, 0.5);
 
     res.json(result);
-
   } catch (error) {
     console.error("AI Route Error:", error.message);
 
     res.status(500).json({
       success: false,
-      error: "AI generation failed"
+      error: "AI generation failed",
     });
   }
 });

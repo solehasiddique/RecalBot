@@ -35,7 +35,7 @@ const revisionSchema = new mongoose.Schema(
     questions: {
       type: [mongoose.Schema.Types.Mixed],
       default: [],
-    }
+    },
   },
   { _id: false },
 );
@@ -84,6 +84,11 @@ const topicSchema = new mongoose.Schema(
       default: [],
     },
 
+    notesContent: {
+      type: String,
+      default: "",
+    },
+    
     /**
      * Quick access for dashboard / reminders
      */

@@ -196,72 +196,10 @@
     <script src="../js/scriptForTest.js"></script>
     <script src="../js/navbarLoader.js"></script>
     <script>
-      function renderQuestions(questions) {
-        const modal = document.getElementById("testModal");
-        const modalContent = modal.querySelector(".modal-content");
-
-        if (!questions || questions.length === 0) {
-          alert("No questions available");
-          return;
-        }
-
-        const q = questions[0]; // show first question for now
-
-        modalContent.innerHTML = `
-      <h3>Revision Test</h3>
-
-      <div class="question">
-        <p><strong>Question:</strong> ${q.question}</p>
-      </div>
-
-      <div class="options">
-        ${q.options
-          .map(
-            (option, index) => `
-              <label class="option">
-                <input type="radio" name="answer" value="${option}" />
-                ${option}
-              </label>
-            `,
-          )
-          .join("")}
-      </div>
-
-      <div class="modal-buttons">
-        <button class="submit-btn" onclick="submitTest('${q.answer}')">
-          Submit Answer
-        </button>
-        <button class="cancel-btn" onclick="closeModal()">
-          Cancel
-        </button>
-      </div>
-    `;
-
-        modal.style.display = "flex";
-      }
-
-      function closeModal() {
-        document.getElementById("testModal").style.display = "none";
-      }
-
-      function submitTest(correctAnswer) {
-        const selected = document.querySelector('input[name="answer"]:checked');
-
-        if (!selected) {
-          alert("Please select an answer.");
-          return;
-        }
-
-        const userAnswer = selected.value;
-
-        if (userAnswer === correctAnswer) {
-          alert("Correct! 🎉");
-        } else {
-          alert("Wrong ❌ Correct answer: " + correctAnswer);
-        }
-
-        closeModal();
-      }
+      let currentTopicId = null;
+      let currentRevisionNumber = null;
+      let totalQuestions = 0;
+      let correctCount = 0;
 
       async function loadTestForTopic(topicName) {
         try {
@@ -310,12 +248,211 @@
             return;
           }
 
-          renderQuestions(result.questions);
+          renderQuestions(
+            result.questions,
+            topic._id,
+            nextRevision.revisionNumber,
+          );
         } catch (err) {
           console.error(err);
           alert("Something went wrong");
         }
       }
+
+      function renderQuestions(questions, topicId, revisionNumber) {
+        const modal = document.getElementById("testModal");
+        const modalContent = modal.querySelector(".modal-content");
+
+        currentTopicId = topicId;
+        currentRevisionNumber = revisionNumber;
+
+        totalQuestions = questions.length;
+
+        let userAnswers = [];
+
+        let questionIndex = 0;
+
+        function showQuestion() {
+          const q = questions[questionIndex];
+
+          const progressPercent = Math.round(
+            ((questionIndex + 1) / totalQuestions) * 100,
+          );
+
+          // 🔥 Build options FIRST (outside template)
+          let optionsHTML = "";
+
+          if (q.type === "mcq") {
+            optionsHTML = `
+        <div class="options">
+          ${q.options
+            .map(
+              (option) => `
+                <label class="option">
+                  <input type="radio" name="answer" value="${option}" />
+                  ${option}
+                </label>
+              `,
+            )
+            .join("")}
+        </div>
+      `;
+          } else {
+            optionsHTML = `
+        <div class="options">
+          <textarea 
+            id="subjectiveAnswer"
+            placeholder="Write your answer here..."
+            style="width:100%;padding:10px;border-radius:8px;min-height:80px;"></textarea>
+        </div>
+      `;
+          }
+
+          modalContent.innerHTML = `
+      <h3>Revision Test</h3>
+
+      <div style="margin-bottom:10px;">
+        Question ${questionIndex + 1} of ${totalQuestions}
+      </div>
+
+      <div style="height:8px;background:#eee;border-radius:4px;margin-bottom:15px;">
+        <div style="width:${progressPercent}%;height:100%;background:#4C9F70;border-radius:4px;"></div>
+      </div>
+
+      <div class="question">
+        <p><strong>${q.question}</strong></p>
+      </div>
+
+      ${optionsHTML}
+
+      <div class="modal-buttons">
+        <button class="submit-btn">
+          ${questionIndex === totalQuestions - 1 ? "Finish" : "Next"}
+        </button>
+      </div>
+    `;
+
+          modalContent.querySelector(".submit-btn").onclick = () => {
+            // ✅ MCQ
+            let userAnswer = "";
+
+            if (q.type === "mcq") {
+              const selected = document.querySelector(
+                'input[name="answer"]:checked',
+              );
+
+              if (!selected) {
+                alert("Please select an answer.");
+                return;
+              }
+
+              userAnswer = selected.value;
+            } else {
+              const text = document
+                .getElementById("subjectiveAnswer")
+                .value.trim();
+
+              if (!text) {
+                alert("Please write your answer.");
+                return;
+              }
+
+              userAnswer = text;
+            }
+
+            // Store answer
+            userAnswers.push({
+              question: q.question,
+              type: q.type,
+              correctAnswer: q.answer,
+              userAnswer: userAnswer,
+            });
+
+            questionIndex++;
+
+            if (questionIndex < totalQuestions) {
+              showQuestion();
+            } else {
+              finishTest();
+            }
+          };
+        }
+
+        async function finishTest() {
+          const modal = document.getElementById("testModal");
+          const modalContent = modal.querySelector(".modal-content");
+
+          modalContent.innerHTML = `<h3>Submitting your answers...</h3>`;
+
+          await sendAnswersToBackend(userAnswers);
+
+          // ❌ DO NOT reload page here
+        }
+        showQuestion();
+        modal.style.display = "flex";
+      }
+
+      async function sendAnswersToBackend(answers) {
+        try {
+          const modal = document.getElementById("testModal");
+          const modalContent = modal.querySelector(".modal-content");
+
+          const res = await fetch("http://localhost:8000/api/topics/complete", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              topicId: currentTopicId,
+              revisionNumber: currentRevisionNumber,
+              answers: answers,
+            }),
+          });
+
+          const data = await res.json();
+          console.log("AI Grading Result:", data);
+
+          let feedbackHTML = `
+  <h3>Test Result</h3>
+  <p><strong>Final Score:</strong> ${data.finalScore}%</p>
+  <p><strong>Memory:</strong> ${data.memoryPercentage}% (${data.memoryLabel})</p>
+  <hr/>
+`;
+
+          data.feedback.forEach((item, index) => {
+            feedbackHTML += `
+    <div style="margin-bottom:15px;padding:10px;border:1px solid #ddd;border-radius:8px;">
+      <strong>Q${index + 1}:</strong> ${item.question}<br/>
+      <strong>Your Answer:</strong> ${item.userAnswer}<br/>
+      <strong>Correct Answer:</strong> ${item.correctAnswer}<br/>
+      <strong>Score:</strong> ${Math.round(item.score * 100)}%<br/>
+      <strong>Feedback:</strong> ${item.feedback}
+    </div>
+  `;
+          });
+
+          feedbackHTML += `
+  <div style="text-align:center;margin-top:20px;">
+    <button onclick="closeFeedback()" style="padding:10px 20px;background:#4C9F70;color:white;border:none;border-radius:6px;">
+      Close
+    </button>
+  </div>
+`;
+
+          modalContent.innerHTML = feedbackHTML;
+          modal.style.display = "flex";
+
+          loadCalendarFromDB();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      function closeFeedback() {
+            const modal = document.getElementById("testModal");
+            modal.style.display = "none";
+          }
     </script>
   </body>
 </html>

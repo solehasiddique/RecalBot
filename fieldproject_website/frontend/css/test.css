@@ -331,6 +331,17 @@
   max-width: 500px;
   color: #375534;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  max-height: 80vh;       /* limits height to 80% of screen */
+  overflow-y: auto;       /* enables vertical scroll */
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #4C9F70;
+  border-radius: 10px;
 }
 
 .modal-content h3 {

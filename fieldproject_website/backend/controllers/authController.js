@@ -109,13 +109,13 @@ export const signin = async (req, res) => {
 
     // 🎯 Decide where to send user
     const redirect = user.hasCompletedAssessment
-      ? "/fieldproject_website/frontend/html/dashboard.html"
-      : "/fieldproject_website/frontend/html/questionary.html";
+      ? "/html/dashboard.html"
+      : "/html/questionary.html";
 
     res.json({
       message: "Signin successful",
       redirect,
-      token, // 🔥 ADD THIS
+      token,
     });
   } catch (err) {
     console.error("🔥 SIGNIN ERROR:", err);
@@ -159,7 +159,7 @@ export const submitQuestionnaire = async (req, res) => {
 
     res.json({
       message: "Assessment saved successfully",
-      redirect: "/fieldproject_website/frontend/html/dashboard.html",
+      redirect: "/html/dashboard.html",
     });
   } catch (err) {
     console.error("🔥 QUESTIONNAIRE ERROR:", err);
@@ -186,7 +186,6 @@ export const logout = async (req, res) => {
     return res.status(500).json({ message: "Logout failed" });
   }
 };
-
 
 // ==========================
 // FORGOT PASSWORD

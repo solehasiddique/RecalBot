@@ -1,0 +1,41 @@
+1.0 PYTHON PROGRAMMING LANGUAGE – BRIEF INTRODUCTION
+
+2.0 INTRODUCTION
+2.1 Python is a high-level, interpreted, and general-purpose programming language.
+2.2 It was created by Guido van Rossum in 1991.
+2.3 Python emphasizes code readability and simplicity.
+2.4 It is one of the most widely used programming languages in the world.
+
+3.0 KEY FEATURES
+3.1 Easy to learn and use.
+3.2 Simple and readable syntax.
+3.3 Interpreted language (no need for compilation).
+3.4 Cross-platform support (Windows, macOS, Linux).
+3.5 Supports object-oriented, procedural, and functional programming.
+3.6 Large standard library.
+3.7 Free and open-source.
+
+4.0 APPLICATIONS OF PYTHON
+4.1 Web development.
+4.2 Data science and machine learning.
+4.3 Artificial intelligence.
+4.4 Automation and scripting.
+4.5 Game development.
+4.6 Desktop application development.
+4.7 Scientific computing.
+
+5.0 EXAMPLE PROGRAM
+5.1 Simple Python program:
+print("Hello, World!")
+5.2 This program prints "Hello, World!" on the screen.
+
+6.0 ADVANTAGES
+6.1 Easy debugging.
+6.2 Rapid development.
+6.3 Strong community support.
+6.4 Versatile and flexible.
+
+7.0 CONCLUSION
+7.1 Python is powerful and easy to learn.
+7.2 It is suitable for both beginners and professionals.
+7.3 Due to its simplicity and wide range of applications, Python continues to grow in popularity.
