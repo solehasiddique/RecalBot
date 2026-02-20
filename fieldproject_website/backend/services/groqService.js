@@ -102,15 +102,18 @@ ${notes}
       return { success: false, error: "JSON parsing failed" };
     }
 
-    if (
-      !parsed.questions ||
-      !Array.isArray(parsed.questions) ||
-      parsed.questions.length !== 10
-    ) {
-      return {
-        success: false,
-        error: "AI did not generate exactly 10 questions",
-      };
+    if (!parsed.questions || !Array.isArray(parsed.questions)) {
+      return { success: false, error: "Invalid question format" };
+    }
+
+    // Ensure exactly 10 questions
+    let questions = parsed.questions.slice(0, 10);
+
+    // If less than 10, duplicate some (rare fallback)
+    while (questions.length < 10 && parsed.questions.length > 0) {
+      questions.push(
+        parsed.questions[questions.length % parsed.questions.length],
+      );
     }
 
     return {

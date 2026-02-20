@@ -1,19 +1,72 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+import joblib
+import json
+import numpy as np
 import random
 import re
 
 app = FastAPI()
 
+# ===============================
+# LOAD ML MODEL
+# ===============================
+
+model = joblib.load("model.pkl")
+
+with open("columns.json", "r") as f:
+    columns = json.load(f)
+
+
+# ===============================
+# MEMORY PREDICTION
+# ===============================
+
+class MemoryRequest(BaseModel):
+    answers: dict
+
+
+@app.post("/predict")
+def predict_memory(data: MemoryRequest):
+    input_vector = np.zeros(len(columns))
+
+    for key, value in data.answers.items():
+        if key in columns:
+            input_vector[columns.index(key)] = value
+
+    active_features = int(input_vector.sum())
+    prediction = int(model.predict([input_vector])[0])
+
+    # Smooth percentage logic
+    if prediction == 0:
+        percentage = random.randint(25, 45)
+        label = "WEAK"
+    elif prediction == 1:
+        percentage = random.randint(50, 75)
+        label = "MEDIUM"
+    else:
+        percentage = random.randint(80, 95)
+        label = "STRONG"
+
+    percentage += min(active_features, 5)
+    percentage = min(percentage, 98)
+
+    return {
+        "score": prediction,
+        "label": label,
+        "percentage": percentage,
+        "active_features": active_features
+    }
+
+
+# ===============================
+# QUESTION GENERATION
+# ===============================
 
 class QuestionRequest(BaseModel):
     notes: str
-    memoryLevel: float  # 0 to 1
+    memoryLevel: float
 
-
-# ---------------------------
-# TEXT PROCESSING
-# ---------------------------
 
 def extract_sentences(text):
     sentences = re.split(r'(?<=[.!?])\s+', text)
@@ -22,22 +75,15 @@ def extract_sentences(text):
 
 def extract_keywords(text):
     words = re.findall(r'\b[a-zA-Z]{6,}\b', text)
-    words = list(set(words))
-    return words
+    return list(set(words))
 
-
-# ---------------------------
-# MCQ GENERATION
-# ---------------------------
 
 def generate_mcq(sentence, keywords):
     valid_keywords = [k for k in keywords if k in sentence]
-
     if not valid_keywords:
         return None
 
     correct = random.choice(valid_keywords)
-
     question_text = sentence.replace(correct, "______", 1)
 
     distractor_pool = [k for k in keywords if k != correct]
@@ -57,10 +103,6 @@ def generate_mcq(sentence, keywords):
     }
 
 
-# ---------------------------
-# SHORT ANSWER
-# ---------------------------
-
 def generate_short(sentence):
     return {
         "type": "short",
@@ -69,10 +111,6 @@ def generate_short(sentence):
     }
 
 
-# ---------------------------
-# LONG ANSWER
-# ---------------------------
-
 def generate_long(sentence):
     return {
         "type": "long",
@@ -80,10 +118,6 @@ def generate_long(sentence):
         "answer": sentence
     }
 
-
-# ---------------------------
-# MAIN ENDPOINT
-# ---------------------------
 
 @app.post("/generate")
 def generate_questions(data: QuestionRequest):
@@ -100,36 +134,24 @@ def generate_questions(data: QuestionRequest):
             return {"success": False, "error": "Could not extract sentences"}
 
         questions = []
-
-        selected_sentences = sentences[:3]
+        selected_sentences = sentences[:10]
 
         for sentence in selected_sentences:
-
-            # 🔥 MEMORY-BASED LOGIC
             if data.memoryLevel < 0.4:
                 q = generate_mcq(sentence, keywords)
 
             elif data.memoryLevel < 0.7:
-                if random.random() < 0.5:
-                    q = generate_mcq(sentence, keywords)
-                else:
-                    q = generate_short(sentence)
+                q = generate_mcq(sentence, keywords) if random.random() < 0.5 else generate_short(sentence)
 
             else:
-                if random.random() < 0.5:
-                    q = generate_short(sentence)
-                else:
-                    q = generate_long(sentence)
+                q = generate_short(sentence) if random.random() < 0.5 else generate_long(sentence)
 
             if q:
                 questions.append(q)
 
-        if not questions:
-            return {"success": False, "error": "Question generation failed"}
-
         return {
             "success": True,
-            "questions": questions
+            "questions": questions[:10]
         }
 
     except Exception as e:

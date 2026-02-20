@@ -273,8 +273,7 @@ export const startRevisionTest = async (req, res) => {
     console.log("FINAL memoryLevel:", memoryLevel);
 
     // 🔹 Get notes content
-    const notesToSend =
-      topic.notesContent?.trim() || topic.description?.trim() || "";
+    const notesToSend = topic.notesContent?.trim().substring(0, 6000) || "";
 
     console.log("SENDING EXACT NOTES LENGTH:", notesToSend.length);
 

@@ -58,7 +58,7 @@ export const signup = async (req, res) => {
 
     res.status(201).json({
       message: "Signup successful",
-      redirect: "/fieldproject_website/frontend/html/questionary.html",
+      redirect: "/html/questionary.html",
       user: {
         id: user._id,
         name: user.name,

@@ -5,7 +5,7 @@ export const generateQuestions = async (notes, memoryLevel) => {
     console.log("CALLING AI WITH:", { notes, memoryLevel });
 
     const response = await axios.post(
-      "http://127.0.0.1:8001/generate",
+      "http://127.0.0.1:5000/generate",
       {
         notes: notes || "",
         memoryLevel: Number(memoryLevel)

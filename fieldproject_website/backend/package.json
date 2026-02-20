@@ -4,9 +4,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon server.js"
-  },
+  "node": "nodemon server.js",
+  "ai": "cd ../ai_ml && .\\venv\\Scripts\\activate && uvicorn ai_service:app --reload --port 5000",
+  "dev": "concurrently \"npm run node\" \"npm run ai\""
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -26,6 +27,7 @@
     "pdf-parse": "^2.4.5"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "nodemon": "^3.1.11"
   }
 }
