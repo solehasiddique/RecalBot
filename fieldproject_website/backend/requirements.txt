@@ -1,0 +1,25 @@
+# Backend dependencies (Node.js)
+# Install with: npm install
+#
+# Necessary backend files to share/run:
+# - package.json
+# - package-lock.json
+# - server.js
+# - .env (with valid values)
+
+[dependencies]
+axios
+bcryptjs
+cookie-parser
+cors
+dotenv
+express
+groq-sdk
+jsonwebtoken
+mongoose
+multer
+nodemailer
+pdf-parse
+
+[devDependencies]
+nodemon
