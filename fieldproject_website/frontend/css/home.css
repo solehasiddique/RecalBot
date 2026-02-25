@@ -49,6 +49,8 @@ main {
   width: 100%;
   position: relative;
   border-radius: 50px;
+
+   
 }
 
 .section1 .lt {
@@ -301,6 +303,7 @@ main {
 
 .card-button:hover {
   background: #2A4028;
+  
   transform: scale(1.08);
 }
 
@@ -333,7 +336,7 @@ main {
 }
 
 .expanded-title {
-  font-size: 1.15rem;
+  font-size: 1.20rem;
   font-weight: 700;
   color: #FFFFFF;
   margin-bottom: 0;
@@ -343,7 +346,7 @@ main {
 }
 
 .expanded-description {
-  font-size: 0.88rem;
+  font-size: 1.0rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.95);
   text-align: center;
@@ -384,7 +387,7 @@ main {
   justify-content: center;
   display: flex;
   align-items: center;
-  gap: 80px;
+  gap: 100px;
   min-height: 600px;
   max-width: 1400px;
   margin: 0 auto;
@@ -578,7 +581,7 @@ main {
 /* Right Content */
 .section3_right {
   flex: 1;
-  max-width: 700px;
+  max-width: 800px;
   opacity: 0;
   transform: translateY(50px);
 }
@@ -634,9 +637,9 @@ main {
 
 .section3_right p {
   color: #6B9071;
-  font-size: 1.3rem;
-  font-weight: 400;
-  line-height: 1.7;
+  font-size: 1.5rem;
+  font-weight: 420;
+  line-height: 1.8;
   margin: 0;
   text-align: left;
 }
@@ -842,7 +845,7 @@ main {
   /* SECTION 3 */
   .section3 {
     flex-direction: column;
-    padding: 50px 40px;
+    padding: 50px 80px;
     gap: 50px;
     min-height: auto;
   }
@@ -859,7 +862,10 @@ main {
   }
 
   .section3_right p {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    line-height: 3.0;
+    
+
   }
 
   .search-bar {

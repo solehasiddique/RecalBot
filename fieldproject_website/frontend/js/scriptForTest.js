@@ -214,6 +214,8 @@ function initUpcomingTests() {
   });
 }
 
+
+
 /***********************
  * DOM READY
  ***********************/
@@ -232,18 +234,18 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
 
       const title = topicName.value;
-      const description = document.getElementById("description").value;
-      if (!description || description.trim().length < 20) {
-        alert("Please enter proper study notes (at least 20 characters).");
-        return;
-      }
+      // const description = document.getElementById("description").value;
+      // if (!description || description.trim().length < 20) {
+      //   alert("Please enter proper study notes (at least 20 characters).");
+      //   return;
+      // }
 
       const endDate = endDateInput.value;
 
       try {
         const formData = new FormData();
         formData.append("title", title);
-        formData.append("description", description);
+        // formData.append("description", description);
         formData.append("endDate", endDate);
 
         const fileInput = document.getElementById("notesFile");

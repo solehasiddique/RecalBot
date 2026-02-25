@@ -41,15 +41,15 @@
                   required
                 />
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label>Description</label>
                 <textarea
                   id="description"
                   placeholder="Brief description of the topic..."
                 ></textarea>
-              </div>
+              </div> -->
               <div class="form-group">
-                <label>End Date</label>
+                <label>End Date/Exam Date</label>
                 <input type="date" id="endDate" required />
               </div>
 
@@ -62,14 +62,7 @@
                   accept=".pdf,.doc,.docx,.txt"
                 />
               </div>
-              <div class="form-group">
-                <label>Difficulty Level</label>
-                <select id="confidence">
-                  <option value="beginner">Easy</option>
-                  <option value="average">Medium</option>
-                  <option value="confident">Hard</option>
-                </select>
-              </div>
+              
               <div id="quiz-container"></div>
               <button type="submit" class="add-btn" id="submit-btn">
                 Add Topic
@@ -175,7 +168,7 @@
           <div class="socials">
             <a href="#">GitHub</a>
             <a href="#">LinkedIn</a>
-            <a href="#">Twitter</a>
+            
             <a href="#">Email</a>
           </div>
         </div>
@@ -414,15 +407,15 @@
           console.log("AI Grading Result:", data);
 
           let feedbackHTML = `
-  <h3>Test Result</h3>
+  <h3 style="text-allign:ceter">Test Result</h3>
   <p><strong>Final Score:</strong> ${data.finalScore}%</p>
   <p><strong>Memory:</strong> ${data.memoryPercentage}% (${data.memoryLabel})</p>
-  <hr/>
+  <br>
 `;
 
           data.feedback.forEach((item, index) => {
             feedbackHTML += `
-    <div style="margin-bottom:15px;padding:10px;border:1px solid #ddd;border-radius:8px;">
+    <div style="margin-bottom:15px;padding:10px;border:2px solid #2A4028;border-radius:8px;">
       <strong>Q${index + 1}:</strong> ${item.question}<br/>
       <strong>Your Answer:</strong> ${item.userAnswer}<br/>
       <strong>Correct Answer:</strong> ${item.correctAnswer}<br/>
@@ -434,7 +427,7 @@
 
           feedbackHTML += `
   <div style="text-align:center;margin-top:20px;">
-    <button onclick="closeFeedback()" style="padding:10px 20px;background:#4C9F70;color:white;border:none;border-radius:6px;">
+    <button onclick="closeFeedback()" style="padding:10px 20px;background:#6B9071;color:white;border:none;border-radius:5px;">
       Close
     </button>
   </div>

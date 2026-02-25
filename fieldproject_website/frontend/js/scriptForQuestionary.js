@@ -260,9 +260,7 @@ function renderQuestion() {
           oninput="handleTextInput('${q.name}', this.value)"
         >${answers[q.name] || ""}</textarea>
 
-        <button class="btn btn-continue submit-text-btn" onclick="submitTextAnswer('${q.name}')">
-          Submit
-        </button>
+        
       </div>
     `;
   }
@@ -273,6 +271,20 @@ function renderQuestion() {
   display.innerHTML = html;
 
   updateProgress();
+
+  // After display.innerHTML = html;
+
+const submitSlot = document.getElementById("submitPlaceholder");
+if (q.type === "text") {
+  submitSlot.innerHTML = `
+   <button class="btn btn-continue submit-text-btn" onclick="submitTextAnswer('${q.name}')">
+          Submit
+        </button>
+  `;
+} else {
+  submitSlot.innerHTML = "";
+}
+  
 }
 
 /***********************

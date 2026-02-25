@@ -184,9 +184,14 @@ main {
 /* Navigation Buttons */
 .navigation-buttons {
     display: flex;
-    justify-content: center;
-    gap: 16px;
+    justify-content: space-between;
     margin-top: 15px;
+     align-items: center;
+      width: 100%;
+}
+
+.navigation-buttons:has(#submitPlaceholder:empty) #prevBtn {
+    margin: 0 auto;
 }
 
 .btn {
@@ -201,15 +206,15 @@ main {
 }
 
 .btn-prev {
-    background-color: #6B9071;
+    background-color:#6c757d ;
     color: #E3EED4;
     max-width: 200px;
 }
 
 .btn-prev:hover:not(:disabled) {
-    background-color: #0f2a1d;
+    background-color: #495057;
     transform: translateY(-2px);
-    box-shadow: 0 2px 4px #E3EED4;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn-prev:disabled {
@@ -388,12 +393,12 @@ input:focus {
 }
 
 /* Navigation Buttons */
-.navigation-buttons {
+/* .navigation-buttons {
     display: flex;
     justify-content: center;
     gap: 16px;
     margin-top: 20px;
-}
+} */
 
 .btn {
     padding: 14px 32px;
@@ -406,12 +411,12 @@ input:focus {
 }
 
 .btn-prev {
-    background-color: #6B9071;
+    background-color: #6c757d;
     color: #FFFFFF;
 }
 
 .btn-prev:hover:not(:disabled) {
-    background-color: #375534;
+    background-color: #495057;
 }
 
 .btn-prev:disabled {
@@ -467,7 +472,7 @@ input:focus {
 /* Submit button */
 .submit-text-btn {
     padding: 12px 36px;
-    background: linear-gradient(135deg, #375534, #6B9071);
+    background: #375534;
     color: #FFFFFF;
     border: none;
     border-radius: 999px;
@@ -477,18 +482,18 @@ input:focus {
     letter-spacing: 0.5px;
     align-self: flex-start;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 20px rgba(55, 85, 52, 0.25);
+    box-shadow: 0 4px 10px rgba(55, 85, 52, 0.25);
 }
 
 /* Hover */
 .submit-text-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(55, 85, 52, 0.35);
-    background: linear-gradient(135deg, #2A4028, #5F8666);
+    box-shadow: 0 7px 14px rgba(55, 85, 52, 0.35);
+    background: #2A4028;
 }
 
 /* Active */
 .submit-text-btn:active {
     transform: translateY(0);
-    box-shadow: 0 6px 16px rgba(55, 85, 52, 0.3);
+    box-shadow: 0 5px 12px rgba(55, 85, 52, 0.3);
 }

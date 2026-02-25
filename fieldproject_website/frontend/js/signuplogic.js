@@ -30,12 +30,26 @@ password.addEventListener('input', function () {
   let strength = '';
   let color = '';
 
+  const hasLower = /[a-z]/.test(val);
+  const hasUpper = /[A-Z]/.test(val);
+  const hasNumber = /[0-9]/.test(val);
+  const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(val);
+  const isLongEnough = val.length >= 8;
+
+  let score = 0;
+
+  if (hasLower) score++;
+  if (hasUpper) score++;
+  if (hasNumber) score++;
+  if (hasSpecial) score++;
+  if (isLongEnough) score++;
+
   if (val.length === 0) {
     strength = '';
-  } else if (val.length < 6) {
+  } else if (score <= 2) {
     strength = 'Weak';
     color = '#ff6b6b';
-  } else if (val.length < 10) {
+  } else if (score === 3 || score === 4) {
     strength = 'Medium';
     color = '#ffd93d';
   } else {
@@ -46,6 +60,7 @@ password.addEventListener('input', function () {
   passwordStrength.textContent = strength
     ? `Password strength: ${strength}`
     : '';
+
   passwordStrength.style.color = color;
 });
 
@@ -67,7 +82,17 @@ form.addEventListener('submit', async function (e) {
 
   // Name validation
   const nameRegex = /^[A-Za-z ]+$/;
-  if (!nameRegex.test(fullname) || fullname.length < 2) {
+  if (!fullname) {
+    fullnameError.textContent = "Name is required";
+    fullnameError.style.display = "block";
+    isValid = false;
+
+  } else if (fullname.length < 2) {
+    fullnameError.textContent = "Name must be at least 2 characters";
+    fullnameError.style.display = "block";
+    isValid = false;
+
+  } else if (!nameRegex.test(fullname)) {
     fullnameError.textContent = "Name must contain only letters";
     fullnameError.style.display = "block";
     isValid = false;
@@ -80,11 +105,7 @@ form.addEventListener('submit', async function (e) {
     isValid = false;
   }
 
-  //Password Validation
-  if (pwd.length < 3) {
-    document.getElementById('password-error').style.display = 'block';
-    isValid = false;
-  }
+
 //Confirm password validation
   if (pwd !== confirmPassword.value) {
     document.getElementById('confirm-error').style.display = 'block';
@@ -137,3 +158,4 @@ form.addEventListener('submit', async function (e) {
     alert("Server error during signup");
   }
 });
+

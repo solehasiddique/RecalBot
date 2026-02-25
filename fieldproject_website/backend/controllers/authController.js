@@ -24,7 +24,7 @@ export const signup = async (req, res) => {
 
     const { name, email, password } = req.body;
     // Full name validation (backend safety)
-    const nameRegex = /^[A-Za-z]+( [A-Za-z]+)+$/;
+    const nameRegex = /^[A-Za-z ]+$/;
 
     if (!nameRegex.test(name)) {
       return res.status(400).json({
