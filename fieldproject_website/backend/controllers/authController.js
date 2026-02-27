@@ -293,6 +293,8 @@ export const getStudyRecommendations = async (req, res) => {
       personality = "Deep Work Mode";
     }
 
+    
+
     // Optional: Music mapping (q3)
     const envAnswer = user?.learningProfile?.q3;
 
@@ -300,12 +302,13 @@ export const getStudyRecommendations = async (req, res) => {
     if (envAnswer === "Soft music") music = "Lo-fi Beats";
     if (envAnswer === "Nature sounds") music = "Nature Ambient";
 
-    res.json({
-      personality,
-      duration,
-      music,
-      background: "linear-gradient(135deg, #e0ecde, #cde0cd)",
-    });
+   res.json({
+  personality,
+  duration,
+  music,
+ musicType: music.toLowerCase().replace(/\s+/g, "-"),
+  background: "linear-gradient(135deg, #e0ecde, #cde0cd)",
+});
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "AI engine offline" });
