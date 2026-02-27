@@ -228,7 +228,11 @@ main {
 .eyeClosed {
   display: none ;
 }
+/* /for the signin page */
+#eyeClosed {
+  display: none;
 
+}
 
 .toggle-password {
   position: absolute;
