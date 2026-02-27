@@ -3,6 +3,11 @@ const password = document.getElementById('password');
 const confirmPassword = document.getElementById('confirm-password');
 const passwordStrength = document.getElementById('password-strength');
 const successMessage = document.getElementById('success-message');
+const togglePassword = document.querySelector(".toggle-password");
+const eyeOpen = document.querySelector(".eyeOpen");
+const eyeClosed = document.querySelector(".eyeClosed");
+
+
 
 const fullnameInput = document.getElementById("fullname");
 const fullnameError = document.getElementById("fullname-error");
@@ -21,6 +26,29 @@ fullnameInput.addEventListener("input", function () {
     fullnameError.style.display = "none";
   }
 });
+
+// Password eye toggle
+document.querySelectorAll(".toggle-password").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    const inputId = button.getAttribute("data-target");
+    const input = document.getElementById(inputId);
+
+    const eyeOpen = button.querySelector(".eyeOpen");
+    const eyeClosed = button.querySelector(".eyeClosed");
+
+    const isHidden = input.type === "password";
+
+    input.type = isHidden ? "text" : "password";
+
+    eyeOpen.style.display = isHidden ? "none" : "block";
+    eyeClosed.style.display = isHidden ? "block" : "none";
+
+  });
+
+});
+
 
 // ========================
 // Password strength

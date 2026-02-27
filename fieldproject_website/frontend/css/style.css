@@ -225,9 +225,10 @@ main {
   box-sizing: border-box;
 }
 
-#eyeClosed {
-  display: none;
+.eyeClosed {
+  display: none ;
 }
+
 
 .toggle-password {
   position: absolute;
@@ -247,7 +248,6 @@ main {
 }
 
 .toggle-password svg {
-  display: block;
   width: 22px;
   height: 22px;
 }
@@ -434,3 +434,6 @@ main {
     display: flex;
   }
 }
+
+
+
