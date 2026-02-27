@@ -6,7 +6,6 @@
     let time = 0;
     let paused = false;
 
-    let sessionStartTime = null;
 
     let total = 0;     // total minutes (from backend)
     let sessions = 0;  // total full sessions (from backend)
@@ -90,7 +89,6 @@
     // START STUDY SESSION
     // =============================
     function start() {
-        sessionStartTime = Date.now();
         paused = false;
 
         document.body.style.background = aiData.background;
@@ -149,8 +147,9 @@
 
         clearInterval(timer);
 
-        const studiedMs = Date.now() - sessionStartTime;
-        const studiedMinutes = Math.floor(studiedMs / 60000);
+        const totalSeconds = aiData.duration * 60;
+const studiedSeconds = totalSeconds - time;
+const studiedMinutes = Math.floor(studiedSeconds / 60);
 
         if (studiedMinutes <= 0) {
             alert("Study at least 1 minute to save progress.");

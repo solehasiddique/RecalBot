@@ -58,7 +58,7 @@ export const signup = async (req, res) => {
 
     res.status(201).json({
       message: "Signup successful",
-      redirect: "/html/questionary.html",
+      redirect: "/fieldproject_website/frontend/html/questionary.html",
       user: {
         id: user._id,
         name: user.name,
@@ -109,8 +109,8 @@ export const signin = async (req, res) => {
 
     // 🎯 Decide where to send user
     const redirect = user.hasCompletedAssessment
-      ? "/html/dashboard.html"
-      : "/html/questionary.html";
+      ? "/fieldproject_website/frontend/html/dashboard.html"
+  : "/fieldproject_website/frontend/html/questionary.html";
 
     res.json({
       message: "Signin successful",
@@ -274,24 +274,24 @@ export const getStudyRecommendations = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
-    let duration = 25; // default
+    let duration = 2; // default
     let personality = "Deep Focus";
     let music = "Lo-fi Beats";
 
-    const focusAnswer = user?.learningProfile?.q1;
+    // const focusAnswer = user?.learningProfile?.q1;
 
-    // 🔥 Map questionnaire answer → duration
-    if (focusAnswer === "Less than 15 minutes") {
-      duration = 2;
-      personality = "Quick Sprint";
-    } else if (focusAnswer === "15–25 minutes") {
-      duration = 20;
-    } else if (focusAnswer === "25–40 minutes") {
-      duration = 30;
-    } else if (focusAnswer === "More than 40 minutes") {
-      duration = 45;
-      personality = "Deep Work Mode";
-    }
+    // // 🔥 Map questionnaire answer → duration
+    // if (focusAnswer === "Less than 15 minutes") {
+    //   duration = 10;
+    //   personality = "Quick Sprint";
+    // } else if (focusAnswer === "15–25 minutes") {
+    //   duration = 20;
+    // } else if (focusAnswer === "25–40 minutes") {
+    //   duration = 30;
+    // } else if (focusAnswer === "More than 40 minutes") {
+    //   duration = 45;
+    //   personality = "Deep Work Mode";
+    // }
 
     // Optional: Music mapping (q3)
     const envAnswer = user?.learningProfile?.q3;
@@ -313,11 +313,16 @@ export const getStudyRecommendations = async (req, res) => {
 };
 
 // ==========================
-// save the sessions
+// SAVE STUDY SESSION (FIXED)
 // ==========================
 export const saveStudySession = async (req, res) => {
   try {
     const { minutes } = req.body;
+
+    if (!minutes || minutes <= 0) {
+      return res.status(400).json({ message: "Invalid session time" });
+    }
+
     const user = await User.findById(req.user.id);
 
     if (!user.studyStats) {
@@ -335,26 +340,11 @@ export const saveStudySession = async (req, res) => {
     // Add minutes
     user.studyStats.totalMinutes += minutes;
 
-    // Determine required duration from questionnaire
-    let requiredDuration = 25;
-
-    const focusAnswer = user?.learningProfile?.q1;
-
-    if (focusAnswer === "Less than 15 minutes") requiredDuration = 2;
-    if (focusAnswer === "15–25 minutes") requiredDuration = 20;
-    if (focusAnswer === "25–40 minutes") requiredDuration = 30;
-    if (focusAnswer === "More than 40 minutes") requiredDuration = 45;
-
-    // Calculate full sessions
-    const newSessions = Math.floor(
-      user.studyStats.totalMinutes / requiredDuration,
-    );
-
+    // Add exactly ONE session
     const previousSessions = user.studyStats.sessions;
+    user.studyStats.sessions += 1;
 
-    user.studyStats.sessions = newSessions;
-
-    // 🔥 STREAK LOGIC
+    // STREAK LOGIC
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -366,8 +356,7 @@ export const saveStudySession = async (req, res) => {
       lastDate.setHours(0, 0, 0, 0);
     }
 
-    // Increase streak only if at least 1 new session completed
-    if (newSessions > previousSessions) {
+    if (user.studyStats.sessions > previousSessions) {
       if (!lastDate) {
         user.studyStats.streak = 1;
       } else {
@@ -394,8 +383,9 @@ export const saveStudySession = async (req, res) => {
       sessions: user.studyStats.sessions,
       streak: user.studyStats.streak,
     });
+
   } catch (err) {
-    console.error(err);
+    console.error("Save session error:", err);
     res.status(500).json({ message: "Could not save session" });
   }
 };
