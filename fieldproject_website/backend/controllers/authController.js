@@ -274,24 +274,24 @@ export const getStudyRecommendations = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
-    let duration = 2; // default
+    let duration = 25; // default
     let personality = "Deep Focus";
     let music = "Lo-fi Beats";
 
-    // const focusAnswer = user?.learningProfile?.q1;
+    const focusAnswer = user?.learningProfile?.q1;
 
-    // // 🔥 Map questionnaire answer → duration
-    // if (focusAnswer === "Less than 15 minutes") {
-    //   duration = 10;
-    //   personality = "Quick Sprint";
-    // } else if (focusAnswer === "15–25 minutes") {
-    //   duration = 20;
-    // } else if (focusAnswer === "25–40 minutes") {
-    //   duration = 30;
-    // } else if (focusAnswer === "More than 40 minutes") {
-    //   duration = 45;
-    //   personality = "Deep Work Mode";
-    // }
+    // 🔥 Map questionnaire answer → duration
+    if (focusAnswer === "Less than 15 minutes") {
+      duration = 10;
+      personality = "Quick Sprint";
+    } else if (focusAnswer === "15–25 minutes") {
+      duration = 20;
+    } else if (focusAnswer === "25–40 minutes") {
+      duration = 30;
+    } else if (focusAnswer === "More than 40 minutes") {
+      duration = 45;
+      personality = "Deep Work Mode";
+    }
 
     
 
