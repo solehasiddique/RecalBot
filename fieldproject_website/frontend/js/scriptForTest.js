@@ -23,6 +23,42 @@ const monthNames = [
   "December",
 ];
 
+async function loadUserNotesDropdown() {
+  const select = document.getElementById("notesSelect");
+  if (!select) return;
+
+  try {
+    const res = await fetch("http://localhost:8000/api/profile/notes", {
+      credentials: "include",
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to load notes");
+    }
+
+    const notes = data.notes || [];
+
+    if (!notes.length) {
+      select.innerHTML =
+        '<option value="">No uploaded notes found. Upload in Profile page.</option>';
+      return;
+    }
+
+    select.innerHTML = '<option value="">Select a note</option>';
+    notes.forEach((note) => {
+      const option = document.createElement("option");
+      option.value = note._id;
+      const subject = note.subject ? ` (${note.subject})` : "";
+      option.textContent = `${note.subject || note.title || "Untitled"}${subject}`;
+      select.appendChild(option);
+    });
+  } catch (err) {
+    console.error("Failed loading notes:", err);
+    select.innerHTML = '<option value="">Unable to load notes</option>';
+  }
+}
+
 /***********************
  * LOAD CALENDAR FROM DB (SINGLE SOURCE)
  ***********************/
@@ -234,24 +270,21 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
 
       const title = topicName.value;
-      // const description = document.getElementById("description").value;
-      // if (!description || description.trim().length < 20) {
-      //   alert("Please enter proper study notes (at least 20 characters).");
-      //   return;
-      // }
-
       const endDate = endDateInput.value;
+      const selectedNoteId = document.getElementById("notesSelect").value;
+      const difficultyLevel = document.getElementById("difficultyLevel").value;
+
+      if (!selectedNoteId) {
+        alert("Please select one uploaded note.");
+        return;
+      }
 
       try {
         const formData = new FormData();
         formData.append("title", title);
-        // formData.append("description", description);
         formData.append("endDate", endDate);
-
-        const fileInput = document.getElementById("notesFile");
-        if (fileInput.files[0]) {
-          formData.append("notesFile", fileInput.files[0]);
-        }
+        formData.append("noteId", selectedNoteId);
+        formData.append("difficultyLevel", difficultyLevel);
 
         const res = await fetch("http://localhost:8000/api/topics/create", {
           method: "POST",
@@ -297,6 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         alert("Topic added & revisions scheduled!");
         this.reset();
+        await loadUserNotesDropdown();
       } catch (err) {
         console.error(err);
         alert("Something went wrong");
@@ -306,4 +340,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initCalendar();
   initUpcomingTests();
   loadCalendarFromDB();
+  loadUserNotesDropdown();
 });

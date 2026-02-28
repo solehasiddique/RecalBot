@@ -47,19 +47,15 @@
             </div>
             <div class="hero-name" id="heroName">Aryan Mehta</div>
             <div class="hero-sub" id="heroSub">aryan.mehta@student.edu</div>
-            <div class="hero-pills">
-              <span class="hero-pill">Class XII — A</span>
-              <span class="hero-pill">DPS R.K. Puram</span>
-              <span class="hero-pill">CBSE · Science</span>
-            </div>
+            <div class="hero-pills" id="heroPills"></div>
             <div class="hero-stats">
               <div class="hstat">
                 <div class="hstat-v" id="hsNotes">4</div>
                 <div class="hstat-l">Notes</div>
               </div>
               <div class="hstat">
-                <div class="hstat-v">84%</div>
-                <div class="hstat-l">Memory Score</div>
+                <div class="hstat-v" id="hsMemory">--</div>
+                <div class="hstat-l" id="hsMemoryLabel">Memory Profile</div>
               </div>
             </div>
           </div>
@@ -234,16 +230,13 @@
                   </div>
                   <div class="dz-types">
                     <span class="dz-type">PDF</span>
-                    <span class="dz-type">DOCX</span>
-                    <span class="dz-type">PPTX</span>
-                    <span class="dz-type">PNG</span>
-                    <span class="dz-type">JPG</span>
+                    <span class="dz-type">TXT</span>
                   </div>
                 </div>
                 <input
                   type="file"
                   id="noteFile"
-                  accept=".pdf,.docx,.pptx,.png,.jpg,.jpeg"
+                    accept=".pdf,.txt"
                   style="display: none"
                   onchange="fileChosen(this)"
                 />
@@ -260,26 +253,18 @@
                     <input
                       class="f-inp"
                       type="text"
-                      id="noteTitle"
+                      id="noteDescription"
                       placeholder="e.g. Chapter 12 — Wave Optics"
                     />
                   </div>
                   <div class="form-field">
-                    <div class="f-lbl">Subject</div>
+                    <div class="f-lbl">Subject Name</div>
                     <input
                       class="f-inp"
                       type="text"
                       id="noteSubject"
                       placeholder="e.g. Physics"
-                    />
-                  </div>
-                  <div class="form-field">
-                    <div class="f-lbl">Topic</div>
-                    <input
-                      class="f-inp"
-                      type="text"
-                      id="noteChapter"
-                      placeholder="e.g. Chapter 12"
+                      required
                     />
                   </div>
                   <!-- <div class="form-field">

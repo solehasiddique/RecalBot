@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    profileCompleted: {
+      type: Boolean,
+      default: false,
+    },
 
     memoryScore: {
       type: Number,
@@ -74,6 +78,20 @@ const userSchema = new mongoose.Schema(
     ],
 
     learningProfile: learningProfileSchema,
+
+    profile: {
+      bio: { type: String, default: "" },
+      avatarUrl: { type: String, default: "" },
+      academic: {
+        class: { type: String, default: "" },
+        section: { type: String, default: "" },
+        roll: { type: String, default: "" },
+        board: { type: String, default: "" },
+        school: { type: String, default: "" },
+        stream: { type: String, default: "" },
+        batch: { type: String, default: "" },
+      },
+    },
 
     memoryProfile: {
       type: String,

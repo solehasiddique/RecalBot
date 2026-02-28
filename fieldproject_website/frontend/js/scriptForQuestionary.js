@@ -359,12 +359,20 @@ function convertAnswersToMLFeatures() {
  ***********************/
 async function submitAssessment() {
   try {
-    await fetch("http://localhost:8000/api/auth/submit", {
+    const submitRes = await fetch("http://localhost:8000/api/auth/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify(answers)
     });
+    const submitData = await submitRes.json();
+    if (!submitRes.ok) {
+      if (submitData?.redirect) {
+        window.location.href = submitData.redirect;
+        return;
+      }
+      throw new Error(submitData?.message || "Questionnaire submit failed");
+    }
 
     const mlFeatures = convertAnswersToMLFeatures();
 
@@ -378,7 +386,7 @@ async function submitAssessment() {
     const data = await res.json();
     alert(`Initial Memory Strength: ${data.label} (${data.percentage}%)`);
 
-    window.location.href = "../html/dashboard.html";
+    window.location.href = submitData.redirect || "../html/profile.html";
 
   } catch (err) {
     console.error(err);
@@ -389,4 +397,31 @@ async function submitAssessment() {
 /***********************
  * INIT
  ***********************/
-renderQuestion();
+async function initQuestionaryPage() {
+  try {
+    const res = await fetch("http://localhost:8000/api/auth/profile", {
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      window.location.href = "../html/signin.html";
+      return;
+    }
+
+    const data = await res.json();
+    const user = data?.user || {};
+
+    if (user.hasCompletedAssessment) {
+      window.location.href = user.profileCompleted
+        ? "../html/dashboard.html"
+        : "../html/profile.html";
+      return;
+    }
+
+    renderQuestion();
+  } catch (_err) {
+    window.location.href = "../html/signin.html";
+  }
+}
+
+initQuestionaryPage();

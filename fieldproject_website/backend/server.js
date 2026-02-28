@@ -2,6 +2,7 @@ import authRoutes from "./routes/authRoutes.js";
 import memoryRoutes from "./routes/memoryRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import topicRoutes from "./routes/topicRoutes.js"; 
+import profileRoutes from "./routes/profileRoutes.js";
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -26,7 +27,8 @@ console.log("--------------------");
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: "25mb" }));
+app.use(express.urlencoded({ extended: true, limit: "25mb" }));
 app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "public")));
@@ -46,6 +48,7 @@ app.use("/api/memory", memoryRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
 app.use("/api/topics", topicRoutes);
+app.use("/api/profile", profileRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server is running");

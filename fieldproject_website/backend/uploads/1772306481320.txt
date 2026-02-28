@@ -1,0 +1,826 @@
+1️⃣ Introduction to Programming
+What is Programming?
+
+Programming is the process of writing instructions that a computer can understand and execute.
+
+A program:
+
+Takes input
+
+Processes data
+
+Produces output
+
+Example:
+
+Input: 5, 10
+Process: Add numbers
+Output: 15
+2️⃣ Types of Programming Languages
+1. Low-Level Languages
+
+Machine Language (binary)
+
+Assembly Language
+
+2. High-Level Languages
+
+Python
+
+Java
+
+C
+
+C++
+
+JavaScript
+
+PHP
+
+Go
+
+Rust
+
+High-level languages are easier to read and write.
+
+3️⃣ Compiled vs Interpreted Languages
+Compiled Language
+
+Entire code converted to machine code before execution
+
+Faster execution
+
+Example: C, C++
+
+Flow:
+
+Source Code → Compiler → Executable File → Run
+Interpreted Language
+
+Code executed line by line
+
+Slower but flexible
+
+Example: Python, JavaScript
+
+Flow:
+
+Source Code → Interpreter → Output
+Hybrid
+
+Java is hybrid:
+
+Java Code → Bytecode → JVM → Machine Code
+
+
+1️⃣ Python
+What is Python?
+
+Python is a high-level, interpreted, dynamically typed programming language known for simplicity and readability.
+
+It is designed to make code easy to write and understand.
+
+Key Features
+
+Interpreted language
+
+Dynamically typed
+
+Huge libraries
+
+Beginner friendly
+
+Supports OOP and Functional programming
+
+Where It Is Used
+
+AI and Machine Learning
+
+Data Science
+
+Web Development
+
+Automation
+
+Scripting
+
+Cybersecurity
+
+Example Syntax
+Variables
+x = 10
+name = "Kunal"
+
+No type declaration required.
+
+Function
+def add(a, b):
+    return a + b
+List
+numbers = [1, 2, 3, 4]
+Why Python Is Popular
+
+Simple English-like syntax
+
+Fast development speed
+
+Massive community support
+
+2️⃣ Java
+What is Java?
+
+Java is a high-level, object-oriented, statically typed programming language.
+
+It follows the principle:
+Write Once, Run Anywhere using JVM.
+
+Key Features
+
+Strongly typed
+
+Platform independent
+
+OOP focused
+
+Secure
+
+Good performance
+
+Where It Is Used
+
+Enterprise applications
+
+Android apps
+
+Banking systems
+
+Large backend systems
+
+Example Syntax
+Basic Program
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello");
+    }
+}
+Variable Declaration
+int age = 21;
+String name = "Kunal";
+
+Type must be declared.
+
+Class Example
+class Person {
+    String name;
+}
+Why Java Is Powerful
+
+Structured
+
+Highly scalable
+
+Used in large companies
+
+3️⃣ C Language
+What is C?
+
+C is a procedural, compiled, low-level structured programming language.
+
+It is very close to hardware and memory.
+
+Key Features
+
+Fast execution
+
+Manual memory management
+
+Foundation for many languages
+
+Used in operating systems
+
+Where It Is Used
+
+Operating Systems
+
+Embedded systems
+
+Compilers
+
+Microcontrollers
+
+Example Syntax
+#include <stdio.h>
+
+int main() {
+    printf("Hello");
+    return 0;
+}
+Variable
+int age = 21;
+Why C Is Important
+
+Builds strong programming fundamentals
+
+Helps understand memory
+
+Base of C++, Java, etc
+
+4️⃣ C++
+What is C++?
+
+C++ is an extension of C that supports Object-Oriented Programming.
+
+It combines:
+
+Low-level control
+
+High-level OOP features
+
+Key Features
+
+Classes and objects
+
+Fast performance
+
+Pointers
+
+Used in game engines
+
+Where It Is Used
+
+Game development
+
+High-performance systems
+
+Competitive programming
+
+Software requiring speed
+
+Example Syntax
+#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Hello";
+}
+Class Example
+class Person {
+public:
+    string name;
+};
+Why C++ Is Powerful
+
+Extremely fast
+
+More control than Java
+
+Used in Unreal Engine
+
+5️⃣ JavaScript
+What is JavaScript?
+
+JavaScript is a high-level, interpreted scripting language mainly used for web development.
+
+It runs inside browsers.
+
+Key Features
+
+Dynamic typing
+
+Event-driven
+
+Asynchronous programming
+
+Works with HTML and CSS
+
+Where It Is Used
+
+Frontend websites
+
+Backend using Node.js
+
+Mobile apps
+
+Full stack development
+
+Example Syntax
+console.log("Hello");
+Variable
+let age = 21;
+const name = "Kunal";
+Function
+function greet(name) {
+    return "Hello " + name;
+}
+Why JavaScript Is Important
+
+Every website uses it
+
+Required for frontend
+
+Huge ecosystem
+
+6️⃣ SQL
+What is SQL?
+
+SQL is a database query language used to manage relational databases.
+
+It is not a general programming language.
+
+Key Features
+
+Data storage
+
+Data retrieval
+
+Data manipulation
+
+Structured queries
+
+Where It Is Used
+
+Websites
+
+Banking systems
+
+Applications storing data
+
+Example Syntax
+Create Table
+CREATE TABLE students (
+    id INT,
+    name VARCHAR(50)
+);
+Select Data
+SELECT * FROM students;
+Why SQL Is Important
+
+Data is everywhere
+
+Every backend uses databases
+
+Core skill for developers
+
+7️⃣ Go (Golang)
+What is Go?
+
+Go is a modern compiled language developed by Google.
+
+Key Features
+
+Fast
+
+Simple syntax
+
+Built-in concurrency
+
+Used for backend systems
+
+Example
+package main
+import "fmt"
+
+func main() {
+    fmt.Println("Hello")
+}
+Used For
+
+Cloud systems
+
+Backend APIs
+
+DevOps tools
+
+8️⃣ Rust
+What is Rust?
+
+Rust is a systems programming language focused on:
+
+Memory safety
+
+Performance
+
+Concurrency
+
+Key Features
+
+No garbage collector
+
+Safe memory handling
+
+Very fast
+
+Example
+fn main() {
+    println!("Hello");
+}
+Used For
+
+System programming
+
+Blockchain
+
+High-performance apps
+
+9️⃣ PHP
+What is PHP?
+
+PHP is a server-side scripting language mainly used for websites.
+
+Example
+<?php
+echo "Hello";
+?>
+
+Used in:
+
+WordPress
+
+Web servers
+
+Backend development
+
+🔟 Swift
+
+Used for:
+
+iOS development
+
+Example:
+
+print("Hello")
+Language Comparison Summary
+Language	Type	Speed	Use Case
+Python	Interpreted	Medium	AI, Automation
+Java	Compiled + JVM	Fast	Enterprise
+C	Compiled	Very Fast	OS
+C++	Compiled	Very Fast	Games
+JavaScript	Interpreted	Medium	Web
+SQL	Query	Fast	Databases
+Go	Compiled	Fast	Cloud
+Rust	Compiled	Very Fast	Systems
+Important Understanding
+
+Every language has:
+
+Variables
+
+Data types
+
+Conditions
+
+Loops
+
+Functions
+
+Data structures
+
+Only syntax and internal working differ.
+
+1️⃣ Introduction to Rust
+What is Rust?
+
+Rust is a systems programming language focused on:
+
+Memory safety
+
+High performance
+
+Concurrency
+
+Zero cost abstractions
+
+It was originally developed by Mozilla and is now maintained by the Rust Foundation.
+
+Rust solves problems like:
+
+Memory leaks
+
+Segmentation faults
+
+Data races
+
+Without using a garbage collector.
+
+2️⃣ Why Rust?
+
+Traditional languages:
+
+C / C++ → Fast but unsafe memory
+
+Java / Python → Safe but slower due to garbage collector
+
+Rust gives:
+
+C level performance
+
+Memory safety without garbage collection
+
+That is Rust’s biggest advantage.
+
+3️⃣ Installing Rust
+
+Rust is installed using:
+
+rustup
+
+Check version:
+
+rustc --version
+
+Create new project:
+
+cargo new project_name
+cd project_name
+cargo run
+
+cargo is Rust’s package manager and build tool.
+
+4️⃣ Basic Rust Program
+fn main() {
+    println!("Hello, world!");
+}
+
+Explanation:
+
+fn means function
+
+main() is entry point
+
+println! is macro
+
+! means macro call
+
+5️⃣ Variables in Rust
+Immutable by Default
+fn main() {
+    let x = 10;
+}
+
+Variables cannot change unless specified.
+
+Mutable Variable
+fn main() {
+    let mut x = 10;
+    x = 20;
+}
+
+mut allows modification.
+
+6️⃣ Data Types
+
+Rust is statically typed.
+
+Integer Types
+
+i8, i16, i32, i64
+
+u8, u16, u32, u64
+
+Example:
+
+let age: i32 = 21;
+Floating Point
+let price: f64 = 99.99;
+Boolean
+let is_active: bool = true;
+Character
+let grade: char = 'A';
+7️⃣ Constants
+const PI: f64 = 3.14;
+
+Constants:
+
+Must declare type
+
+Always uppercase by convention
+
+8️⃣ Shadowing
+
+Rust allows redeclaring variable:
+
+let x = 5;
+let x = x + 1;
+
+This is called shadowing.
+
+9️⃣ Control Flow
+If Statement
+let number = 10;
+
+if number > 5 {
+    println!("Greater");
+} else {
+    println!("Smaller");
+}
+
+Note:
+Condition must be boolean.
+
+Loop
+Infinite Loop
+loop {
+    println!("Running");
+}
+While Loop
+let mut x = 5;
+
+while x > 0 {
+    println!("{}", x);
+    x -= 1;
+}
+For Loop
+for i in 1..5 {
+    println!("{}", i);
+}
+
+1..5 means range from 1 to 4.
+
+🔟 Functions
+fn add(a: i32, b: i32) -> i32 {
+    return a + b;
+}
+
+Short form:
+
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+Last line without semicolon returns value.
+
+1️⃣1️⃣ Ownership (Most Important Concept)
+
+Rust has unique memory system called Ownership.
+
+Rules:
+
+Each value has one owner
+
+Only one owner at a time
+
+When owner goes out of scope, value is dropped
+
+Example:
+
+let s = String::from("Hello");
+
+If you assign:
+
+let s1 = s;
+
+Now:
+
+s1 owns value
+
+s is invalid
+
+This prevents double free errors.
+
+1️⃣2️⃣ Borrowing
+
+Instead of transferring ownership:
+
+fn main() {
+    let s = String::from("Hello");
+    print_string(&s);
+}
+
+fn print_string(s: &String) {
+    println!("{}", s);
+}
+
+& means reference.
+
+Rules:
+
+One mutable reference OR
+
+Multiple immutable references
+
+But not both together.
+
+1️⃣3️⃣ Structs
+
+Struct is custom data type.
+
+struct Person {
+    name: String,
+    age: u32,
+}
+
+Create instance:
+
+let p = Person {
+    name: String::from("Kunal"),
+    age: 21,
+};
+1️⃣4️⃣ Methods
+impl Person {
+    fn greet(&self) {
+        println!("Hello {}", self.name);
+    }
+}
+
+Call method:
+
+p.greet();
+1️⃣5️⃣ Enums
+
+Enums allow multiple types in one.
+
+enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
+With values:
+
+enum Message {
+    Text(String),
+    Number(i32),
+}
+1️⃣6️⃣ Pattern Matching
+
+Rust uses match.
+
+let number = 3;
+
+match number {
+    1 => println!("One"),
+    2 => println!("Two"),
+    _ => println!("Other"),
+}
+
+_ means default case.
+
+1️⃣7️⃣ Option Type
+
+Rust avoids null.
+
+Instead uses:
+
+Option<T>
+
+Example:
+
+let x: Option<i32> = Some(5);
+let y: Option<i32> = None;
+
+Handle safely:
+
+match x {
+    Some(val) => println!("{}", val),
+    None => println!("No value"),
+}
+1️⃣8️⃣ Result Type (Error Handling)
+
+Rust does not use exceptions.
+
+Instead:
+
+Result<T, E>
+
+Example:
+
+fn divide(a: i32, b: i32) -> Result<i32, String> {
+    if b == 0 {
+        Err(String::from("Cannot divide by zero"))
+    } else {
+        Ok(a / b)
+    }
+}
+1️⃣9️⃣ Vectors
+
+Dynamic array.
+
+let mut numbers = Vec::new();
+numbers.push(1);
+numbers.push(2);
+
+Or:
+
+let numbers = vec![1, 2, 3];
+2️⃣0️⃣ Strings
+let s = String::from("Hello");
+
+Append:
+
+s.push_str(" World");
+2️⃣1️⃣ Concurrency
+
+Rust makes concurrency safe.
+
+Example thread:
+
+use std::thread;
+
+fn main() {
+    thread::spawn(|| {
+        println!("Hello from thread");
+    });
+}
+
+Rust prevents data races at compile time.

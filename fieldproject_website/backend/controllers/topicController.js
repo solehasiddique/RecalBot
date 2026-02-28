@@ -1,14 +1,86 @@
 import fs from "fs";
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const pdfParse = require("pdf-parse");
+import { PDFParse } from "pdf-parse";
 
 import Topic from "../models/Topic.js";
 import User from "../models/User.js";
+import Note from "../models/Note.js";
 import { generateInitialRevisions } from "../utils/revisionScheduler.js";
 import { generateNextRevision } from "../utils/revisionScheduler.js";
 import { generateQuestionsWithGroq } from "../services/groqService.js";
 import { gradeAnswerWithAI } from "../services/aiGradingService.js";
+
+const extractPdfText = async (dataBuffer) => {
+  const parser = new PDFParse({ data: dataBuffer });
+  try {
+    const result = await parser.getText();
+    return result?.text || "";
+  } finally {
+    await parser.destroy().catch(() => {});
+  }
+};
+
+const extractRelevantNotesByTopic = (notesText, topicName) => {
+  if (!notesText) return { text: "", matched: false };
+  if (!topicName || topicName.trim().length < 2) {
+    return { text: notesText, matched: true };
+  }
+
+  const topic = topicName.trim().toLowerCase();
+  const stopWords = new Set([
+    "the", "and", "for", "with", "from", "that", "this", "into", "your",
+    "have", "has", "are", "was", "were", "about", "chapter", "topic", "unit",
+    "part", "day", "level", "exam", "date",
+  ]);
+
+  const topicWords = topic
+    .split(/[^a-z0-9]+/i)
+    .map((w) => w.trim().toLowerCase())
+    .filter((w) => w.length > 2 && !stopWords.has(w));
+
+  if (!topicWords.length) {
+    return { text: notesText, matched: true };
+  }
+
+  const paragraphs = notesText
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  const sourceChunks = paragraphs.length
+    ? paragraphs
+    : notesText.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+
+  const scored = sourceChunks
+    .map((chunk) => {
+      const normalized = chunk.toLowerCase();
+      let score = 0;
+
+      if (normalized.includes(topic)) score += 8;
+      topicWords.forEach((word) => {
+        if (normalized.includes(word)) score += 2;
+      });
+
+      return { chunk, score };
+    })
+    .filter((c) => c.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  if (!scored.length) {
+    return { text: "", matched: false };
+  }
+
+  const selected = scored
+    .slice(0, 8)
+    .map((c) => c.chunk)
+    .join("\n\n")
+    .trim();
+
+  if (selected.length < 50) {
+    return { text: "", matched: false };
+  }
+
+  return { text: selected, matched: true };
+};
 
 /* =====================================================
    CREATE TOPIC
@@ -21,7 +93,7 @@ export const createTopic = async (req, res) => {
       return res.status(401).json({ message: "User not found" });
     }
 
-    const { title, description, endDate } = req.body;
+    const { title, description, endDate, noteId, difficultyLevel } = req.body;
 
     if (!title) {
       return res.status(400).json({ message: "Title required" });
@@ -29,13 +101,36 @@ export const createTopic = async (req, res) => {
 
     let notesContent = description || "";
 
+    if (noteId) {
+      const note = await Note.findOne({ _id: noteId, user: req.user.id });
+      if (!note) {
+        return res.status(404).json({ message: "Selected note not found" });
+      }
+
+      const notePath = note.filePath;
+      const noteExt = (note.fileExt || "").toLowerCase();
+
+      if (noteExt === "pdf") {
+        const dataBuffer = fs.readFileSync(notePath);
+        notesContent = await extractPdfText(dataBuffer);
+      } else if (
+        ["txt", "md", "csv", "json", "xml", "html"].includes(noteExt)
+      ) {
+        notesContent = fs.readFileSync(notePath, "utf8");
+      } else {
+        return res.status(400).json({
+          message:
+            "Selected note format is not supported for topic generation. Use PDF or TXT notes.",
+        });
+      }
+    }
+
     if (req.file) {
       const filePath = req.file.path;
 
       if (req.file.mimetype === "application/pdf") {
         const dataBuffer = fs.readFileSync(filePath);
-        const pdfData = await pdfParse(dataBuffer);
-        notesContent = pdfData.text;
+        notesContent = await extractPdfText(dataBuffer);
       } else {
         notesContent = fs.readFileSync(filePath, "utf8");
       }
@@ -52,11 +147,25 @@ export const createTopic = async (req, res) => {
       endDate,
     );
 
+    const relevant = extractRelevantNotesByTopic(notesContent, title);
+    if (!relevant.matched) {
+      return res.status(400).json({
+        message:
+          "Topic not found clearly in selected notes. Use the exact chapter/topic name from your notes.",
+      });
+    }
+
     const topic = await Topic.create({
       user: user._id,
       title,
+      difficultyLevel: ["easy", "medium", "hard"].includes(
+        String(difficultyLevel || "").toLowerCase(),
+      )
+        ? String(difficultyLevel).toLowerCase()
+        : "medium",
       description,
-      notesContent,
+      notesContent: relevant.text,
+      sourceNote: noteId || null,
       endDate,
       initialMemoryProfile: user.memoryProfile,
       revisions,
@@ -284,9 +393,12 @@ export const startRevisionTest = async (req, res) => {
     }
 
     // 🔹 Call AI
+    const difficultyLevel = topic.difficultyLevel || "medium";
     const aiResponse = await generateQuestionsWithGroq(
       notesToSend,
       memoryLevel,
+      difficultyLevel,
+      topic.title,
     );
 
     console.log("AI RESPONSE:", aiResponse);

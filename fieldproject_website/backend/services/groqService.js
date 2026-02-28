@@ -9,7 +9,9 @@ const groq = new Groq({
 
 export const generateQuestionsWithGroq = async (
   notes,
-  memoryLevel, // 0 → 1
+  memoryLevel,
+  difficultyLevel = "medium",
+  topicName = "",
 ) => {
   try {
     if (!notes || notes.length < 50) {
@@ -24,6 +26,8 @@ export const generateQuestionsWithGroq = async (
 You are an adaptive exam generator.
 
 MemoryLevel: ${memoryLevel}
+DifficultyLevel: ${difficultyLevel}
+TopicName: ${topicName}
 
 Generate EXACTLY 10 questions from the notes.
 
@@ -46,10 +50,16 @@ Strict Rules:
 - Total questions must be exactly 10.
 - Follow distribution exactly.
 - MCQ must have exactly 4 options and 1 correct answer.
-- Short answer: 2–3 line explanation.
+- Short answer: 2-3 line explanation.
 - Long answer: detailed conceptual explanation.
 - Cover different concepts from the notes.
 - Avoid repetition.
+- Keep depth aligned with DifficultyLevel:
+  - easy: direct recall, basic understanding
+  - medium: applied understanding
+  - hard: analytical and conceptual depth
+- Generate questions strictly from TopicName context.
+- If unrelated content exists in notes, ignore it.
 
 Return ONLY valid JSON in this exact format:
 
@@ -58,7 +68,7 @@ Return ONLY valid JSON in this exact format:
     {
       "type": "mcq" | "short" | "long",
       "question": "Question text",
-      "options": ["A","B","C","D"], 
+      "options": ["A","B","C","D"],
       "answer": "Correct answer text"
     }
   ]
@@ -82,23 +92,19 @@ ${notes}
     });
 
     const raw = response?.choices?.[0]?.message?.content;
-
     if (!raw) {
       return { success: false, error: "Empty AI response" };
     }
 
-    // Extract JSON block safely
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
-
     if (!jsonMatch) {
       return { success: false, error: "AI did not return valid JSON" };
     }
 
     let parsed;
-
     try {
       parsed = JSON.parse(jsonMatch[0]);
-    } catch (parseError) {
+    } catch (_parseError) {
       return { success: false, error: "JSON parsing failed" };
     }
 
@@ -106,10 +112,7 @@ ${notes}
       return { success: false, error: "Invalid question format" };
     }
 
-    // Ensure exactly 10 questions
     let questions = parsed.questions.slice(0, 10);
-
-    // If less than 10, duplicate some (rare fallback)
     while (questions.length < 10 && parsed.questions.length > 0) {
       questions.push(
         parsed.questions[questions.length % parsed.questions.length],
@@ -118,7 +121,7 @@ ${notes}
 
     return {
       success: true,
-      questions: parsed.questions,
+      questions,
     };
   } catch (err) {
     console.error("Groq Error:", err.message);

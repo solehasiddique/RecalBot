@@ -58,6 +58,12 @@ const topicSchema = new mongoose.Schema(
       trim: true,
     },
 
+    difficultyLevel: {
+      type: String,
+      enum: ["easy", "medium", "hard"],
+      default: "medium",
+    },
+
     description: {
       type: String,
       default: "",
@@ -87,6 +93,12 @@ const topicSchema = new mongoose.Schema(
     notesContent: {
       type: String,
       default: "",
+    },
+
+    sourceNote: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Note",
+      default: null,
     },
     
     /**

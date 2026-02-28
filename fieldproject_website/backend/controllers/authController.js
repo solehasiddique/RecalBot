@@ -48,6 +48,7 @@ export const signup = async (req, res) => {
       email,
       password: hashedPassword,
       hasCompletedAssessment: false,
+      profileCompleted: false,
     });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -108,9 +109,12 @@ export const signin = async (req, res) => {
     setTokenCookie(res, token);
 
     // 🎯 Decide where to send user
-    const redirect = user.hasCompletedAssessment
-      ? "/html/dashboard.html"
-      : "/html/questionary.html";
+    let redirect = "/html/questionary.html";
+    if (user.hasCompletedAssessment && !user.profileCompleted) {
+      redirect = "/html/profile.html";
+    } else if (user.hasCompletedAssessment && user.profileCompleted) {
+      redirect = "/html/dashboard.html";
+    }
 
     res.json({
       message: "Signin successful",
@@ -129,7 +133,7 @@ export const signin = async (req, res) => {
 export const profile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select(
-      "name email role hasCompletedAssessment studyStats memoryProfile memoryScore memoryPercentage memoryInitializedAt",
+      "name email role hasCompletedAssessment profileCompleted studyStats memoryProfile memoryScore memoryPercentage memoryInitializedAt",
     );
 
     res.json({
@@ -152,6 +156,16 @@ export const submitQuestionnaire = async (req, res) => {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
+    if (user.hasCompletedAssessment) {
+      const redirect = user.profileCompleted
+        ? "/html/dashboard.html"
+        : "/html/profile.html";
+      return res.status(400).json({
+        message: "Questionnaire already submitted",
+        redirect,
+      });
+    }
+
     user.learningProfile = req.body;
     user.hasCompletedAssessment = true;
 
@@ -159,7 +173,7 @@ export const submitQuestionnaire = async (req, res) => {
 
     res.json({
       message: "Assessment saved successfully",
-      redirect: "/html/dashboard.html",
+      redirect: "/html/profile.html",
     });
   } catch (err) {
     console.error("🔥 QUESTIONNAIRE ERROR:", err);

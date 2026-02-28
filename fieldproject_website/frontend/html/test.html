@@ -33,13 +33,12 @@
                 />
               </div>
               <div class="form-group">
-                <label>Subject</label>
-                <input
-                  type="text"
-                  id="subject"
-                  placeholder="e.g., Computer Science"
-                  required
-                />
+                <label>Difficulty Level</label>
+                <select id="difficultyLevel" required>
+                  <option value="easy">Easy</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
               </div>
               <!-- <div class="form-group">
                 <label>Description</label>
@@ -53,14 +52,12 @@
                 <input type="date" id="endDate" required />
               </div>
 
-              <!-- Upload Notes -->
+              <!-- Select Notes -->
               <div class="form-group">
-                <label>Upload Notes</label>
-                <input
-                  type="file"
-                  id="notesFile"
-                  accept=".pdf,.doc,.docx,.txt"
-                />
+                <label>Select Uploaded Note</label>
+                <select id="notesSelect" required>
+                  <option value="">Loading notes...</option>
+                </select>
               </div>
               
               <div id="quiz-container"></div>
