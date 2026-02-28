@@ -45,7 +45,7 @@ function renderLoggedIn(container, user) {
     <div class="profile-menu">
       <span id="profileToggle">${user.name} ▾</span>
       <div class="dropdown" id="dropdown">
-        <a href="../html/dashboard.html">My Dashboard</a>
+        <a href="../html/profile.html">Profile</a>
         <a href="#" id="logoutBtn">Logout</a>
       </div>
     </div>

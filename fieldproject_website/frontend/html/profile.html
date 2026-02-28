@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+    <header>
+
+        <nav class="navbar">
+            <div class="logo">
+                RecallBot
+            </div>
+            <a href="../html/index.html" class="signin">Sign Out</a>
+        </nav>
+
+    </header>
+
+    <main>
+        <div class="profile-wrap">
+
+            <!-- ════════════ SIDEBAR ════════════ -->
+            <aside class="p-sidebar">
+
+                <!-- Hero Card -->
+                <div class="hero-card">
+                    <div class="hero-av-wrap">
+                        <div class="hero-av" id="heroAv" onclick="document.getElementById('avFile').click()">
+                            <img id="avImg" src="" alt="" />
+                            <span id="avInit">AM</span>
+                        </div>
+                        <button class="av-btn" onclick="document.getElementById('avFile').click()">📷</button>
+                        <input type="file" id="avFile" accept="image/*" style="display:none" onchange="loadAv(this)" />
+                    </div>
+                    <div class="hero-name" id="heroName">Aryan Mehta</div>
+                    <div class="hero-sub" id="heroSub">aryan.mehta@student.edu</div>
+                    <div class="hero-pills">
+                        <span class="hero-pill">Class XII — A</span>
+                        <span class="hero-pill">DPS R.K. Puram</span>
+                        <span class="hero-pill">CBSE · Science</span>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="hstat">
+                            <div class="hstat-v" id="hsNotes">4</div>
+                            <div class="hstat-l">Notes</div>
+                        </div>
+                        <div class="hstat">
+                            <div class="hstat-v">84%</div>
+                            <div class="hstat-l">Memory Score</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Details -->
+                <div>
+                    <div class="sec-lbl">
+                        <span class="sec-lbl-text">Personal Details</span>
+                        <div class="sec-lbl-line"></div>
+                        <button class="edit-btn" id="editBtnP" onclick="toggleEdit('personal')">Edit</button>
+                    </div>
+                    <div class="pcard pc-body">
+                        <div class="field-list" id="personalFields">
+                            <div class="field-row">
+                                <div class="field-ico">👤</div>
+                                <div class="field-content">
+                                    <div class="field-lbl">Full Name</div>
+                                    <div class="field-val" id="fv-name" data-field="name">Aryan Mehta</div>
+                                </div>
+                            </div>
+                            
+                            <div class="field-row">
+                                <div class="field-ico">✉️</div>
+                                <div class="field-content">
+                                    <div class="field-lbl">Email</div>
+                                    <div class="field-val" id="fv-email" data-field="email">aryan.mehta@student.edu
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-ico">📝</div>
+                                <div class="field-content">
+                                    <div class="field-lbl">Bio</div>
+                                    <div class="field-val" id="fv-bio" data-field="bio">Aspiring engineer passionate
+                                        about science and technology.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="save-btn" id="saveBtnP" onclick="saveSection('personal')">Save Changes</button>
+                    </div>
+                </div>
+
+                <!-- Academic Info -->
+                <div>
+                    <div class="sec-lbl">
+                        <span class="sec-lbl-text">Academic Info</span>
+                        <div class="sec-lbl-line"></div>
+                        <button class="edit-btn" id="editBtnA" onclick="toggleEdit('academic')">Edit</button>
+                    </div>
+                    <div class="pcard pc-body">
+                        <div class="field-list" id="academicFields">
+                            <div class="field-row">
+                                <div class="field-ico">📖</div>
+                                <div class="field-content">
+                                    <div class="field-lbl">Class</div>
+                                    <div class="field-val" id="fa-class" data-field="class">Class XII</div>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-ico">🚪</div>
+                                <div class="field-content">
+                                    <div class="field-lbl">Section</div>
+                                    <div class="field-val" id="fa-section" data-field="section">Section A</div>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-ico">🔢</div>
+                                <div class="field-content">
+                                    <div class="field-lbl">Roll No.</div>
+                                    <div class="field-val" id="fa-roll" data-field="roll">XII-A-07</div>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-ico">📋</div>
+                                <div class="field-content">
+                                    <div class="field-lbl">Board</div>
+                                    <div class="field-val" id="fa-board" data-field="board">CBSE</div>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-ico">🏫</div>
+                                <div class="field-content">
+                                    <div class="field-lbl">School</div>
+                                    <div class="field-val" id="fa-school" data-field="school">Delhi Public School, R.K.
+                                        Puram</div>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-ico">🔬</div>
+                                <div class="field-content">
+                                    <div class="field-lbl">Stream</div>
+                                    <div class="field-val" id="fa-stream" data-field="stream">Science (PCM)</div>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-ico">📅</div>
+                                <div class="field-content">
+                                    <div class="field-lbl">Batch</div>
+                                    <div class="field-val" id="fa-batch" data-field="batch">2025 – 2026</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="save-btn" id="saveBtnA" onclick="saveSection('academic')">Save Changes</button>
+                    </div>
+                </div>
+
+            </aside>
+            <!-- /sidebar -->
+
+            <!-- ════════════ MAIN CONTENT ════════════ -->
+            <section class="p-main">
+
+                <!-- Upload Notes -->
+                <div>
+                    <div class="sec-lbl">
+                        <span class="sec-lbl-text">Upload Notes</span>
+                        <div class="sec-lbl-line"></div>
+                    </div>
+                    <div class="pcard pc-body-lg">
+                        <div class="upload-panel">
+
+                            <div class="dropzone" id="dropZone" onclick="document.getElementById('noteFile').click()"
+                                ondragover="dzOver(event)" ondragleave="dzLeave()" ondrop="dzDrop(event)">
+                                <div class="dz-icon">📂</div>
+                                <div class="dz-title">Drop your file here</div>
+                                <div class="dz-hint">or <strong>click to browse</strong> from your device</div>
+                                <div class="dz-types">
+                                    <span class="dz-type">PDF</span>
+                                    <span class="dz-type">DOCX</span>
+                                    <span class="dz-type">PPTX</span>
+                                    <span class="dz-type">PNG</span>
+                                    <span class="dz-type">JPG</span>
+                                </div>
+                            </div>
+                            <input type="file" id="noteFile" accept=".pdf,.docx,.pptx,.png,.jpg,.jpeg"
+                                style="display:none" onchange="fileChosen(this)" />
+
+                            <div class="file-chip" id="fileChip">
+                                <div class="chip-ico" id="chipIcon">📄</div>
+                                <div class="chip-name" id="chipName">filename.pdf</div>
+                                <button class="chip-rm" onclick="clearFile()">✕</button>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-field full">
+                                    <div class="f-lbl">Description</div>
+                                    <input class="f-inp" type="text" id="noteTitle"
+                                        placeholder="e.g. Chapter 12 — Wave Optics" />
+                                </div>
+                                <div class="form-field">
+                                    <div class="f-lbl">Subject</div>
+                                    <input class="f-inp" type="text" id="noteSubject" placeholder="e.g. Physics" />
+                                </div>
+                                <div class="form-field">
+                                    <div class="f-lbl">Topic</div>
+                                    <input class="f-inp" type="text" id="noteChapter" placeholder="e.g. Chapter 12" />
+                                </div>
+                                <!-- <div class="form-field">
+                <div class="f-lbl">Class</div>
+                <input class="f-inp" type="text" id="noteClass" placeholder="e.g. Class XII"/>
+              </div>
+              <div class="form-field">
+                <div class="f-lbl">Note Type</div>
+                <input class="f-inp" type="text" id="noteType" placeholder="e.g. Lecture Notes"/>
+              </div> -->
+                            </div>
+
+                            <div class="prog-wrap" id="progWrap">
+                                <div class="prog-meta">
+                                    <span id="progLbl">Uploading</span>
+                                    <span id="progPct">0%</span>
+                                </div>
+                                <div class="prog-track">
+                                    <div class="prog-bar" id="progBar"></div>
+                                </div>
+                            </div>
+
+                            <button class="upload-btn" onclick="doUpload()">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                </svg>
+                                Upload
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Library -->
+                <div>
+                    <div class="sec-lbl">
+                        <span class="sec-lbl-text">Notes Library</span>
+                        <div class="sec-lbl-line"></div>
+                    </div>
+                    <div class="pcard pc-body-lg">
+                        <div class="notes-toolbar">
+                            <span class="note-count" id="nCount">4 NOTES</span>
+                            <div class="search-wrap">
+                                <span class="search-ico">🔍</span>
+                                <input type="text" placeholder="Search notes…" oninput="searchNotes(this.value)" />
+                            </div>
+                            <input class="filter-inp" type="text" placeholder="Filter by subject…"
+                                oninput="filterBySubject(this.value)" />
+                        </div>
+
+                        <div class="notes-list" id="notesList">
+                            <div class="note-card" data-subject="mathematics"
+                                data-title="chapter 5 quadratic equations">
+                                <div class="note-ico ni-pdf">📕</div>
+                                <div class="note-body">
+                                    <div class="note-title">Chapter 5 — Quadratic Equations</div>
+                                    <div class="note-meta">
+                                        <span>22 Feb 2026</span>
+                                        <span class="n-ext e-pdf">PDF</span>
+                                        <span class="n-subj">Mathematics</span>
+                                    </div>
+                                </div>
+                                <button class="note-del" onclick="delNote(this)" title="Delete">✕</button>
+                            </div>
+                            <div class="note-card" data-subject="physics" data-title="wave optics full chapter notes">
+                                <div class="note-ico ni-pptx">📙</div>
+                                <div class="note-body">
+                                    <div class="note-title">Wave Optics — Full Chapter Notes</div>
+                                    <div class="note-meta">
+                                        <span>19 Feb 2026</span>
+                                        <span class="n-ext e-pptx">PPTX</span>
+                                        <span class="n-subj">Physics</span>
+                                    </div>
+                                </div>
+                                <button class="note-del" onclick="delNote(this)" title="Delete">✕</button>
+                            </div>
+                            <div class="note-card" data-subject="english" data-title="flamingo poem annotations">
+                                <div class="note-ico ni-docx">📘</div>
+                                <div class="note-body">
+                                    <div class="note-title">Flamingo — Poem Annotations</div>
+                                    <div class="note-meta">
+                                        <span>14 Feb 2026</span>
+                                        <span class="n-ext e-docx">DOCX</span>
+                                        <span class="n-subj">English</span>
+                                    </div>
+                                </div>
+                                <button class="note-del" onclick="delNote(this)" title="Delete">✕</button>
+                            </div>
+                            <div class="note-card" data-subject="chemistry"
+                                data-title="electrochemistry handwritten scan">
+                                <div class="note-ico ni-img">📗</div>
+                                <div class="note-body">
+                                    <div class="note-title">Electrochemistry Handwritten Scan</div>
+                                    <div class="note-meta">
+                                        <span>10 Feb 2026</span>
+                                        <span class="n-ext e-img">PNG</span>
+                                        <span class="n-subj">Chemistry</span>
+                                    </div>
+                                </div>
+                                <button class="note-del" onclick="delNote(this)" title="Delete">✕</button>
+                            </div>
+                        </div>
+
+                        <div class="empty-state" id="emptyState">
+                            <div class="empty-ico">📭</div>
+                            <h4>No notes found</h4>
+                            <p>Try a different search or upload your first note.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            <!-- /main content -->
+
+        </div>
+        <!-- /profile-wrap -->
+    </main>
+
+
+
+
+
+    <footer>
+        <div class="footer-container">
+
+            <!-- LEFT SIDE -->
+            <div class="footer-left">
+                <h3 class="footer-logo">RecallBot</h3>
+                <p class="tagline">Smarter Recall. Stronger Memory.</p>
+                <p class="badges">AI Powered • Research-Based • Student Focused</p>
+                <p class="copyright">© 2025 RecallBot</p>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="footer-right">
+                <h4>Get in Touch</h4>
+                <!-- <p class="email">support@recallbot.ai</p> -->
+
+                <div class="socials">
+                    <a href="#">GitHub</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Email</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MARQUEE INSIDE FOOTER -->
+        <div class="footer-marquee">
+            <p class="marquee-text">
+
+                AI DRIVEN PERSONALIZED LEARNING AND MEMORY RETENTION SYSTEM
+            </p>
+        </div>
+    </footer>
+
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+    <script src="../js/scriptForAnimation.js"></script>
+    <script src="../js/scriptForProfile.js"></script>
+</body>
+
+</html>

@@ -21,7 +21,8 @@
 
 /* Welcome Card */
 .welcome-card {
-    background: linear-gradient(135deg, #375534 0%, #6B9071 50%, #AEC3B0 100%);
+    /* background: linear-gradient(135deg, #375534 0%, #6B9071 50%, #AEC3B0 100%); */
+    background:linear-gradient(155deg, #1e3a24 0%, #375534 50%, #4a7c59 110%);
     border-radius: 16px;
     padding: 30px;
     display: flex;
@@ -31,7 +32,16 @@
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(55, 85, 52, 0.2);
 }
-
+.welcome-card::before{
+  content:'';position:absolute;top:-30px;right:-50px;
+  width:200px;height:200px;border-radius:50%;
+  background:rgba(255,255,255,.05);pointer-events:none;
+}
+.welcome-card::after{
+  content:'';position:absolute;bottom:-40px;left:-25px;
+  width:140px;height:140px;border-radius:50%;
+  background:rgba(255,255,255,.04);pointer-events:none;
+}
 .welcome-img {
     width: 250px;
     height: 250px;
