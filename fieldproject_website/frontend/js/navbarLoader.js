@@ -32,10 +32,11 @@ async function setupNavbar() {
 
 function renderLoggedIn(container, user) {
   const roleLinks = user.role === "admin"
-    ? `<a href="../html/admin.html">Admin</a>`
+    ? `<a href="../html/admin.html" class="nav-link">Admin</a>`
     : "";
 
   container.innerHTML = `
+    <a href="../html/index.html" class="nav-link">Home</a>
     <a href="../html/dashboard.html" class="nav-link">Dashboard</a>
     <a href="../html/study.html" class="nav-link">Study</a>
     <a href="../html/test.html" class="nav-link">Test</a>
@@ -68,16 +69,22 @@ function renderLoggedIn(container, user) {
 
 function renderLoggedOut(container) {
   container.innerHTML = `
-    <a href="../html/signin.html" class="nav-link">Sign In</a>
+    <a href="../html/signin.html" class="nav-link">Sign In/Sign Up</a>
   `;
 }
 
 function highlightActiveLink() {
   const links = document.querySelectorAll(".nav-link");
-  const currentPath = window.location.pathname;
+  const currentPath = window.location.pathname.toLowerCase();
+  const currentPage = currentPath.endsWith("/")
+    ? "index.html"
+    : currentPath.split("/").pop() || "index.html";
 
   links.forEach(link => {
-    if (currentPath.includes(link.getAttribute("href"))) {
+    const linkPath = new URL(link.getAttribute("href"), window.location.href).pathname.toLowerCase();
+    const linkPage = linkPath.split("/").pop() || "index.html";
+
+    if (linkPage === currentPage) {
       link.classList.add("active");
     }
   });
