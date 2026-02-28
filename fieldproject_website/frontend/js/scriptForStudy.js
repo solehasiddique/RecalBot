@@ -122,21 +122,28 @@
         completeSession();
     }
 
-    async function completeSession() {
-        clearInterval(timer);
-        const studiedMinutes = Math.floor((aiData.duration * 60 - time) / 60);
-        if (studiedMinutes < 1) return;
+   async function completeSession() {
+    clearInterval(timer);
 
-        await saveSessionToBackend(studiedMinutes);
+    const studiedMinutes = Math.floor((aiData.duration * 60 - time) / 60);
+    if (studiedMinutes < 1) return;
 
-        document.getElementById('title').textContent = 'Session Complete! 👍';
-        document.getElementById('subtitle').textContent = `${sessions} sessions • ${total} minutes`;
-        document.getElementById('timerSection').classList.add('hidden');
+    await saveSessionToBackend(studiedMinutes);
 
-        if (musicPlayer) { musicPlayer.pause(); musicPlayer.currentTime = 0; }
+    // REFRESH DASHBOARD AFTER SAVE
+    await loadDashboard(); // <-- add this
 
-        show([{ text: 'New Session', class: 'btn-primary', action: () => location.reload() }]);
+    document.getElementById('title').textContent = 'Session Complete! 👍';
+    document.getElementById('subtitle').textContent = `${sessions} sessions • ${total} minutes`;
+    document.getElementById('timerSection').classList.add('hidden');
+
+    if (musicPlayer) { 
+        musicPlayer.pause(); 
+        musicPlayer.currentTime = 0; 
     }
+
+    show([{ text: 'New Session', class: 'btn-primary', action: () => location.reload() }]);
+}
 
     function show(btns) {
         const container = document.getElementById('buttons');

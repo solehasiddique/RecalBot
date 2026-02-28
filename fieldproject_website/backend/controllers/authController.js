@@ -58,7 +58,7 @@ export const signup = async (req, res) => {
 
     res.status(201).json({
       message: "Signup successful",
-      redirect: "/fieldproject_website/frontend/html/questionary.html",
+      redirect: "/html/questionary.html",
       user: {
         id: user._id,
         name: user.name,
@@ -109,8 +109,8 @@ export const signin = async (req, res) => {
 
     // 🎯 Decide where to send user
     const redirect = user.hasCompletedAssessment
-      ? "/fieldproject_website/frontend/html/dashboard.html"
-  : "/fieldproject_website/frontend/html/questionary.html";
+      ? "/html/dashboard.html"
+      : "/html/questionary.html";
 
     res.json({
       message: "Signin successful",
@@ -274,24 +274,24 @@ export const getStudyRecommendations = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
-    let duration = 25; // default
+    let duration = 2; // default
     let personality = "Deep Focus";
     let music = "Lo-fi Beats";
 
-    const focusAnswer = user?.learningProfile?.q1;
+    // const focusAnswer = user?.learningProfile?.q1;
 
-    // 🔥 Map questionnaire answer → duration
-    if (focusAnswer === "Less than 15 minutes") {
-      duration = 10;
-      personality = "Quick Sprint";
-    } else if (focusAnswer === "15–25 minutes") {
-      duration = 20;
-    } else if (focusAnswer === "25–40 minutes") {
-      duration = 30;
-    } else if (focusAnswer === "More than 40 minutes") {
-      duration = 45;
-      personality = "Deep Work Mode";
-    }
+    // // 🔥 Map questionnaire answer → duration
+    // if (focusAnswer === "Less than 15 minutes") {
+    //   duration = 10;
+    //   personality = "Quick Sprint";
+    // } else if (focusAnswer === "15–25 minutes") {
+    //   duration = 20;
+    // } else if (focusAnswer === "25–40 minutes") {
+    //   duration = 30;
+    // } else if (focusAnswer === "More than 40 minutes") {
+    //   duration = 45;
+    //   personality = "Deep Work Mode";
+    // }
 
     
 
@@ -380,6 +380,16 @@ export const saveStudySession = async (req, res) => {
     });
 
     await user.save();
+
+    // Initialize weeklySessions if not exist
+if (!user.weeklySessions) user.weeklySessions = [0,0,0,0,0,0,0];
+
+// Determine today's day index
+const todayIndex = new Date().getDay(); // Sun=0 ... Sat=6
+
+// Increment today's session count
+user.weeklySessions[todayIndex] += 1;    
+
 
     res.json({
       totalMinutes: user.studyStats.totalMinutes,

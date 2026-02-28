@@ -1,52 +1,13 @@
-// ============================
-// FETCH DASHBOARD DATA
-// ============================
-fetch("http://localhost:8000/api/dashboard", {
-  credentials: "include"
-})
-.then(res => res.json())
-.then(data => {
+let performanceChart, consistencyChart, subjectChart, resultChart;
 
-  // ============================
-  // TEXT DATA
-  // ============================
-  document.getElementById("welcomeUser").textContent =
-    `Welcome back, ${data.name}! 👋`;
+function renderCharts(data) {
+  // Destroy old charts if they exist
+  if (performanceChart) performanceChart.destroy();
+  if (consistencyChart) consistencyChart.destroy();
+  if (subjectChart) subjectChart.destroy();
+  if (resultChart) resultChart.destroy();
 
-  if (data.memory) {
-    document.getElementById("memoryValue").textContent =
-      `🧠 ${data.memory.percentage}%`;
-
-    document.getElementById("memoryLabel").textContent =
-      `Profile: ${data.memory.label}`;
-  }
-
-  document.getElementById("streakValue").textContent =
-    `🔥 ${data.stats.streak}`;
-
-  document.getElementById("topicsValue").textContent =
-    `📃 ${data.stats.totalTopics}`;
-
-  document.getElementById("testsValue").textContent =
-    `🎯 ${data.stats.completedTests}`;
-
-  document.getElementById("passedValue").textContent =
-    `✅ ${data.stats.passedTests}`;
-
-  document.getElementById("failedValue").textContent =
-    `❎ ${data.stats.failedTests}`;
-
-  document.getElementById("missedValue").textContent =
-    `⚠️ ${data.stats.missedTests}`;
-
-  document.getElementById("remainingValue").textContent =
-    `📌 ${data.stats.testsLeft}`;
-
-  // ============================
-  // CHARTS (NOW SAFE)
-  // ============================
-
-  new Chart(document.getElementById('performanceLineChart'), {
+  performanceChart = new Chart(document.getElementById('performanceLineChart'), {
     type: 'line',
     data: {
       labels: data.charts.performance.map((_, i) => `Test ${i+1}`),
@@ -60,7 +21,7 @@ fetch("http://localhost:8000/api/dashboard", {
     }
   });
 
-  new Chart(document.getElementById('consistencyBarChart'), {
+  consistencyChart = new Chart(document.getElementById('consistencyBarChart'), {
     type: 'bar',
     data: {
       labels: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
@@ -72,24 +33,18 @@ fetch("http://localhost:8000/api/dashboard", {
     }
   });
 
-  new Chart(document.getElementById('subjectPieChart'), {
+  subjectChart = new Chart(document.getElementById('subjectPieChart'), {
     type: 'pie',
     data: {
       labels: data.charts.subjectLabels,
       datasets: [{
         data: data.charts.subjectData,
-        backgroundColor: [
-          '#4C9F70',
-          '#3A7F7A',
-          '#F0AD4E',
-          '#D9534F',
-          '#6C5CE7'
-        ]
+        backgroundColor: ['#4C9F70','#3A7F7A','#F0AD4E','#D9534F','#6C5CE7']
       }]
     }
   });
 
-  new Chart(document.getElementById('resultPieChart'), {
+  resultChart = new Chart(document.getElementById('resultPieChart'), {
     type: 'pie',
     data: {
       labels: ['Passed', 'Failed', 'Missed'],
@@ -99,8 +54,33 @@ fetch("http://localhost:8000/api/dashboard", {
       }]
     }
   });
+}
 
-})
-.catch(err => {
-  console.error("Dashboard load failed", err);
-});
+// Fetch and render dashboard
+async function loadDashboard() {
+  try {
+    const res = await fetch("http://localhost:8000/api/dashboard", { credentials: "include" });
+    const data = await res.json();
+
+    document.getElementById("welcomeUser").textContent = `Welcome back, ${data.name}! 👋`;
+    if (data.memory) {
+      document.getElementById("memoryValue").textContent = `🧠 ${data.memory.percentage}%`;
+      document.getElementById("memoryLabel").textContent = `Profile: ${data.memory.label}`;
+    }
+    document.getElementById("streakValue").textContent = `🔥 ${data.stats.streak}`;
+    document.getElementById("topicsValue").textContent = `📃 ${data.stats.totalTopics}`;
+    document.getElementById("testsValue").textContent = `🎯 ${data.stats.completedTests}`;
+    document.getElementById("passedValue").textContent = `✅ ${data.stats.passedTests}`;
+    document.getElementById("failedValue").textContent = `❎ ${data.stats.failedTests}`;
+    document.getElementById("missedValue").textContent = `⚠️ ${data.stats.missedTests}`;
+    document.getElementById("remainingValue").textContent = `📌 ${data.stats.testsLeft}`;
+
+    renderCharts(data);
+
+  } catch (err) {
+    console.error("Dashboard load failed", err);
+  }
+}
+
+// Call this on page load
+loadDashboard();

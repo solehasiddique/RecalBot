@@ -48,6 +48,13 @@ export const getDashboardData = async (req, res) => {
 
       });
     });
+    // Add standalone focus sessions to weeklySessions
+if (user.sessionsLog && user.sessionsLog.length > 0) {
+  user.sessionsLog.forEach(session => {
+    const day = new Date(session.date).getDay();
+    weeklySessions[day]++;
+  });
+}
 
     res.json({
       name: user.name,
