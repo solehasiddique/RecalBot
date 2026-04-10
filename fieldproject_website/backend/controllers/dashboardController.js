@@ -13,67 +13,68 @@ export const getDashboardData = async (req, res) => {
     let testsLeft = 0;
 
     let performanceScores = [];
-    let weeklySessions = [0, 0, 0, 0, 0, 0, 0]; // Sun → Sat
+    let weeklySessions = [0, 0, 0, 0, 0, 0, 0];
     let subjectDistribution = {};
 
     const today = new Date();
 
     topics.forEach(topic => {
-
-      // Subject distribution
       subjectDistribution[topic.title] =
         (subjectDistribution[topic.title] || 0) + 1;
 
       topic.revisions.forEach(rev => {
-
         if (rev.status === "completed") {
           completedTests++;
-
           performanceScores.push(rev.scoreAfterRevision);
-
           const day = new Date(rev.completedAt).getDay();
           weeklySessions[day]++;
-
           if (rev.scoreAfterRevision >= 50) passedTests++;
           else failedTests++;
         }
-
         if (rev.status === "scheduled") {
           testsLeft++;
-
-          if (new Date(rev.scheduledAt) < today) {
-            missedTests++;
-          }
+          if (new Date(rev.scheduledAt) < today) missedTests++;
         }
-
       });
     });
-    // Add standalone focus sessions to weeklySessions
-if (user.sessionsLog && user.sessionsLog.length > 0) {
-  user.sessionsLog.forEach(session => {
-    const day = new Date(session.date).getDay();
-    weeklySessions[day]++;
-  });
-}
+
+    if (user.sessionsLog && user.sessionsLog.length > 0) {
+      user.sessionsLog.forEach(session => {
+        const day = new Date(session.date).getDay();
+        weeklySessions[day]++;
+      });
+    }
+
+    // ✅ ADD THIS BLOCK — today's stats
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const todaySessions = (user.sessionsLog || []).filter(
+      s => new Date(s.date) >= todayStart
+    );
+    const todayMinutes = todaySessions.reduce((sum, s) => sum + s.minutes, 0);
 
     res.json({
       name: user.name,
 
       memory: {
-      label: user.memoryLabel || "Not initialized",
-      percentage: user.memoryPercentage ?? 0,
-      initializedAt: user.memoryInitializedAt
-    },
+        label: user.memoryLabel || "Not initialized",
+        percentage: user.memoryPercentage ?? 0,
+        initializedAt: user.memoryInitializedAt
+      },
 
-       stats: {
+      stats: {
         totalTopics: topics.length,
         completedTests,
         passedTests,
         failedTests,
         missedTests,
         testsLeft,
-        streak: user.studyStats?.streak || 0
+        streak: user.studyStats?.streak || 0,
+        todayMinutes,                        // ✅ ADD THIS
+        todaySessions: todaySessions.length  // ✅ ADD THIS
       },
+
       charts: {
         performance: performanceScores.slice(-6),
         weeklySessions,
@@ -82,7 +83,6 @@ if (user.sessionsLog && user.sessionsLog.length > 0) {
         resultPie: [passedTests, failedTests, missedTests]
       }
     });
-
 
   } catch (err) {
     console.error("Dashboard error:", err);

@@ -393,16 +393,11 @@ export const saveStudySession = async (req, res) => {
       minutes,
     });
 
-    await user.save();
+    if (!user.weeklySessions) user.weeklySessions = [0,0,0,0,0,0,0];
+const todayIndex = new Date().getDay();
+user.weeklySessions[todayIndex] += 1;
 
-    // Initialize weeklySessions if not exist
-if (!user.weeklySessions) user.weeklySessions = [0,0,0,0,0,0,0];
-
-// Determine today's day index
-const todayIndex = new Date().getDay(); // Sun=0 ... Sat=6
-
-// Increment today's session count
-user.weeklySessions[todayIndex] += 1;    
+await user.save();  
 
 
     res.json({

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "node": "nodemon server.js",
-    "ai": "cd ../ai_ml && .\\venv\\Scripts\\activate && uvicorn ai_service:app --reload --port 5000",
+    "ai": "cd ../ai_ml && source venv/bin/activate && uvicorn ai_service:app --reload --port 5000",
     "dev": "concurrently \"npm run node\" \"npm run ai\""
   },
   "keywords": [],

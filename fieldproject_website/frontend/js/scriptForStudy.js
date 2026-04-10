@@ -32,8 +32,8 @@
             const res = await fetch("http://localhost:8000/api/dashboard", { credentials: "include" });
             if (!res.ok) return;
             const data = await res.json();
-            total = data.stats.totalMinutes || 0;
-            sessions = data.stats.totalSessions || 0;
+            total = data.stats.todayMinutes || 0;
+sessions = data.stats.todaySessions || 0;
         } catch (err) {
             console.error("Failed to load stats:", err);
         }
@@ -98,10 +98,27 @@
     }
 
     function pause(btn) {
-        paused = !paused;
-        btn.textContent = paused ? '▶ Resume' : '⏸ Pause';
-        if (musicPlayer) paused ? musicPlayer.pause() : musicPlayer.play().catch(() => {});
+    paused = !paused;
+    if (paused) {
+        if (musicPlayer) musicPlayer.pause();
+        show([
+            { text: '▶ Resume', class: 'btn-primary', action: resume },
+            { text: '⏹ Stop', class: 'btn-secondary', action: stop }
+        ]);
+    } else {
+        resume();
     }
+}
+
+function resume() {
+    paused = false;
+    if (musicPlayer) musicPlayer.play().catch(() => {});
+    show([
+        { text: '⏸ Pause', class: 'btn-secondary', action: pause },
+        { text: '⏹ Stop', class: 'btn-secondary', action: stop }
+    ]);
+}
+
 
     function stop() {
         clearInterval(timer);
@@ -124,26 +141,19 @@
 
    async function completeSession() {
     clearInterval(timer);
-
     const studiedMinutes = Math.floor((aiData.duration * 60 - time) / 60);
     if (studiedMinutes < 1) return;
 
     await saveSessionToBackend(studiedMinutes);
-
-    // REFRESH DASHBOARD AFTER SAVE
-    await loadDashboard(); // <-- add this
+    await loadStats(); // ✅ use this instead of loadDashboard()
 
     document.getElementById('title').textContent = 'Session Complete! 👍';
     document.getElementById('subtitle').textContent = `${sessions} sessions • ${total} minutes`;
     document.getElementById('timerSection').classList.add('hidden');
-
-    if (musicPlayer) { 
-        musicPlayer.pause(); 
-        musicPlayer.currentTime = 0; 
-    }
-
+    if (musicPlayer) { musicPlayer.pause(); musicPlayer.currentTime = 0; }
     show([{ text: 'New Session', class: 'btn-primary', action: () => location.reload() }]);
 }
+
 
     function show(btns) {
         const container = document.getElementById('buttons');
