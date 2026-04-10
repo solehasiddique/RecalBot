@@ -225,7 +225,8 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
     await user.save();
 
-    const resetUrl = `http://localhost:5500/fieldproject_website/frontend/html/reset-password.html?token=${resetToken}`;
+    // const resetUrl = `http://localhost:5500/fieldproject_website/frontend/html/reset-password.html?token=${resetToken}`;
+    const resetUrl = `http://localhost:8000/api/auth/redirect-reset?token=${resetToken}`;
 
     await sendEmail({
       to: user.email,
@@ -233,7 +234,8 @@ export const forgotPassword = async (req, res) => {
       html: `
         <p>You requested a password reset</p>
         <p>Click below to reset your password:</p>
-        <a href="${resetUrl}">Reset Password</a>
+       <a href="${resetUrl}" target="_blank" rel="noopener noreferrer">Reset Password</a>
+
       `,
     });
 

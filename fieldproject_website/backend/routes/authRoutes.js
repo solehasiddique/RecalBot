@@ -20,6 +20,10 @@ router.post("/signin", signin);
 router.get("/profile", authMiddleware, profile);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
+router.get("/redirect-reset", (req, res) => {
+  const { token } = req.query;
+  res.redirect(`http://localhost:8000/html/reset-password.html?token=${token}`);
+});
 
 // 🛡️ Protected
 router.post("/submit", authMiddleware, submitQuestionnaire);
