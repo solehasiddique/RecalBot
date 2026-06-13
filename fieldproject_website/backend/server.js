@@ -34,7 +34,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 app.use(cors({
-  origin: "http://localhost:5500",
+   origin: [
+    "http://localhost:5500",
+    "https://recal-bot.vercel.app"
+  ],
   credentials: true,
 }));
 

@@ -4,6 +4,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "node": "nodemon server.js",
     "ai": "cd ../ai_ml && source venv/bin/activate && uvicorn ai_service:app --reload --port 5000",
     "dev": "concurrently \"npm run node\" \"npm run ai\""
