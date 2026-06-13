@@ -11,7 +11,7 @@ async function setupNavbar() {
   const navRight = document.getElementById("nav-right");
 
   try {
-    const res = await fetch(`${BASE_URL}/api/auth/profile`, {
+    const res = await fetch(`${window.BASE_URL}/api/auth/profile`, {
       credentials: "include"
     });
 
@@ -59,7 +59,7 @@ function renderLoggedIn(container, user) {
   // Logout
   document.getElementById("logoutBtn").addEventListener("click", async (e) => {
     e.preventDefault();
-    await fetch(`${BASE_URL}/api/auth/logout`, {
+    await fetch(`${window.BASE_URL}/api/auth/logout`, {
       method: "POST",
       credentials: "include"
     });

@@ -359,7 +359,7 @@ function convertAnswersToMLFeatures() {
  ***********************/
 async function submitAssessment() {
   try {
-    const submitRes = await fetch(`${BASE_URL}/api/auth/submit`, {
+    const submitRes = await fetch(`${window.BASE_URL}/api/auth/submit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -376,7 +376,7 @@ async function submitAssessment() {
 
     const mlFeatures = convertAnswersToMLFeatures();
 
-    const res = await fetch(`${BASE_URL}/api/memory/predict`, {
+    const res = await fetch(`${window.BASE_URL}/api/memory/predict`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -399,7 +399,7 @@ async function submitAssessment() {
  ***********************/
 async function initQuestionaryPage() {
   try {
-    const res = await fetch(`${BASE_URL}/api/auth/profile`, {
+    const res = await fetch(`${window.BASE_URL}/api/auth/profile`, {
       credentials: "include",
     });
 

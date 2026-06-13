@@ -1,6 +1,6 @@
 (async function () {
     try {
-       const res = await fetch(`${BASE_URL}/api/auth/profile`, {
+        const res = await fetch(`${window.BASE_URL}/api/auth/profile`, {
             credentials: "include"
         });
 

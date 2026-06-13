@@ -1,3 +1,4 @@
+
 const form = document.getElementById('signupForm');
 const password = document.getElementById('password');
 const confirmPassword = document.getElementById('confirm-password');
@@ -144,7 +145,7 @@ form.addEventListener('submit', async function (e) {
   
 //api call
   try {
-    const res = await fetch(`${BASE_URL}/api/auth/signup`, {
+    const res = await fetch(`${window.BASE_URL}/api/auth/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

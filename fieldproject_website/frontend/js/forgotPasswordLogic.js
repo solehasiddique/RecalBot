@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const email = emailInput.value.trim();
     if (!email) return alert("Enter email");
 
-    const res = await fetch(`${BASE_URL}/api/auth/forgot-password`, {
+    const res = await fetch(`${window.BASE_URL}/api/auth/forgot-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),

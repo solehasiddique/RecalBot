@@ -1,4 +1,4 @@
-import { BASE_URL } from "./config.js";
+
 
 const personalCfg = {
   name: { id: "fv-name", type: "text" },
@@ -76,7 +76,7 @@ async function apiRequest(path, options = {}) {
     };
   }
 
-  const response = await fetch(`${BASE_URL}${path}`, config);
+  const response = await fetch(`${window.BASE_URL}${path}`, config);
   let data = {};
   try {
     data = await response.json();

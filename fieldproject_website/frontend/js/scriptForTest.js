@@ -28,7 +28,7 @@ async function loadUserNotesDropdown() {
   if (!select) return;
 
   try {
-    const res = await fetch(`${BASE_URL}/api/profile/notes`, {
+    const res = await fetch(`${window.BASE_URL}/api/profile/notes`, {
       credentials: "include",
     });
     const data = await res.json();
@@ -67,7 +67,7 @@ async function loadCalendarFromDB() {
     calendarData = {};
     upcomingTests = [];
 
-    const res = await fetch(`${BASE_URL}/api/topics`, {
+    const res = await fetch(`${window.BASE_URL}/api/topics`, {
       credentials: "include",
     });
 
@@ -286,7 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("noteId", selectedNoteId);
         formData.append("difficultyLevel", difficultyLevel);
 
-        const res = await fetch(`${BASE_URL}/api/topics/create`, {
+        const res = await fetch(`${window.BASE_URL}/api/topics/create`, {
           method: "POST",
           credentials: "include",
           body: formData,

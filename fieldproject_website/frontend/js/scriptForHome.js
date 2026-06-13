@@ -104,7 +104,7 @@ if (section3 && typedTextElement) {
 
 async function checkAuth() {
   try {
-    const res = await fetch(`${BASE_URL}/api/auth/profile`, {
+    const res = await fetch(`${window.BASE_URL}/api/auth/profile`, {
       credentials: "include",
     });
 
@@ -120,7 +120,7 @@ async function checkAuth() {
     `;
 
     document.getElementById("logoutBtn").addEventListener("click", async () => {
-      await fetch(`${BASE_URL}/api/auth/logout`, {
+      await fetch(`${window.BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

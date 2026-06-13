@@ -2,7 +2,7 @@ document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   e.preventDefault();
 
   try {
-    await fetch(`${BASE_URL}/api/auth/logout`, {
+    await fetch(`${window.BASE_URL}/api/auth/logout`, {
       method: "POST",
       credentials: "include"
     });

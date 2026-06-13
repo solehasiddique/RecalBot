@@ -17,6 +17,7 @@
     <header id="navbar-container"></header>
 
     <main>
+      
       <div class="dashboard-container">
         <!-- LEFT PANEL -->
         <div class="dashboard-left">
@@ -180,6 +181,7 @@
     </footer>
 
     <!-- <img src="../images/logo.png" class="img" > -->
+     <script src="../config.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
     <script src="../js/scriptForAnimation.js"></script>
@@ -193,7 +195,7 @@
 
       async function loadTestForTopic(topicName) {
         try {
-          const res = await fetch(`${BASE_URL}/api/topics`, {
+          const res = await fetch(`${window.BASE_URL}/api/topics`, {
             credentials: "include",
           });
 
@@ -216,7 +218,7 @@
           }
 
           const response = await fetch(
-            `${BASE_URL}/api/topics/start-revision`,
+            `${window.BASE_URL}/api/topics/start-revision`,
             {
               method: "POST",
               headers: {

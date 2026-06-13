@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!token) return alert("No token provided in URL");
 
     try {
-      const res = await fetch(`${BASE_URL}/api/auth/reset-password/${token}`, {
+      const res = await fetch(`${window.BASE_URL}/api/auth/reset-password/${token}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password: passwordInput.value }),
