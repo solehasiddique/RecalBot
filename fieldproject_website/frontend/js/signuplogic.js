@@ -144,7 +144,7 @@ form.addEventListener('submit', async function (e) {
   
 //api call
   try {
-    const res = await fetch("http://localhost:8000/api/auth/signup", {
+    const res = await fetch(`${BASE_URL}/api/auth/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

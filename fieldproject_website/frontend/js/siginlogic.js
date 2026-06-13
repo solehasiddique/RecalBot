@@ -35,7 +35,7 @@ form.addEventListener('submit', async function (e) {
 
   if (isValid) {
   try {
-    const res = await fetch("http://localhost:8000/api/auth/signin", {
+    const res = await fetch(`${BASE_URL}/api/auth/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

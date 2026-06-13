@@ -12,7 +12,7 @@
 
     async function getAIRecommendations() {
         try {
-            const res = await fetch("http://localhost:8000/api/auth/recommendations", { credentials: "include" });
+            const res = await fetch(`${BASE_URL}/api/auth/recommendations`, { credentials: "include" });
             if (!res.ok) throw new Error("Failed to fetch AI data");
             return await res.json();
         } catch (err) {
@@ -29,7 +29,7 @@
 
     async function loadStats() {
         try {
-            const res = await fetch("http://localhost:8000/api/dashboard", { credentials: "include" });
+            const res = await fetch(`${BASE_URL}/api/dashboard`, { credentials: "include" });
             if (!res.ok) return;
             const data = await res.json();
             total = data.stats.todayMinutes || 0;
@@ -41,7 +41,7 @@ sessions = data.stats.todaySessions || 0;
 
     async function saveSessionToBackend(minutes) {
         try {
-            const res = await fetch("http://localhost:8000/api/auth/session", {
+            const res = await fetch(`${BASE_URL}/api/auth/session`, {
                 method: "POST",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
@@ -173,9 +173,9 @@ function resume() {
 
         musicPlayer = document.getElementById("bgMusic");
         const musicMap = {
-            "lo-fi-beats": "http://localhost:8000/music/lofi.mp3",
-            "nature-ambient": "http://localhost:8000/music/nature.mp3",
-            "classical-focus": "http://localhost:8000/music/instrument.mp3",
+            "lo-fi-beats": `${BASE_URL}/music/lofi.mp3`,
+            "nature-ambient": `${BASE_URL}/music/nature.mp3`,
+            "classical-focus": `${BASE_URL}/music/instrument.mp3`,
             "no-music": null,
         };
 

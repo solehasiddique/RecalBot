@@ -59,7 +59,7 @@ function renderCharts(data) {
 // Fetch and render dashboard
 async function loadDashboard() {
   try {
-    const res = await fetch("http://localhost:8000/api/dashboard", { credentials: "include" });
+    const res = await fetch(`${BASE_URL}/api/dashboard`, { credentials: "include" });
     const data = await res.json();
 
     document.getElementById("welcomeUser").textContent = `Welcome back, ${data.name}! 👋`;

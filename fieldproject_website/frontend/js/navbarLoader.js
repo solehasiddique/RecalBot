@@ -11,7 +11,7 @@ async function setupNavbar() {
   const navRight = document.getElementById("nav-right");
 
   try {
-    const res = await fetch("http://localhost:8000/api/auth/profile", {
+    const res = await fetch(`${BASE_URL}/api/auth/profile`, {
       credentials: "include"
     });
 
