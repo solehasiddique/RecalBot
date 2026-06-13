@@ -2,12 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "type": "module",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "node": "nodemon server.js",
-    "ai": "cd ../ai_ml && source venv/bin/activate && uvicorn ai_service:app --reload --port 5000",
-    "dev": "concurrently \"npm run node\" \"npm run ai\""
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
