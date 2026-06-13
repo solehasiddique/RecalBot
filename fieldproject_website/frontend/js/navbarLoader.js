@@ -59,7 +59,7 @@ function renderLoggedIn(container, user) {
   // Logout
   document.getElementById("logoutBtn").addEventListener("click", async (e) => {
     e.preventDefault();
-    await fetch("http://localhost:8000/api/auth/logout", {
+    await fetch(`${BASE_URL}/api/auth/logout`, {
       method: "POST",
       credentials: "include"
     });

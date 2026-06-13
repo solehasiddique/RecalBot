@@ -226,7 +226,7 @@ export const forgotPassword = async (req, res) => {
     await user.save();
 
     // const resetUrl = `http://localhost:5500/fieldproject_website/frontend/html/reset-password.html?token=${resetToken}`;
-    const resetUrl = `http://localhost:8000/api/auth/redirect-reset?token=${resetToken}`;
+      const resetUrl = `${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`;  
 
     await sendEmail({
       to: user.email,

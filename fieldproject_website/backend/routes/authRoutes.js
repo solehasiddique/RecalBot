@@ -22,7 +22,7 @@ router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
 router.get("/redirect-reset", (req, res) => {
   const { token } = req.query;
-  res.redirect(`http://localhost:8000/html/reset-password.html?token=${token}`);
+  res.redirect(`${process.env.FRONTEND_URL}/html/reset-password.html?token=${token}`);
 });
 
 // 🛡️ Protected
