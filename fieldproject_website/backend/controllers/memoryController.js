@@ -7,7 +7,7 @@ import User from "../models/User.js";
 export const predictMemory = async (req, res) => {
   try {
     const mlUrl = process.env.ML_SERVICE_URL;
-     console.log("ML URL:", mlUrl);
+
 
     // 🟡 If ML not deployed yet
     if (!mlUrl) {
@@ -23,7 +23,7 @@ export const predictMemory = async (req, res) => {
       `${mlUrl}/predict`,
       { answers: req.body }
     );
-    console.log("ML RESPONSE:", mlResponse.data);
+   
 
     const { score, label, percentage } = mlResponse.data;
 
