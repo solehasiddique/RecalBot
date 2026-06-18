@@ -7,6 +7,7 @@ import User from "../models/User.js";
 export const predictMemory = async (req, res) => {
   try {
     const mlUrl = process.env.ML_SERVICE_URL;
+     console.log("ML URL:", mlUrl);
 
     // 🟡 If ML not deployed yet
     if (!mlUrl) {
@@ -22,6 +23,7 @@ export const predictMemory = async (req, res) => {
       `${mlUrl}/predict`,
       { answers: req.body }
     );
+    console.log("ML RESPONSE:", mlResponse.data);
 
     const { score, label, percentage } = mlResponse.data;
 
@@ -37,7 +39,7 @@ export const predictMemory = async (req, res) => {
     res.json({ score, label, percentage });
 
   } catch (err) {
-    console.error("ML API error:", err.message);
+    console.error("ML API error:", err.response?.data || err.message);
 
     return res.json({
       score: 0.5,
