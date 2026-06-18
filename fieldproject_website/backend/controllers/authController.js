@@ -188,8 +188,8 @@ export const logout = async (req, res) => {
   try {
     res.cookie("token", "", {
       httpOnly: true,
-      sameSite: "lax",
-      secure: false,
+      sameSite: "none",
+      secure: true,
       expires: new Date(0),
       path: "/", // 🔥 MUST MATCH LOGIN
     });
