@@ -375,6 +375,7 @@ async function submitAssessment() {
     }
 
     const mlFeatures = convertAnswersToMLFeatures();
+    console.log("ML FEATURES:", mlFeatures);
 
     const res = await fetch(`${window.BASE_URL}/api/memory/predict`, {
       method: "POST",
