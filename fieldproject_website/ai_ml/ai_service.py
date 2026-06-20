@@ -16,6 +16,8 @@ model = joblib.load("model.pkl")
 
 with open("columns.json", "r") as f:
     columns = json.load(f)
+    print("MODEL COLUMNS:", columns, flush=True)
+print(columns)
 
 
 # ===============================
@@ -30,9 +32,20 @@ class MemoryRequest(BaseModel):
 def predict_memory(data: MemoryRequest):
     input_vector = np.zeros(len(columns))
 
+    matched = []
+    unmatched = []
     for key, value in data.answers.items():
         if key in columns:
             input_vector[columns.index(key)] = value
+            matched.append(key)
+        else:
+            unmatched.append(key)
+
+    print("✅ MATCHED:", matched, flush=True)
+
+    print("❌ UNMATCHED:", unmatched, flush=True)
+
+    print("ACTIVE FEATURES:", active_features, flush=True)
 
     active_features = int(input_vector.sum())
     prediction = int(model.predict([input_vector])[0])
