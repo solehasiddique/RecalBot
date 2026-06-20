@@ -44,11 +44,9 @@ def predict_memory(data: MemoryRequest):
     
 
     active_features = int(input_vector.sum())
-    print("✅ MATCHED:", matched, flush=True)
-
-    print("❌ UNMATCHED:", unmatched, flush=True)
-
-    print("ACTIVE FEATURES:", active_features, flush=True)
+    print("RECEIVED ANSWERS:", data.answers, flush=True)
+    print("MATCHED:", matched, flush=True)
+    print("UNMATCHED:", unmatched, flush=True)
     prediction = int(model.predict([input_vector])[0])
 
     # Smooth percentage logic
