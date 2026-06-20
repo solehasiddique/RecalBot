@@ -1,10 +1,11 @@
-import Groq from "groq-sdk";
+// services/aiGradingService.js
 import dotenv from "dotenv";
-
 dotenv.config();
 
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
 });
 
 export const gradeAnswerWithAI = async (
@@ -14,7 +15,7 @@ export const gradeAnswerWithAI = async (
 ) => {
   try {
     const prompt = `
-You are grading a student's answer.
+You are a strict academic grader.
 
 Question:
 ${question}
@@ -25,31 +26,27 @@ ${correctAnswer}
 Student Answer:
 ${userAnswer}
 
-Return JSON:
+Return ONLY valid JSON in this exact format:
 {
   "score": number between 0 and 1,
   "feedback": "Short explanation"
 }
 `;
 
-    const response = await groq.chat.completions.create({
-      model: "llama-3.1-8b-instant",
-      messages: [
-        { role: "system", content: "You are a strict academic grader." },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0,
+    const res = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+      },
     });
 
-    const raw = response.choices[0].message.content;
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    const parsed = JSON.parse(jsonMatch[0]);
+    const parsed = JSON.parse(res.text);
 
     return {
       score: Math.max(0, Math.min(1, parsed.score)),
-      feedback: parsed.feedback
+      feedback: parsed.feedback,
     };
-
   } catch (err) {
     console.error("AI Grading Error:", err.message);
     return { score: 0, feedback: "Evaluation failed." };

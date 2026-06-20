@@ -1,13 +1,6 @@
-import Groq from "groq-sdk";
-import dotenv from "dotenv";
+import { generateExamQuestions } from "./geminiService.js";
 
-dotenv.config();
-
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
-
-export const generateQuestionsWithGroq = async (
+export const generateQuestions = async (
   notes,
   memoryLevel,
   difficultyLevel = "medium",
@@ -82,31 +75,7 @@ Notes:
 ${notes}
 `;
 
-    const response = await groq.chat.completions.create({
-      model: "llama-3.1-8b-instant",
-      messages: [
-        { role: "system", content: "You generate structured exam questions." },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.7,
-    });
-
-    const raw = response?.choices?.[0]?.message?.content;
-    if (!raw) {
-      return { success: false, error: "Empty AI response" };
-    }
-
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      return { success: false, error: "AI did not return valid JSON" };
-    }
-
-    let parsed;
-    try {
-      parsed = JSON.parse(jsonMatch[0]);
-    } catch (_parseError) {
-      return { success: false, error: "JSON parsing failed" };
-    }
+    const parsed = await generateExamQuestions(prompt);
 
     if (!parsed.questions || !Array.isArray(parsed.questions)) {
       return { success: false, error: "Invalid question format" };
@@ -124,7 +93,7 @@ ${notes}
       questions,
     };
   } catch (err) {
-    console.error("Groq Error:", err.message);
+    console.error("Question Generation Error:", err.message);
     return { success: false, error: err.message };
   }
 };

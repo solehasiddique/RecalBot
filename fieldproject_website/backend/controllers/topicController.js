@@ -6,7 +6,7 @@ import User from "../models/User.js";
 import Note from "../models/Note.js";
 import { generateInitialRevisions } from "../utils/revisionScheduler.js";
 import { generateNextRevision } from "../utils/revisionScheduler.js";
-import { generateQuestionsWithGroq } from "../services/groqService.js";
+import { generateQuestions } from "../services/questionGeneratorService.js";
 import { gradeAnswerWithAI } from "../services/aiGradingService.js";
 
 const extractPdfText = async (dataBuffer) => {
@@ -394,7 +394,7 @@ export const startRevisionTest = async (req, res) => {
 
     // 🔹 Call AI
     const difficultyLevel = topic.difficultyLevel || "medium";
-    const aiResponse = await generateQuestionsWithGroq(
+    const aiResponse = await generateQuestions(
       notesToSend,
       memoryLevel,
       difficultyLevel,

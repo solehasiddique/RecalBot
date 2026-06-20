@@ -5,7 +5,7 @@ import {
   completeRevision,
 } from "../controllers/topicController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
-import { generateQuestions } from "../services/aiService.js";
+import { generateQuestions } from "../services/questionGeneratorService.js";
 import { startRevisionTest } from "../controllers/topicController.js";
 import { upload } from "../middleware/uploadMiddleware.js";
 
