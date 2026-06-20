@@ -200,6 +200,7 @@ export const getUserTopics = async (req, res) => {
    COMPLETE REVISION
 ===================================================== */
 export const completeRevision = async (req, res) => {
+  
   try {
     const { topicId, revisionNumber, answers } = req.body;
 
@@ -282,6 +283,8 @@ export const completeRevision = async (req, res) => {
     // ============================================
     // 🧠 ADAPTIVE MEMORY UPDATE
     // ============================================
+    console.log("Current DB memory:", user.memoryPercentage);
+console.log("Final Percentage:", finalPercentage);
 
     let memory = user.memoryPercentage ?? 50;
 
