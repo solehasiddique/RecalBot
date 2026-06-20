@@ -407,7 +407,8 @@ export const startRevisionTest = async (req, res) => {
     }
 
     // 🔹 Save questions
-    await Topic.updateOne(
+
+    const updateResult = await Topic.updateOne(
   {
     _id: topicId,
     "revisions.revisionNumber": revisionNumber
@@ -425,7 +426,8 @@ return res.json({
   message: "Revision test generated",
   memoryLevel,
   questions: aiResponse.questions,
-});
+});  
+
   } catch (err) {
     console.error("START REVISION FULL ERROR:", err);
 
