@@ -5,7 +5,6 @@ import Topic from "../models/Topic.js";
 import User from "../models/User.js";
 import Note from "../models/Note.js";
 import { generateInitialRevisions } from "../utils/revisionScheduler.js";
-import { generateNextRevision } from "../utils/revisionScheduler.js";
 import { generateQuestions } from "../services/questionGeneratorService.js";
 import { gradeAnswerWithAI } from "../services/aiGradingService.js";
 
@@ -401,23 +400,32 @@ export const startRevisionTest = async (req, res) => {
       topic.title,
     );
 
-    console.log("AI RESPONSE:", aiResponse);
+    console.log("AI RESPONSE:", JSON.stringify(aiResponse, null, 2));
 
     if (!aiResponse || !aiResponse.success) {
       throw new Error(aiResponse?.error || "AI generation failed");
     }
 
     // 🔹 Save questions
-    revision.questions = aiResponse.questions;
-    revision.status = "scheduled";
+    await Topic.updateOne(
+  {
+    _id: topicId,
+    "revisions.revisionNumber": revisionNumber
+  },
+  {
+    $set: {
+      "revisions.$.questions": aiResponse.questions,
+      "revisions.$.status": "scheduled"
+    }
+  }
+);
+console.log("UPDATE RESULT:", updateResult);
 
-    await topic.save();
-
-    return res.json({
-      message: "Revision test generated",
-      memoryLevel,
-      questions: aiResponse.questions,
-    });
+return res.json({
+  message: "Revision test generated",
+  memoryLevel,
+  questions: aiResponse.questions,
+});
   } catch (err) {
     console.error("START REVISION FULL ERROR:", err);
 
