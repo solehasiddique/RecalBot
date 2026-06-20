@@ -169,3 +169,7 @@ def generate_questions(data: QuestionRequest):
 
     except Exception as e:
         return {"success": False, "error": str(e)}
+    
+@app.get("/columns")
+def get_columns():
+     return {"columns": columns}
