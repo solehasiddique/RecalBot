@@ -393,6 +393,8 @@ export const startRevisionTest = async (req, res) => {
 
     // 🔹 Call AI
     const difficultyLevel = topic.difficultyLevel || "medium";
+    console.log("memoryLevel =", memoryLevel);
+console.log("difficultyLevel =", difficultyLevel);
     const aiResponse = await generateQuestions(
       notesToSend,
       memoryLevel,
