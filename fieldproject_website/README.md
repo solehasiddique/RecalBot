@@ -135,5 +135,7 @@ Open `frontend/html/index.html` in your browser or use Live Server.
 ## Contact
 
 **Soleha Siddique**
+
 https://www.linkedin.com/in/soleha-siddique-a2351b368/
+
 solehasiddique07@gmail.com
