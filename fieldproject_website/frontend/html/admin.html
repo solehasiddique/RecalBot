@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RecallBot Memory Observatory</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Space Grotesk & Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Inter:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="js/tailwind-config.js"></script>
+
+</head>
+<body class="overflow-x-hidden">
+<!-- Persistent SideNavBar -->
+<aside class="w-sidebar_width h-screen fixed left-0 top-0 bg-surface-container-low flex flex-col border-r border-outline-variant z-40">
+<div class="px-lg py-xl">
+<div class="flex items-center gap-md mb-xxxl">
+<div class="w-10 h-10 bg-primary flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-white">neurology</span>
+</div>
+<div>
+<h1 class="font-display-lg text-headline-sm font-bold text-primary">RecallBot</h1>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Admin Console</p>
+</div>
+</div>
+<nav class="flex flex-col gap-xs">
+<!-- Nav Items mapped from JSON -->
+<a class="flex items-center gap-md px-lg py-md border-l-4 border-secondary text-primary font-bold bg-secondary-container/10 transition-transform duration-150 active:scale-[0.99]" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-body-md">Learners</span>
+</a>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined">neurology</span>
+<span class="font-body-md">Memory Analytics</span>
+</a>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span class="font-body-md">Assessments</span>
+</a>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined">science</span>
+<span class="font-body-md">Research</span>
+</a>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors mt-xxl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-lg">
+<div class="bg-surface-container-high rounded-xl p-md flex items-center gap-md">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A professional headshot of a clinical research administrator, neutral lighting, soft background, modern corporate attire, looking directly at the camera with a calm and focused expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD588YY0vJVNrnVjA1gcFcYBeeIG9JTuaYh2frpNoqhVBHB7GiuleKaHcremKAzJv8fbeHjcxfGukFaSh19drbNB4vXY0RR45sfK20jPdoXQuVo-5OXZtLVyJKGtMdJ8wRB1GecNFBqcKp9st7hCgYaby5xAgKQCdM44VpO4Vh82oDrsAPODVpYuA-4Q-rW8r2MEVYIjrxtgkRcGTYEoGHYOs2MV1rf1pauKQCYWvWdMqxbeN7toadn"/>
+<div class="overflow-hidden">
+<p class="font-label-md text-on-surface truncate">Dr. Aris Thorne</p>
+<p class="text-[10px] text-on-surface-variant">Lead Researcher</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-sidebar_width min-h-screen relative pb-xxxl">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center h-xxl px-lg sticky top-0 z-50 bg-background/80 backdrop-blur-md">
+<div class="flex items-center gap-md">
+<h2 class="font-headline-sm text-on-surface font-semibold">Memory Observatory</h2>
+<div class="h-4 w-[1px] bg-outline-variant hidden md:block"></div>
+<p class="text-on-surface-variant font-body-sm hidden md:block">Live Cognitive Analytics</p>
+</div>
+<div class="flex items-center gap-lg">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-body-sm w-64 focus:ring-2 focus:ring-secondary/20 transition-all" placeholder="Search learner data..." type="text"/>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="px-xl pt-xl pb-lg">
+<div class="max-w-content_max_width">
+<h1 class="font-display-lg text-display-lg text-primary mb-xs">Memory Observatory</h1>
+<p class="font-body-lg text-on-surface-variant">Monitoring learner cognition in real time with advanced neuro-analytics.</p>
+</div>
+</section>
+<!-- Main Dashboard Bento -->
+<div class="px-xl max-w-content_max_width mx-auto">
+<div class="bento-grid">
+<!-- Primary Large Card: System Health -->
+<div class="col-span-12 lg:col-span-4 bg-white rounded-card p-xl card-shadow flex flex-col items-center justify-center text-center relative overflow-hidden group hover-lift">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary to-primary-fixed"></div>
+<h3 class="font-headline-sm text-on-surface-variant mb-xl">System Health</h3>
+<div class="relative w-48 h-48 flex items-center justify-center mb-lg">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container" cx="96" cy="96" fill="transparent" r="90" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary ring-progress" cx="96" cy="96" fill="transparent" r="90" stroke="currentColor" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-lg text-display-lg text-primary">84<span class="text-headline-sm">%</span></span>
+<span class="font-label-md text-on-surface-variant uppercase">Optimal</span>
+</div>
+</div>
+<p class="font-body-sm text-on-surface-variant max-w-[200px]">Memory retention performance is 12% higher than last period.</p>
+</div>
+<!-- Grid of 4 Smaller Cards -->
+<div class="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Card 1 -->
+<div class="bg-white rounded-card p-lg card-shadow hover-lift border-b-4 border-secondary/20">
+<div class="flex justify-between items-start mb-md">
+<div class="p-2 bg-secondary-container rounded-lg">
+<span class="material-symbols-outlined text-secondary">person_search</span>
+</div>
+<span class="text-primary font-label-md bg-primary-fixed px-2 py-1 rounded-full">+4%</span>
+</div>
+<p class="font-label-md text-on-surface-variant uppercase tracking-wider">Active Learners</p>
+<h4 class="font-headline-md text-display-lg-mobile text-on-surface mt-sm">248</h4>
+</div>
+<!-- Card 2 -->
+<div class="bg-white rounded-card p-lg card-shadow hover-lift border-b-4 border-secondary/20">
+<div class="flex justify-between items-start mb-md">
+<div class="p-2 bg-secondary-container rounded-lg">
+<span class="material-symbols-outlined text-secondary">history_edu</span>
+</div>
+<span class="text-primary font-label-md bg-primary-fixed px-2 py-1 rounded-full">New</span>
+</div>
+<p class="font-label-md text-on-surface-variant uppercase tracking-wider">Total Assessments</p>
+<h4 class="font-headline-md text-display-lg-mobile text-on-surface mt-sm">1,204</h4>
+</div>
+<!-- Card 3 -->
+<div class="bg-white rounded-card p-lg card-shadow hover-lift border-b-4 border-secondary/20">
+<div class="flex justify-between items-start mb-md">
+<div class="p-2 bg-secondary-container rounded-lg">
+<span class="material-symbols-outlined text-secondary">topic</span>
+</div>
+<span class="text-on-surface-variant font-label-md bg-surface-container-highest px-2 py-1 rounded-full">Stable</span>
+</div>
+<p class="font-label-md text-on-surface-variant uppercase tracking-wider">Knowledge Topics</p>
+<h4 class="font-headline-md text-display-lg-mobile text-on-surface mt-sm">456</h4>
+</div>
+<!-- Card 4 -->
+<div class="bg-white rounded-card p-lg card-shadow hover-lift border-b-4 border-secondary/20">
+<div class="flex justify-between items-start mb-md">
+<div class="p-2 bg-secondary-container rounded-lg">
+<span class="material-symbols-outlined text-secondary">checklist_rtl</span>
+</div>
+<span class="text-primary font-label-md bg-primary-fixed px-2 py-1 rounded-full">+12k</span>
+</div>
+<p class="font-label-md text-on-surface-variant uppercase tracking-wider">Revisions Completed</p>
+<h4 class="font-headline-md text-display-lg-mobile text-on-surface mt-sm">3,892</h4>
+</div>
+</div>
+<!-- Memory Distribution Chart Section -->
+<div class="col-span-12 lg:col-span-8 bg-white rounded-card p-xl card-shadow">
+<div class="flex justify-between items-center mb-xl">
+<div>
+<h3 class="font-headline-sm text-on-surface">Memory Distribution</h3>
+<p class="text-body-sm text-on-surface-variant">Retention trends over the last 30 days</p>
+</div>
+<select class="bg-surface-container-low border-none rounded-lg text-label-md py-2 px-4 focus:ring-0">
+<option>Last 30 Days</option>
+<option>Last 6 Months</option>
+<option>Year to Date</option>
+</select>
+</div>
+<div class="h-64 w-full relative">
+<!-- Chart Skeleton/Mockup -->
+<div class="absolute inset-0 flex items-end justify-between px-4">
+<!-- Simulated Chart Bars/Area -->
+<div class="w-[8%] bg-primary/10 rounded-t-lg h-[40%]"></div>
+<div class="w-[8%] bg-primary/20 rounded-t-lg h-[55%]"></div>
+<div class="w-[8%] bg-primary/15 rounded-t-lg h-[45%]"></div>
+<div class="w-[8%] bg-primary/30 rounded-t-lg h-[70%]"></div>
+<div class="w-[8%] bg-primary/40 rounded-t-lg h-[85%]"></div>
+<div class="w-[8%] bg-primary/35 rounded-t-lg h-[75%]"></div>
+<div class="w-[8%] bg-primary/50 rounded-t-lg h-[90%]"></div>
+<div class="w-[8%] bg-primary/45 rounded-t-lg h-[80%]"></div>
+<div class="w-[8%] bg-primary/20 rounded-t-lg h-[50%]"></div>
+<div class="w-[8%] bg-primary/10 rounded-t-lg h-[30%]"></div>
+</div>
+<!-- Svg Area Curve -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none">
+<path d="M0,256 Q100,150 200,180 T400,80 T600,120 T800,40 T1000,100" fill="none" stroke="#1e422c" stroke-width="3"></path>
+<path d="M0,256 Q100,150 200,180 T400,80 T600,120 T800,40 T1000,100 L1000,256 L0,256 Z" fill="rgba(30, 66, 44, 0.05)"></path>
+</svg>
+<!-- Grid Lines -->
+<div class="absolute inset-0 border-b border-outline-variant flex flex-col justify-between">
+<div class="w-full border-t border-outline-variant/30 h-0"></div>
+<div class="w-full border-t border-outline-variant/30 h-0"></div>
+<div class="w-full border-t border-outline-variant/30 h-0"></div>
+<div class="w-full h-0"></div>
+</div>
+</div>
+<div class="flex justify-between mt-md text-label-sm text-on-surface-variant px-2">
+<span>Day 01</span>
+<span>Day 10</span>
+<span>Day 20</span>
+<span>Day 30</span>
+</div>
+</div>
+<!-- Recent Activity Timeline -->
+<div class="col-span-12 lg:col-span-4 bg-white rounded-card p-xl card-shadow overflow-hidden">
+<div class="flex justify-between items-center mb-xl">
+<h3 class="font-headline-sm text-on-surface">Recent Activity</h3>
+<button class="text-primary font-label-md hover:underline">View All</button>
+</div>
+<div class="relative flex flex-col gap-lg">
+<!-- Timeline Line -->
+<div class="absolute left-[19px] top-2 bottom-2 w-[2px] bg-surface-container-highest"></div>
+<!-- Timeline Items -->
+<div class="relative flex gap-md group">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center z-10 shrink-0">
+<span class="material-symbols-outlined text-secondary text-lg">check_circle</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">Soleha completed <span class="font-semibold">AI Assessment</span></p>
+<p class="text-label-md text-on-surface-variant">Today, 09:40 AM</p>
+</div>
+</div>
+<div class="relative flex gap-md group">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center z-10 shrink-0">
+<span class="material-symbols-outlined text-primary text-lg">add_box</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">Rahul created <span class="font-semibold">Biology Topic</span></p>
+<p class="text-label-md text-on-surface-variant">Today, 09:28 AM</p>
+</div>
+</div>
+<div class="relative flex gap-md group">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center z-10 shrink-0">
+<span class="material-symbols-outlined text-secondary text-lg">update</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">Sara finished <span class="font-semibold">Revision Module</span></p>
+<p class="text-label-md text-on-surface-variant">Today, 09:11 AM</p>
+</div>
+</div>
+<div class="relative flex gap-md group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center z-10 shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">person_add</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">New Learner <span class="font-semibold">James W.</span> joined</p>
+<p class="text-label-md text-on-surface-variant">Yesterday, 11:45 PM</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Action Button Context -->
+<div class="fixed bottom-xl right-xl z-50">
+<button class="flex items-center gap-md bg-primary text-white px-xl py-lg rounded-full shadow-lg hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-md uppercase tracking-widest">New Analysis</span>
+</button>
+</div>
+</main>
+<script src="js/admin.js"></script>
+</body>
+</html>
