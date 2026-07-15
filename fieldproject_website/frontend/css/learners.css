@@ -1,0 +1,30 @@
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+.glass-panel {
+    background: rgba(255,255,255,.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.drawer-transition {
+    transition: transform .4s cubic-bezier(.4,0,.2,1);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width:4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background:transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background:#A6B3A4;
+    border-radius:10px;
+}
