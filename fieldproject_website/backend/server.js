@@ -10,6 +10,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
+import adminRoutes from "./routes/adminRoutes.js";
 
 
 dotenv.config();
@@ -62,6 +63,8 @@ app.use("/api/dashboard", dashboardRoutes);
 
 app.use("/api/topics", topicRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/admin", adminRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("Server is running");

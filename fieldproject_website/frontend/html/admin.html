@@ -31,23 +31,31 @@
 </div>
 <nav class="flex flex-col gap-xs">
 <!-- Nav Items mapped from JSON -->
-<a class="flex items-center gap-md px-lg py-md border-l-4 border-secondary text-primary font-bold bg-secondary-container/10 transition-transform duration-150 active:scale-[0.99]" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-body-md">Dashboard</span>
-</a>
-<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors" href="#">
-<span class="material-symbols-outlined">groups</span>
-<span class="font-body-md">Learners</span>
-</a>
-<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors" href="#">
-<span class="material-symbols-outlined">neurology</span>
-<span class="font-body-md">Memory Analytics</span>
-</a>
-<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors" href="#">
-<span class="material-symbols-outlined">quiz</span>
-<span class="font-body-md">Assessments</span>
-</a>
-<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors" href="#">
+<!-- Dashboard -->
+    <a class="flex items-center gap-md px-lg py-md border-l-4 border-secondary text-primary font-bold bg-secondary-container/10 transition-transform duration-150 active:scale-[0.99]"
+       href="../html/admin.html">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="font-body-md">Dashboard</span>
+    </a>
+    <!-- Learners -->
+    <a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors"
+       href="../html/learners.html">
+        <span class="material-symbols-outlined">groups</span>
+        <span class="font-body-md">Learners</span>
+    </a>
+    <!-- Memory Analytics -->
+    <a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors"
+       href="../html/memory_analytics.html">
+        <span class="material-symbols-outlined">neurology</span>
+        <span class="font-body-md">Memory Analytics</span>
+    </a>
+    <!-- Memory Observation -->
+    <a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors"
+       href="../html/memory_observation.html">
+        <span class="material-symbols-outlined">visibility</span>
+        <span class="font-body-md">Memory Observation</span>
+    </a>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors" href="../html/research.html">
 <span class="material-symbols-outlined">science</span>
 <span class="font-body-md">Research</span>
 </a>
@@ -58,12 +66,19 @@
 </nav>
 </div>
 <div class="mt-auto p-lg">
-<div class="bg-surface-container-high rounded-xl p-md flex items-center gap-md">
-<img class="w-10 h-10 rounded-full object-cover" data-alt="A professional headshot of a clinical research administrator, neutral lighting, soft background, modern corporate attire, looking directly at the camera with a calm and focused expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD588YY0vJVNrnVjA1gcFcYBeeIG9JTuaYh2frpNoqhVBHB7GiuleKaHcremKAzJv8fbeHjcxfGukFaSh19drbNB4vXY0RR45sfK20jPdoXQuVo-5OXZtLVyJKGtMdJ8wRB1GecNFBqcKp9st7hCgYaby5xAgKQCdM44VpO4Vh82oDrsAPODVpYuA-4Q-rW8r2MEVYIjrxtgkRcGTYEoGHYOs2MV1rf1pauKQCYWvWdMqxbeN7toadn"/>
-<div class="overflow-hidden">
-<p class="font-label-md text-on-surface truncate">Dr. Aris Thorne</p>
-<p class="text-[10px] text-on-surface-variant">Lead Researcher</p>
-</div>
+    <div class="bg-surface-container-high rounded-xl p-md flex items-center gap-md mb-md">
+        <img ...>
+        <div class="overflow-hidden">
+            <p class="font-label-md text-on-surface truncate">Soleha Siddique</p>
+            <p class="text-[10px] text-on-surface-variant">Lead Researcher</p>
+        </div>
+    </div>
+
+    <button
+        data-logout
+        class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition-colors">
+        Logout
+    </button>
 </div>
 </div>
 </aside>
@@ -265,6 +280,7 @@
 </button>
 </div>
 </main>
+<script src="../config.js"></script>
 <script src="../js/admin.js"></script>
 </body>
 </html>
