@@ -1,28 +1,24 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
-export const sendEmail = async ({ to, subject, text, html }) => {
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export const sendEmail = async ({ to, subject, html }) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.MAIL_HOST,
-      port: process.env.MAIL_PORT,
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
-      },
-    });
-
-    if (!to) throw new Error("Recipient email is missing");
-
-    const info = await transporter.sendMail({
-      from: `"RecallBot" <${process.env.MAIL_USER}>`, // must be a valid email
-      to, // <-- THIS MUST BE DEFINED
+    const { error } = await resend.emails.send({
+      from: "RecallBot <onboarding@resend.dev>",
+      to,
       subject,
-      text,
       html,
     });
 
-    console.log("✅ Email sent:", info.messageId);
+    if (error) {
+      console.error("🔥 EMAIL ERROR:", error);
+      throw new Error(error.message);
+    }
+
+    console.log("✅ Email sent to:", to);
   } catch (err) {
-    console.error("🔥 EMAIL ERROR:", err);
+    console.error("🔥 EMAIL ERROR:", err.message);
+    throw err;
   }
 };
