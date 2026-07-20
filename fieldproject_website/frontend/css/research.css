@@ -1,0 +1,31 @@
+body {
+    background-color: #f9faf6;
+    color: #1a1c1a;
+    -webkit-font-smoothing: antialiased;
+}
+
+.sidebar-active-pill {
+    width: 4px;
+    height: 24px;
+    background-color: #43664b;
+    border-radius: 99px;
+    position: absolute;
+    left: 0;
+}
+
+.soft-elevation {
+    box-shadow: 0 4px 24px -1px rgba(0,0,0,0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e3df;
+    border-radius: 10px;
+}
