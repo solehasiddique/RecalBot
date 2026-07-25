@@ -30,18 +30,6 @@ async function logout() {
   window.location.href = "../html/signin.html";
 }
 
-// ── ACTIVE NAV LINK ──
-// Highlights the correct sidebar link based on current page
-function setActiveNav() {
-  const current = window.location.pathname.split("/").pop();
-  document.querySelectorAll("nav a").forEach(link => {
-    const href = link.getAttribute("href")?.split("/").pop();
-    if (href === current) {
-      link.classList.add("border-l-4", "border-secondary", "text-primary", "font-bold", "bg-secondary-container/10");
-      link.classList.remove("text-on-surface-variant");
-    }
-  });
-}
 
 // ── FETCH HELPERS ──
 async function fetchStats() {
@@ -112,14 +100,3 @@ function openModal(html, title = "User Detail") {
     overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
   }
 }
-
-// ── INIT ON EVERY ADMIN PAGE ──
-document.addEventListener("DOMContentLoaded", async () => {
-  await requireAdmin();
-  setActiveNav();
-
-  // Wire logout buttons
-  document.querySelectorAll("[data-logout]").forEach(btn => {
-    btn.addEventListener("click", logout);
-  });
-});

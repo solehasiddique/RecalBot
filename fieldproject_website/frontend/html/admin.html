@@ -17,71 +17,11 @@
 
 </head>
 <body class="overflow-x-hidden">
-<!-- Persistent SideNavBar -->
-<aside class="w-sidebar_width h-screen fixed left-0 top-0 bg-surface-container-low flex flex-col border-r border-outline-variant z-40">
-<div class="px-lg py-xl">
-<div class="flex items-center gap-md mb-xxxl">
-<div class="w-10 h-10 bg-primary flex items-center justify-center rounded-lg">
-<span class="material-symbols-outlined text-white">neurology</span>
-</div>
-<div>
-<h1 class="font-display-lg text-headline-sm font-bold text-primary">RecallBot</h1>
-<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Admin Console</p>
-</div>
-</div>
-<nav class="flex flex-col gap-xs">
-<!-- Nav Items mapped from JSON -->
-<!-- Dashboard -->
-    <a class="flex items-center gap-md px-lg py-md border-l-4 border-secondary text-primary font-bold bg-secondary-container/10 transition-transform duration-150 active:scale-[0.99]"
-       href="../html/admin.html">
-        <span class="material-symbols-outlined">dashboard</span>
-        <span class="font-body-md">Dashboard</span>
-    </a>
-    <!-- Learners -->
-    <a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors"
-       href="../html/learners.html">
-        <span class="material-symbols-outlined">groups</span>
-        <span class="font-body-md">Learners</span>
-    </a>
-    <!-- Memory Analytics -->
-    <a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors"
-       href="../html/memory_analytics.html">
-        <span class="material-symbols-outlined">neurology</span>
-        <span class="font-body-md">Memory Analytics</span>
-    </a>
-    <!-- Memory Observation -->
-    <a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors"
-       href="../html/memory_observation.html">
-        <span class="material-symbols-outlined">visibility</span>
-        <span class="font-body-md">Memory Observation</span>
-    </a>
-<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors" href="../html/research.html">
-<span class="material-symbols-outlined">science</span>
-<span class="font-body-md">Research</span>
-</a>
-<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-secondary-container/10 transition-colors mt-xxl" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-body-md">Settings</span>
-</a>
-</nav>
-</div>
-<div class="mt-auto p-lg">
-    <div class="bg-surface-container-high rounded-xl p-md flex items-center gap-md mb-md">
-        <img ...>
-        <div class="overflow-hidden">
-            <p class="font-label-md text-on-surface truncate">Soleha Siddique</p>
-            <p class="text-[10px] text-on-surface-variant">Lead Researcher</p>
-        </div>
-    </div>
 
-    <button
-        data-logout
-        class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition-colors">
-        Logout
-    </button>
-</div>
-</div>
+<aside id="admin-sidebar" class="w-sidebar_width h-screen fixed left-0 top-0 bg-surface-container-low flex flex-col border-r border-outline-variant z-40">
+  <!-- filled in by adminShell.js -->
 </aside>
+
 <!-- Main Content Canvas -->
 <main class="ml-sidebar_width min-h-screen relative pb-xxxl">
 <!-- TopNavBar -->
@@ -280,7 +220,11 @@
 </button>
 </div>
 </main>
-<script src="../config.js"></script>
+<<script src="../config.js"></script>
 <script src="../js/admin.js"></script>
+<script src="../js/adminShell.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => initAdminShell("dashboard"));
+</script>
 </body>
 </html>
