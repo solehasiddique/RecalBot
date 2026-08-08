@@ -10,7 +10,6 @@ const ADMIN_NAV_ITEMS = [
   // Once you rename the files, this is the ONLY place you update — that's the
   // whole point of centralizing it. Before, that bug lived in 5 files.
   { key: "memory-analytics",    label: "Memory Analytics",   icon: "neurology",  href: "Memory_analytics.html" },
-  { key: "memory-observation",  label: "Memory Observation", icon: "visibility", href: "memory_observation.html" },
   { key: "research",            label: "Research",           icon: "science",    href: "research.html" },
 ];
 
