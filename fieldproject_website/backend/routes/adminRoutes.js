@@ -4,8 +4,7 @@ import {
   getAllUsers,
   getUserDetail,
   getMemoryAnalytics,
-  makeAdmin,
-  getMemoryAnalytics 
+  makeAdmin
 } from "../controllers/adminController.js";
 import { protectAdmin } from "../middleware/adminMiddleware.js";
 
