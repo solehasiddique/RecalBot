@@ -19,6 +19,5 @@ router.get("/users",            getAllUsers);
 router.get("/user/:id",         getUserDetail);
 router.get("/memory-analytics", getMemoryAnalytics);
 router.post("/make-admin",      makeAdmin);
-router.get("/memory-analytics", getMemoryAnalytics);
 
 export default router;
