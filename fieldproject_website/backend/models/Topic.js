@@ -109,6 +109,20 @@ const topicSchema = new mongoose.Schema(
       default: null,
       index: true,
     },
+    scoreAfterRevision: {
+      type: Number,
+      default: null,
+    },
+    profileAtTest: {
+  type: String,
+  enum: ["WEAK", "MEDIUM", "STRONG"],
+  default: null,
+},
+
+confidenceAtTest: {
+  type: Number,
+  default: null,
+},
   },
   { timestamps: true },
 );

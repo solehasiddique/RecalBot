@@ -18,51 +18,7 @@
 </head>
 <body class="font-body-md text-body-md overflow-hidden">
 <!-- Side Navigation Bar -->
-<aside class="w-sidebar_width h-screen fixed left-0 top-0 bg-surface border-r border-outline-variant/30 flex flex-col py-lg px-md z-50">
-<div class="flex items-center gap-md mb-xxl px-sm">
-<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center text-on-primary">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">biotech</span>
-</div>
-<div>
-<h1 class="font-headline-sm text-headline-sm text-primary leading-none">RecallBot</h1>
-<p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Memory Observatory</p>
-</div>
-</div>
-<nav class="flex-1 space-y-sm">
-<a class="flex items-center gap-md text-on-surface-variant hover:bg-secondary-container/5 hover:text-primary transition-colors duration-200 py-md px-sm rounded-lg group relative" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-body-md">Dashboard</span>
-</a>
-<a class="flex items-center gap-md text-on-surface-variant hover:bg-secondary-container/5 hover:text-primary transition-colors duration-200 py-md px-sm rounded-lg group" href="#">
-<span class="material-symbols-outlined">school</span>
-<span class="font-body-md">Learners</span>
-</a>
-<a class="flex items-center gap-md text-on-surface-variant hover:bg-secondary-container/5 hover:text-primary transition-colors duration-200 py-md px-sm rounded-lg group" href="#">
-<span class="material-symbols-outlined">analytics</span>
-<span class="font-body-md">Memory Analytics</span>
-</a>
-<!-- Active Tab: Research -->
-<a class="flex items-center gap-md bg-secondary-container/10 text-primary py-md px-sm rounded-lg relative" href="#">
-<div class="sidebar-active-pill"></div>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">biotech</span>
-<span class="font-body-md font-semibold">Research</span>
-</a>
-</nav>
-<div class="mt-auto pt-lg border-t border-outline-variant/20 space-y-sm">
-<button class="w-full bg-primary text-on-primary py-md px-lg rounded-xl font-body-md font-semibold flex items-center justify-center gap-sm mb-lg active:scale-95 transition-transform">
-<span class="material-symbols-outlined text-[20px]">add</span>
-                New Study
-            </button>
-<a class="flex items-center gap-md text-on-surface-variant hover:text-primary py-sm px-sm rounded-lg" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-body-md">Settings</span>
-</a>
-<a class="flex items-center gap-md text-on-surface-variant hover:text-primary py-sm px-sm rounded-lg" href="#">
-<span class="material-symbols-outlined">help</span>
-<span class="font-body-md">Support</span>
-</a>
-</div>
-</aside>
+<aside id="admin-sidebar" class="w-sidebar_width h-screen fixed left-0 top-0 bg-surface-container-low flex flex-col border-r border-outline-variant z-40"></aside>
 <!-- Main Content Area -->
 <main class="ml-[280px] h-screen overflow-y-auto custom-scrollbar bg-background">
 <!-- Top Nav Bar -->
@@ -350,5 +306,10 @@
 <span class="material-symbols-outlined text-[28px]">biotech</span>
 </button>
 <script src="../config.js"></script>
+<script src="../js/admin.js"></script>
+<script src="../js/adminShell.js"></script>
 <script src="../js/research.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => initAdminShell("research"));
+</script>
 </body></html>

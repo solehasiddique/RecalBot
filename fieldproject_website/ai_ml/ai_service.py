@@ -50,15 +50,23 @@ def predict_memory(data: MemoryRequest):
     prediction = int(model.predict([input_vector])[0])
 
     # Smooth percentage logic
+    proba = model.predict_proba([input_vector])[0]
+# proba is an array like [0.2, 0.7, 0.1] — probability for each class
+
     if prediction == 0:
-        percentage = random.randint(25, 45)
-        label = "WEAK"
+       label = "WEAK"
+       percentage = int(proba[0] * 100)
     elif prediction == 1:
-        percentage = random.randint(50, 75)
-        label = "MEDIUM"
+       label = "MEDIUM"
+       percentage = int(proba[1] * 100) 
     else:
-        percentage = random.randint(80, 95)
-        label = "STRONG"
+       label = "STRONG"
+       percentage = int(proba[2] * 100)
+
+# Keep the active_features bonus but cap at 98
+    percentage += min(active_features, 5)
+    percentage = min(percentage, 98)
+    percentage = max(percentage, 10)  # never return 0
 
     percentage += min(active_features, 5)
     percentage = min(percentage, 98)

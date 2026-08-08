@@ -103,6 +103,11 @@ const userSchema = new mongoose.Schema(
     memoryInitializedAt: {
       type: Date,
     },
+    lastPrediction: {
+  profile:     { type: String, enum: ["WEAK", "MEDIUM", "STRONG"], default: null },
+  confidence:  { type: Number, default: null },
+  predictedAt: { type: Date,   default: null },
+},
 
     resetPasswordToken: String,
     resetPasswordExpires: Date,

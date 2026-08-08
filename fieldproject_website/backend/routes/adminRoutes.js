@@ -4,7 +4,8 @@ import {
   getAllUsers,
   getUserDetail,
   getMemoryAnalytics,
-  makeAdmin
+  makeAdmin,
+  getMemoryAnalytics 
 } from "../controllers/adminController.js";
 import { protectAdmin } from "../middleware/adminMiddleware.js";
 
@@ -18,5 +19,6 @@ router.get("/users",            getAllUsers);
 router.get("/user/:id",         getUserDetail);
 router.get("/memory-analytics", getMemoryAnalytics);
 router.post("/make-admin",      makeAdmin);
+router.get("/memory-analytics", getMemoryAnalytics);
 
 export default router;

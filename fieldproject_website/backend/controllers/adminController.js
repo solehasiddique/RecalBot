@@ -198,3 +198,143 @@ export const makeAdmin = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+// ===============================
+// GET /api/admin/memory-analytics
+// Everything needed for the Memory Analytics admin page
+// ===============================
+export const getMemoryAnalytics = async (req, res) => {
+  try {
+
+    // ── 1. Profile Distribution ──
+    // How many users got each prediction
+    const weak   = await User.countDocuments({ role: "student", memoryProfile: { $regex: /weak/i } });
+    const medium = await User.countDocuments({ role: "student", memoryProfile: { $regex: /medium/i } });
+    const strong = await User.countDocuments({ role: "student", memoryProfile: { $regex: /strong/i } });
+
+    // ── 2. Average Test Score by Memory Profile ──
+    // This is the core validation: does WEAK actually score lower than STRONG?
+    const scoreByProfile = await Topic.aggregate([
+      { $unwind: "$revisions" },
+      { $match: { "revisions.score": { $exists: true, $ne: null } } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "userInfo"
+        }
+      },
+      { $unwind: "$userInfo" },
+      { $match: { "userInfo.role": "student" } },
+      {
+        $group: {
+          _id: "$userInfo.memoryProfile",
+          avgScore: { $avg: "$revisions.score" },
+          totalRevisions: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // ── 3. Revision Completion Rate by Profile ──
+    // What % of scheduled revisions does each profile group actually complete?
+    const completionByProfile = await Topic.aggregate([
+      { $unwind: "$revisions" },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "userInfo"
+        }
+      },
+      { $unwind: "$userInfo" },
+      { $match: { "userInfo.role": "student" } },
+      {
+        $group: {
+          _id: {
+            profile: "$userInfo.memoryProfile",
+            status: "$revisions.status"
+          },
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // Process completion data into a cleaner format
+    const completionMap = {};
+    completionByProfile.forEach(item => {
+      const profile = (item._id.profile || "unknown").toUpperCase();
+      const status  = item._id.status;
+      if (!completionMap[profile]) completionMap[profile] = { completed: 0, total: 0 };
+      completionMap[profile].total += item.count;
+      if (status === "completed") completionMap[profile].completed += item.count;
+    });
+
+    const completionRates = Object.entries(completionMap).map(([profile, data]) => ({
+      profile,
+      completionRate: data.total > 0
+        ? parseFloat(((data.completed / data.total) * 100).toFixed(1))
+        : 0,
+      completed: data.completed,
+      total: data.total
+    }));
+
+    // ── 4. Memory Score Change Over Time ──
+    // Per user: their starting memoryPercentage vs current
+    // Since we store memoryPercentage as a single value (updated after each test),
+    // we compare signup date vs latest revision date to show movement
+    const scoreOverTime = await User.find(
+      {
+        role: "student",
+        memoryPercentage: { $exists: true, $ne: null }
+      },
+      {
+        name: 1,
+        memoryPercentage: 1,
+        memoryProfile: 1,
+        createdAt: 1
+      }
+    ).sort({ createdAt: 1 }).limit(50);
+
+    // ── 5. Model Confidence Check ──
+    // Are users predicted with high confidence actually performing better?
+    // Group users by memoryPercentage bands
+    const confidenceBands = await User.aggregate([
+      { $match: { role: "student", memoryPercentage: { $exists: true } } },
+      {
+        $bucket: {
+          groupBy: "$memoryPercentage",
+          boundaries: [0, 25, 50, 75, 101],
+          default: "other",
+          output: {
+            count: { $sum: 1 },
+            avgPercentage: { $avg: "$memoryPercentage" }
+          }
+        }
+      }
+    ]);
+
+    // ── 6. Users With No Assessment ──
+    // How many signed up but never completed the questionnaire?
+    // These users have no ML prediction at all — important for data quality
+    const noAssessment = await User.countDocuments({
+      role: "student",
+      hasCompletedAssessment: false
+    });
+
+    res.json({
+      profileDistribution: { weak, medium, strong },
+      scoreByProfile,
+      completionRates,
+      scoreOverTime,
+      confidenceBands,
+      noAssessment,
+      totalStudents: weak + medium + strong
+    });
+
+  } catch (err) {
+    console.error("Memory analytics error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};

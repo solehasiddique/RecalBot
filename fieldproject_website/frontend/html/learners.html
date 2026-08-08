@@ -15,57 +15,7 @@
 </head>
 <body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
 <!-- Sidebar Navigation -->
-<aside class="w-[280px] h-screen fixed left-0 top-0 flex flex-col py-lg bg-surface dark:bg-surface-container-low z-50">
-<div class="px-lg mb-xxl flex items-center gap-3">
-<div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center text-on-primary">
-<span class="material-symbols-outlined">psychology</span>
-</div>
-<div>
-<h1 class="font-display-lg text-display-lg text-primary dark:text-primary-fixed-dim text-[24px] leading-tight">RecallBot</h1>
-<p class="text-label-md text-on-surface-variant">Memory Observatory</p>
-</div>
-</div>
-<nav class="flex-1">
-<ul class="space-y-1">
-<li>
-<a class="flex items-center gap-3 px-lg py-3 text-on-surface-variant hover:text-on-surface hover:bg-secondary-container/15 transition-colors duration-200 cursor-pointer active:scale-95" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-body-md">Dashboard</span>
-</a>
-</li>
-<li>
-<a class="flex items-center gap-3 px-lg py-3 border-l-4 border-secondary-fixed text-primary font-semibold bg-secondary-container/10 cursor-pointer active:scale-95" href="#">
-<span class="material-symbols-outlined">groups</span>
-<span class="font-body-md">Learners</span>
-</a>
-</li>
-<li>
-<a class="flex items-center gap-3 px-lg py-3 text-on-surface-variant hover:text-on-surface hover:bg-secondary-container/15 transition-colors duration-200 cursor-pointer active:scale-95" href="#">
-<span class="material-symbols-outlined">analytics</span>
-<span class="font-body-md">Memory Analytics</span>
-</a>
-</li>
-<li>
-<a class="flex items-center gap-3 px-lg py-3 text-on-surface-variant hover:text-on-surface hover:bg-secondary-container/15 transition-colors duration-200 cursor-pointer active:scale-95" href="#">
-<span class="material-symbols-outlined">quiz</span>
-<span class="font-body-md">Assessments</span>
-</a>
-</li>
-<li>
-<a class="flex items-center gap-3 px-lg py-3 text-on-surface-variant hover:text-on-surface hover:bg-secondary-container/15 transition-colors duration-200 cursor-pointer active:scale-95" href="#">
-<span class="material-symbols-outlined">science</span>
-<span class="font-body-md">Research</span>
-</a>
-</li>
-</ul>
-</nav>
-<div class="px-lg mt-auto">
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-secondary-container/15 transition-colors duration-200 rounded-xl" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-body-md">Settings</span>
-</a>
-</div>
-</aside>
+<aside id="admin-sidebar" class="w-sidebar_width h-screen fixed left-0 top-0 bg-surface-container-low flex flex-col border-r border-outline-variant z-40"></aside>
 <!-- Main Content Area -->
 <main class="ml-[280px] min-h-screen relative">
 <!-- Top Navigation Bar -->
@@ -448,5 +398,9 @@
 </div>
 <script src="../config.js"></script>
 <script src="../js/admin.js"></script>
+<script src="../js/adminShell.js"></script>
 <script src="../js/learners.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => initAdminShell("learners"));
+</script>
 </body></html>

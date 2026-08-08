@@ -18,44 +18,7 @@
 </head>
 <body class="text-on-background">
 <!-- Sidebar Navigation Shell -->
-<aside class="w-[280px] h-screen fixed left-0 top-0 bg-surface dark:bg-surface-container-low flex flex-col py-lg z-50 overflow-y-auto">
-<div class="px-lg mb-xxl flex items-center gap-3">
-<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">psychology</span>
-</div>
-<div>
-<h1 class="font-display-lg text-headline-md text-primary dark:text-primary-fixed-dim leading-none">RecallBot</h1>
-<p class="text-label-sm uppercase tracking-widest text-on-surface-variant opacity-70">Memory Observatory</p>
-</div>
-</div>
-<nav class="flex-1 flex flex-col gap-1">
-<!-- Navigation Items Mapping from JSON -->
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-secondary-container/15 transition-colors duration-200 cursor-pointer active:scale-95" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-body-md text-body-md">Dashboard</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-secondary-container/15 transition-colors duration-200 cursor-pointer active:scale-95" href="#">
-<span class="material-symbols-outlined">groups</span>
-<span class="font-body-md text-body-md">Learners</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 border-l-4 border-secondary-fixed text-primary font-semibold bg-secondary-container/10 cursor-pointer active:scale-95" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
-<span class="font-body-md text-body-md">Memory Analytics</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-secondary-container/15 transition-colors duration-200 cursor-pointer active:scale-95" href="#">
-<span class="material-symbols-outlined">quiz</span>
-<span class="font-body-md text-body-md">Assessments</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-secondary-container/15 transition-colors duration-200 cursor-pointer active:scale-95" href="#">
-<span class="material-symbols-outlined">science</span>
-<span class="font-body-md text-body-md">Research</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-secondary-container/15 transition-colors duration-200 cursor-pointer active:scale-95 mt-auto" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-body-md text-body-md">Settings</span>
-</a>
-</nav>
-</aside>
+<aside id="admin-sidebar" class="w-sidebar_width h-screen fixed left-0 top-0 bg-surface-container-low flex flex-col border-r border-outline-variant z-40"></aside>
 <!-- Top Bar Shell -->
 <header class="fixed top-0 right-0 w-[calc(100%-280px)] h-16 bg-surface-bright dark:bg-surface-dim flex items-center justify-between px-lg z-40 shadow-sm ml-[280px]">
 <div class="flex items-center gap-4 flex-1">
@@ -363,5 +326,8 @@
 
 <script src="../config.js"></script>
 <script src="../js/admin.js"></script>
-<script src="../js/Memory_analytics.js"></script>
+<script src="../js/adminShell.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => initAdminShell("memory_analytics"));
+</script>
 </body></html>

@@ -277,8 +277,12 @@ export const completeRevision = async (req, res) => {
     // ============================================
 
     revision.status = "completed";
-    revision.completedAt = new Date();
-    revision.scoreAfterRevision = finalPercentage;
+revision.completedAt = new Date();
+revision.scoreAfterRevision = finalPercentage;
+
+// ── Snapshot which profile was active when this test happened ──
+revision.profileAtTest   = user.memoryProfile  || null;
+revision.confidenceAtTest = user.memoryPercentage || null;
 
     // ============================================
     // 🧠 ADAPTIVE MEMORY UPDATE

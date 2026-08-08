@@ -29,10 +29,17 @@ export const predictMemory = async (req, res) => {
 
     const user = await User.findById(req.user.id);
     user.memoryScore = score;
-    user.memoryLabel = label;
-    user.memoryPercentage = percentage;
-    user.memoryProfile = label;
-    user.memoryInitializedAt = new Date();
+user.memoryLabel = label;
+user.memoryPercentage = percentage;
+user.memoryProfile = label;
+user.memoryInitializedAt = new Date();
+
+// ── Snapshot the prediction at this moment ──
+user.lastPrediction = {
+  profile:     label,
+  confidence:  percentage,
+  predictedAt: new Date()
+};
 
     await user.save();
 
