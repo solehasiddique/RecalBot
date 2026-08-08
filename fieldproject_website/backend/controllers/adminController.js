@@ -139,46 +139,46 @@ export const getUserDetail = async (req, res) => {
 // GET /api/admin/memory-analytics
 // Memory profile data for analytics page
 // ===============================
-export const getMemoryAnalytics = async (req, res) => {
-  try {
-    // Score distribution buckets
-    const scoreBuckets = await User.aggregate([
-      { $match: { role: "student", memoryPercentage: { $exists: true } } },
-      {
-        $bucket: {
-          groupBy: "$memoryPercentage",
-          boundaries: [0, 25, 50, 75, 100],
-          default: "100+",
-          output: { count: { $sum: 1 } }
-        }
-      }
-    ]);
+// export const getMemoryAnalytics = async (req, res) => {
+//   try {
+//     // Score distribution buckets
+//     const scoreBuckets = await User.aggregate([
+//       { $match: { role: "student", memoryPercentage: { $exists: true } } },
+//       {
+//         $bucket: {
+//           groupBy: "$memoryPercentage",
+//           boundaries: [0, 25, 50, 75, 100],
+//           default: "100+",
+//           output: { count: { $sum: 1 } }
+//         }
+//       }
+//     ]);
 
-    // Average score per memory profile
-    const avgByProfile = await User.aggregate([
-      { $match: { role: "student", memoryProfile: { $exists: true } } },
-      {
-        $group: {
-          _id: "$memoryProfile",
-          avgScore: { $avg: "$memoryPercentage" },
-          count: { $sum: 1 }
-        }
-      }
-    ]);
+//     // Average score per memory profile
+//     const avgByProfile = await User.aggregate([
+//       { $match: { role: "student", memoryProfile: { $exists: true } } },
+//       {
+//         $group: {
+//           _id: "$memoryProfile",
+//           avgScore: { $avg: "$memoryPercentage" },
+//           count: { $sum: 1 }
+//         }
+//       }
+//     ]);
 
-    // Users with score over time (for line chart)
-    const scoreOverTime = await User.find(
-      { role: "student", memoryPercentage: { $exists: true } },
-      { memoryPercentage: 1, createdAt: 1, memoryProfile: 1 }
-    ).sort({ createdAt: 1 });
+//     // Users with score over time (for line chart)
+//     const scoreOverTime = await User.find(
+//       { role: "student", memoryPercentage: { $exists: true } },
+//       { memoryPercentage: 1, createdAt: 1, memoryProfile: 1 }
+//     ).sort({ createdAt: 1 });
 
-    res.json({ scoreBuckets, avgByProfile, scoreOverTime });
+//     res.json({ scoreBuckets, avgByProfile, scoreOverTime });
 
-  } catch (err) {
-    console.error("Memory analytics error:", err);
-    res.status(500).json({ message: "Server error" });
-  }
-};
+//   } catch (err) {
+//     console.error("Memory analytics error:", err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
 
 // ===============================
 // POST /api/admin/make-admin
