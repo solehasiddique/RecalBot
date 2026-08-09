@@ -188,3 +188,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadRecentActivity();
   }, 300);
 });
+
+// Search redirects to learners page with query
+document.getElementById("observatory-search")?.addEventListener("input", function() {
+  const query = this.value.trim();
+  if (query.length > 2) {
+    window.location.href = `learners.html?search=${encodeURIComponent(query)}`;
+  }
+});
