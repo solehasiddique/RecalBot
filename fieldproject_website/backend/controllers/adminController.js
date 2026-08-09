@@ -71,7 +71,22 @@ export const getAllUsers = async (req, res) => {
       .select("name email memoryProfile memoryPercentage hasCompletedAssessment profileCompleted createdAt studyStats")
       .sort({ createdAt: -1 });
 
-    res.json({ users });
+    // For each user, count how many topics they have created
+    // We do this separately because topics live in a different collection
+    // Why not a join? MongoDB .select() only works within one model.
+    // We use Promise.all so all counts run in parallel — much faster than one by one
+    const usersWithTopics = await Promise.all(
+      users.map(async (user) => {
+        const topicsCount = await Topic.countDocuments({ user: user._id });
+        return {
+          ...user.toObject(),  // convert mongoose doc to plain object so we can add fields
+          topicsCount
+        };
+      })
+    );
+
+    res.json({ users: usersWithTopics });
+
   } catch (err) {
     console.error("Admin users error:", err);
     res.status(500).json({ message: "Server error" });
