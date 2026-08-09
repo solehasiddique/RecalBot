@@ -5,6 +5,9 @@
 // ============================================
 
 let allUsers = [];  // store all users so search can filter without re-fetching
+let currentPage = 1;
+const PAGE_SIZE = 10;
+let currentFiltered = []; // tracks filtered/searched results for pagination
 
 // ── PROFILE BADGE ──
 // Returns styled HTML based on memory profile
@@ -132,16 +135,18 @@ async function loadLearners() {
   try {
     const data = await fetchUsers();
     allUsers = data.users || [];
+    currentFiltered = allUsers;
 
-    // Update count display
-    const countEl = document.getElementById("learner-count");
-    if (countEl) countEl.textContent = `Showing ${allUsers.length} learners`;
+    // Update subtitle with real count
+    const subtitle = document.getElementById("learner-subtitle");
+    if (subtitle) {
+      subtitle.textContent = `Observing memory retention patterns across ${allUsers.length} active participant${allUsers.length !== 1 ? "s" : ""}.`;
+    }
 
     // Update stat cards
     const totalEl = document.getElementById("stat-total-learners");
     if (totalEl) totalEl.textContent = allUsers.length.toLocaleString();
 
-    // Calculate average memory score across all users who have one
     const usersWithScore = allUsers.filter(u => u.memoryPercentage != null);
     if (usersWithScore.length) {
       const avg = usersWithScore.reduce((sum, u) => sum + u.memoryPercentage, 0) / usersWithScore.length;
@@ -149,7 +154,7 @@ async function loadLearners() {
       if (avgEl) avgEl.textContent = avg.toFixed(1) + "%";
     }
 
-    renderTableRows(allUsers);
+    renderPage();
 
   } catch (err) {
     console.error("Failed to load learners:", err);
@@ -162,35 +167,146 @@ async function loadLearners() {
       </tr>`;
   }
 }
+// Renders the current page of users
+// Why separate from renderTableRows: renderTableRows takes any array,
+// renderPage knows about currentPage and slices the right chunk
+function renderPage() {
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const end   = start + PAGE_SIZE;
+  const pageUsers = currentFiltered.slice(start, end);
+  const total = currentFiltered.length;
+
+  renderTableRows(pageUsers);
+
+  // Update count text
+  const countEl = document.getElementById("learner-count");
+  if (countEl) {
+    countEl.textContent = total === 0
+      ? "No learners found"
+      : `Showing ${start + 1}–${Math.min(end, total)} of ${total}`;
+  }
+}
+function nextPage() {
+  const maxPage = Math.ceil(currentFiltered.length / PAGE_SIZE);
+  if (currentPage < maxPage) {
+    currentPage++;
+    renderPage();
+  }
+}
+
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    renderPage();
+  }
+}
 
 // ── SEARCH ──
 // Filters the already-loaded allUsers array — no backend call needed
 // Why: searching locally is instant. Backend search would add latency
 // for every keystroke which feels sluggish
+// function setupSearch() {
+//   const input = document.getElementById("learner-search");
+//   if (!input) return;
+
+//   input.addEventListener("input", function () {
+//     const query = this.value.trim().toLowerCase();
+
+//     if (!query) {
+//       renderTableRows(allUsers);
+//       document.getElementById("learner-count").textContent =
+//         `Showing ${allUsers.length} learners`;
+//       return;
+//     }
+
+//     const filtered = allUsers.filter(u =>
+//       (u.name || "").toLowerCase().includes(query) ||
+//       (u.email || "").toLowerCase().includes(query) ||
+//       (u.memoryProfile || "").toLowerCase().includes(query)
+//     );
+
+//     renderTableRows(filtered);
+//     document.getElementById("learner-count").textContent =
+//       `Showing ${filtered.length} of ${allUsers.length} learners`;
+//   });
+// }
 function setupSearch() {
   const input = document.getElementById("learner-search");
   if (!input) return;
 
   input.addEventListener("input", function () {
     const query = this.value.trim().toLowerCase();
-
-    if (!query) {
-      renderTableRows(allUsers);
-      document.getElementById("learner-count").textContent =
-        `Showing ${allUsers.length} learners`;
-      return;
-    }
-
-    const filtered = allUsers.filter(u =>
+    currentFiltered = !query ? allUsers : allUsers.filter(u =>
       (u.name || "").toLowerCase().includes(query) ||
       (u.email || "").toLowerCase().includes(query) ||
       (u.memoryProfile || "").toLowerCase().includes(query)
     );
-
-    renderTableRows(filtered);
-    document.getElementById("learner-count").textContent =
-      `Showing ${filtered.length} of ${allUsers.length} learners`;
+    currentPage = 1; // reset to first page on new search
+    renderPage();
   });
+}
+function setupFilter() {
+  const btn = document.getElementById("filter-btn");
+  if (!btn) return;
+
+  // Create a simple dropdown when filter is clicked
+  btn.addEventListener("click", () => {
+    const existing = document.getElementById("filter-dropdown");
+    if (existing) { existing.remove(); return; }
+
+    const dropdown = document.createElement("div");
+    dropdown.id = "filter-dropdown";
+    dropdown.className = "absolute top-12 left-0 bg-white border border-surface-container rounded-xl shadow-lg z-50 overflow-hidden";
+    dropdown.innerHTML = `
+      <button onclick="applyFilter('')"    class="block w-full text-left px-lg py-md hover:bg-surface-container text-body-sm">All Profiles</button>
+      <button onclick="applyFilter('STRONG')" class="block w-full text-left px-lg py-md hover:bg-surface-container text-body-sm text-primary font-semibold">Strong</button>
+      <button onclick="applyFilter('MEDIUM')" class="block w-full text-left px-lg py-md hover:bg-surface-container text-body-sm">Medium</button>
+      <button onclick="applyFilter('WEAK')"   class="block w-full text-left px-lg py-md hover:bg-surface-container text-body-sm text-error">Weak</button>
+    `;
+    btn.parentElement.style.position = "relative";
+    btn.parentElement.appendChild(dropdown);
+  });
+}
+
+function applyFilter(profile) {
+  currentFiltered = !profile
+    ? allUsers
+    : allUsers.filter(u => (u.memoryProfile || "").toUpperCase() === profile);
+  currentPage = 1;
+  renderPage();
+  document.getElementById("filter-dropdown")?.remove();
+}
+// Exports current user's revision history as a CSV file
+// Why CSV: easy to open in Excel, standard format for research data
+let currentDrawerUser = null; // store the user currently shown in drawer
+
+function exportUserData() {
+  if (!currentDrawerUser) return;
+  const user = currentDrawerUser;
+
+  const rows = [["Topic", "Revision Number", "Status", "Score", "Profile At Test", "Completed At"]];
+
+  (user.topics || []).forEach(topic => {
+    (topic.revisions || []).forEach(rev => {
+      rows.push([
+        topic.title,
+        rev.revisionNumber,
+        rev.status,
+        rev.scoreAfterRevision ?? "",
+        rev.profileAtTest ?? "",
+        rev.completedAt ? new Date(rev.completedAt).toLocaleDateString() : ""
+      ]);
+    });
+  });
+
+  const csv     = rows.map(r => r.join(",")).join("\n");
+  const blob    = new Blob([csv], { type: "text/csv" });
+  const url     = URL.createObjectURL(blob);
+  const a       = document.createElement("a");
+  a.href        = url;
+  a.download    = `${user.name?.replace(/\s+/g, "_")}_revisions.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 // ── OPEN DRAWER ──
@@ -221,6 +337,12 @@ async function openDrawer(userId) {
 
     // ── Name + email ──
     document.getElementById("drawer-name").textContent = user.name || "—";
+    // Show first letter of name as avatar instead of fake photo
+const initialEl = document.getElementById("drawer-initial");
+if (initialEl) {
+  initialEl.textContent = (user.name || "?").trim().charAt(0).toUpperCase();
+}
+currentDrawerUser = user; // store for CSV export
 
     // ── Stats row: revisions, topics, profile ──
     const stats = user.stats || {};
@@ -322,9 +444,9 @@ function toggleDrawer() {
 
 // ── INIT ──
 document.addEventListener("DOMContentLoaded", async () => {
-  // Small delay to let adminShell finish auth check first
   setTimeout(async () => {
     await loadLearners();
     setupSearch();
+    setupFilter();
   }, 300);
 });

@@ -46,16 +46,14 @@
 <div class="flex items-end justify-between mb-xl">
 <div>
 <h2 class="font-headline-md text-headline-md text-primary mb-1">Learners Directory</h2>
-<p class="text-on-surface-variant text-body-md">Observing memory retention patterns across 1,284 active participants.</p>
+<p id="learner-subtitle" class="text-on-surface-variant text-body-md">
+  Loading participants...
+</p>
 </div>
 <div class="flex gap-md">
-<button class="px-md py-2 bg-secondary-container/15 text-primary font-semibold rounded-[14px] flex items-center gap-2 hover:bg-secondary-container/25 transition-all">
+<button id="filter-btn" class="px-md py-2 bg-secondary-container/15 text-primary font-semibold rounded-[14px] flex items-center gap-2 hover:bg-secondary-container/25 transition-all">
 <span class="material-symbols-outlined text-[20px]">filter_list</span>
 <span>Filter</span>
-</button>
-<button class="px-md py-2 bg-primary text-on-primary font-semibold rounded-[14px] flex items-center gap-2 hover:bg-primary-container transition-all shadow-sm">
-<span class="material-symbols-outlined text-[20px]">person_add</span>
-<span>Enroll Learner</span>
 </button>
 </div>
 </div>
@@ -109,11 +107,11 @@
 <div class="flex items-center gap-md">
 <span id="learner-count" class="text-body-sm text-on-surface-variant">Loading...</span>
 <div class="flex border border-surface-container rounded-lg overflow-hidden">
-<button class="p-1 hover:bg-surface-container transition-colors border-r border-surface-container">
-<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+<button onclick="prevPage()" class="p-1 hover:bg-surface-container ...">
+  <span class="material-symbols-outlined text-[20px]">chevron_left</span>
 </button>
-<button class="p-1 hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+<button onclick="nextPage()" class="p-1 hover:bg-surface-container ...">
+  <span class="material-symbols-outlined text-[20px]">chevron_right</span>
 </button>
 </div>
 </div>
@@ -159,13 +157,16 @@
 <div class="flex flex-col items-center text-center gap-md">
 <div class="relative">
 <div class="w-24 h-24 rounded-full border-4 border-secondary-fixed shadow-lg overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A high-quality professional portrait for a digital identity card. The person is looking directly at the camera with a slight, confident smile. The environment is a futuristic, brightly lit research facility with clean lines and soft green ambient lighting. The style is modern corporate minimalist." id="drawer-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5ZTv4zNfV86_mOt0Mn4DVbG9rJaspwrmOa7W9NVzWKlnyCBbMVVfaVGbKpERMeGjA9kiFdqkY3ReW2p_fRPR5DyoXdcQ_X6mBQ0a4MA2Y2R6UoWsQti5vt5vFQflkn1hvlCIH570B2fFvEtwNLnNlLK_Nq7X30x9JbkzhhL5DNuqVpIyJwwqh8WVIvBdGD346wSkNGG5dnUEgU-U8Ty7SyCEUtZNZrDk_YXs4RUWGcESIIEFbxrVl"/>
+<!-- Replace the img tag with this -->
+<div id="drawer-avatar-initial" 
+     class="w-24 h-24 rounded-full border-4 border-secondary-fixed shadow-lg flex items-center justify-center bg-secondary-container">
+  <span id="drawer-initial" class="font-bold text-primary text-3xl">?</span>
+</div>
 </div>
 <div class="absolute bottom-1 right-1 w-6 h-6 bg-secondary border-2 border-white rounded-full"></div>
 </div>
 <div>
 <h4 class="font-headline-md text-headline-md text-primary" id="drawer-name">-</h4>
-<p class="text-on-surface-variant text-body-md">Senior Research Participant</p>
 </div>
 <div id="drawer-stats" class="flex gap-md">
 <div class="px-4 py-2 bg-surface-container-low rounded-xl">
@@ -205,9 +206,17 @@
 </div>
 </div>
 <!-- Footer Actions -->
+ <button class="flex-1 py-3 bg-primary text-on-primary font-semibold rounded-[14px] hover:bg-primary-container transition-all">Send Report</button>
+
 <div class="pt-lg flex gap-md border-t border-surface-container">
-<button class="flex-1 py-3 bg-primary text-on-primary font-semibold rounded-[14px] hover:bg-primary-container transition-all">Send Report</button>
-<button class="flex-1 py-3 border border-outline-variant text-on-surface-variant font-semibold rounded-[14px] hover:bg-surface-container transition-all">Export Data</button>
+  <button onclick="exportUserData()" 
+          class="flex-1 py-3 bg-primary text-on-primary font-semibold rounded-[14px] hover:bg-primary-container transition-all">
+    Export CSV
+  </button>
+  <button onclick="toggleDrawer()" 
+          class="flex-1 py-3 border border-outline-variant text-on-surface-variant font-semibold rounded-[14px] hover:bg-surface-container transition-all">
+    Close
+  </button>
 </div>
 </div>
 </div>
