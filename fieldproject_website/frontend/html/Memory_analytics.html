@@ -82,7 +82,7 @@
 </svg>
 <!-- Center Label -->
 <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-<span class="font-headline-md text-display-lg text-primary font-bold">-%</span>
+<span id="ring-mean" class="font-headline-md text-display-lg text-primary font-bold">—</span>
 <span class="text-label-sm text-on-surface-variant uppercase tracking-tighter">Mean Retention</span>
 </div>
 </div>
@@ -91,25 +91,20 @@
 <div class="flex items-center gap-4">
 <div class="w-1.5 h-12 bg-primary rounded-full"></div>
 <div>
+<!-- Strong -->
 <p class="text-label-sm text-on-surface-variant font-bold">STRONG RECALL</p>
-<p class="font-headline-sm text-headline-md font-bold text-primary">-</p>
-<p class="text-body-sm text-secondary">-</p>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<div class="w-1.5 h-12 bg-secondary rounded-full"></div>
-<div>
+<p id="ring-strong-count" class="font-headline-sm text-headline-md font-bold text-primary">—</p>
+<p id="ring-strong-pct" class="text-body-sm text-secondary">—</p>
+
+<!-- Medium -->
 <p class="text-label-sm text-on-surface-variant font-bold">MEDIUM RECALL</p>
-<p class="font-headline-sm text-headline-md font-bold text-primary">-</p>
-<p class="text-body-sm text-on-surface-variant">-</p>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<div class="w-1.5 h-12 bg-primary-fixed-dim rounded-full"></div>
-<div>
+<p id="ring-medium-count" class="font-headline-sm text-headline-md font-bold text-primary">—</p>
+<p id="ring-medium-pct" class="text-body-sm text-on-surface-variant">—</p>
+
+<!-- Weak -->
 <p class="text-label-sm text-on-surface-variant font-bold">WEAK RECALL</p>
-<p class="font-headline-sm text-headline-md font-bold text-primary">-</p>
-<p class="text-body-sm text-error">-</p>
+<p id="ring-weak-count" class="font-headline-sm text-headline-md font-bold text-primary">—</p>
+<p id="ring-weak-pct" class="text-body-sm text-error">—</p>
 </div>
 </div>
 </div>
