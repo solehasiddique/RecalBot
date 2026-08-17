@@ -27,9 +27,9 @@ function updateMemoryRings(weak, medium, strong) {
   const mediumPct  = medium / total;
   const weakPct    = weak   / total;
 
-  const strongRing = document.querySelector(".memory-ring-animate:nth-of-type(4)");
-  const mediumRing = document.querySelector(".memory-ring-animate:nth-of-type(5)");
-  const weakRing   = document.querySelector(".memory-ring-animate:nth-of-type(6)");
+  const strongRing = document.getElementById("ring-strong");
+const mediumRing = document.getElementById("ring-medium");
+const weakRing   = document.getElementById("ring-weak");
 
   if (strongRing) strongRing.setAttribute("stroke-dashoffset", (282.7 * (1 - strongPct)).toFixed(1));
   if (mediumRing) mediumRing.setAttribute("stroke-dashoffset", (219.9 * (1 - mediumPct)).toFixed(1));
