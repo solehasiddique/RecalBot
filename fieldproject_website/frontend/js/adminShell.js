@@ -9,7 +9,7 @@ const ADMIN_NAV_ITEMS = [
   // NOTE: these two still use your CURRENT (mismatched-case) filenames on purpose.
   // Once you rename the files, this is the ONLY place you update — that's the
   // whole point of centralizing it. Before, that bug lived in 5 files.
-  { key: "memory-analytics",    label: "Memory Analytics",   icon: "neurology",  href: "Memory_analytics.html" },
+  { key: "memory-analytics",    label: "Memory Analytics",   icon: "neurology",  href: "memory_analytics.html" },
   { key: "research",            label: "Research",           icon: "science",    href: "research.html" },
 ];
 
