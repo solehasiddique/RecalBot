@@ -22,18 +22,6 @@
 <!-- Top Bar Shell -->
 <header class="fixed top-0 right-0 w-[calc(100%-280px)] h-16 bg-surface-bright dark:bg-surface-dim flex items-center justify-between px-lg z-40 shadow-sm ml-[280px]">
 <div class="flex items-center gap-4 flex-1">
-<div class="relative w-full max-w-md group">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input class="w-full bg-surface-container rounded-xl pl-10 pr-4 py-2 text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary/20 border-none" placeholder="Search research nodes..." type="text"/>
-</div>
-</div>
-<div class="flex items-center gap-md">
-<button class="p-2 text-on-surface-variant hover:text-primary transition-all">
-<span class="material-symbols-outlined">notifications</span>
-</button>
-<button class="p-2 text-on-surface-variant hover:text-primary transition-all">
-<span class="material-symbols-outlined">help</span>
-</button>
 </div>
 </header>
 <!-- Main Content Canvas -->
@@ -167,42 +155,43 @@
 </div>
 </div>
 
-<!-- Assessment Outcomes (Chart Visualization) -->
+<!-- Assessment Outcomes -->
 <div class="lg:col-span-6 bg-surface rounded-[20px] card-shadow p-xl">
-<div class="flex items-center justify-between mb-xl">
-<div>
-<h3 class="font-headline-sm text-primary mb-1">Assessment Outcomes</h3>
-<p class="text-body-sm text-on-surface-variant">Success rates for recent neural stimuli trials.</p>
+  <div class="flex items-center justify-between mb-xl">
+    <div>
+      <h3 class="font-headline-sm text-primary mb-1">Assessment Outcomes</h3>
+      <p class="text-body-sm text-on-surface-variant">Success rates for recent revision sessions.</p>
+    </div>
+    <div class="flex gap-2">
+      <div class="flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-primary"></span>
+        <span class="text-[10px] text-on-surface-variant">COMPLETED</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+        <span class="text-[10px] text-on-surface-variant">MISSED</span>
+      </div>
+    </div>
+  </div>
+  <div class="h-48 relative">
+    <canvas id="assessment-chart"></canvas>
+  </div>
 </div>
-<div class="flex gap-2">
-<div class="flex items-center gap-1">
-<span class="w-2 h-2 rounded-full bg-primary"></span>
-<span class="text-[10px] text-on-surface-variant">SUCCESS</span>
-</div>
-<div class="flex items-center gap-1">
-<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
-<span class="text-[10px] text-on-surface-variant">FAIL</span>
-</div>
-</div>
-</div>
-<div class="h-48 relative">
-  <canvas id="assessment-chart"></canvas>
-</div>
+
 <!-- Core Validation: Avg Score by Profile -->
-<div class="lg:col-span-12 bg-surface rounded-[20px] card-shadow p-xl">
+<div class="lg:col-span-6 bg-surface rounded-[20px] card-shadow p-xl">
   <div class="flex items-center justify-between mb-xl">
     <div>
       <h3 class="font-headline-sm text-primary mb-1">Prediction vs Actual Performance</h3>
       <p class="text-body-sm text-on-surface-variant">
-        Core model validation — if the model works, WEAK users should score lower than STRONG users on tests.
+        Core model validation — WEAK users should score lower than STRONG users.
       </p>
     </div>
   </div>
-  <div class="h-64 relative">
+  <div class="h-48 relative">
     <canvas id="validation-chart"></canvas>
   </div>
   <div id="validation-note" class="mt-md p-md bg-primary/5 rounded-xl border border-primary/10 text-body-sm"></div>
-</div>
 </div>
 </div>
 </div>
