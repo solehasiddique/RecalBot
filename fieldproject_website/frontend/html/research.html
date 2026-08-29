@@ -21,265 +21,137 @@
 <aside id="admin-sidebar" class="w-sidebar_width h-screen fixed left-0 top-0 bg-surface-container-low flex flex-col border-r border-outline-variant z-40"></aside>
 <!-- Main Content Area -->
 <main class="ml-[280px] h-screen overflow-y-auto custom-scrollbar bg-background">
-<!-- Content Shell -->
-<div class="px-xxl py-xl max-w-content_max_width mx-auto">
-<!-- Hero Header -->
-<section class="mb-xxl">
-<h2 class="font-headline-md text-[32px] text-primary mb-xs">Research Hub</h2>
-<p class="text-body-lg text-on-surface-variant max-w-2xl">Observing population-wide cognitive trends and experimental outcomes through AI-assisted memory observation.</p>
-</section>
-<!-- Key Metrics Grid -->
-<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg mb-xxl">
-<div class="bg-surface p-lg rounded-xxl soft-elevation border border-outline-variant/10">
-<p class="text-label-md text-on-surface-variant uppercase mb-sm">Active Studies</p>
-<div class="flex items-baseline gap-sm">
-<span class="font-headline-md text-3xl text-primary">14</span>
-<span class="text-on-secondary-container bg-secondary-container px-sm py-xs rounded-full text-[10px] font-bold uppercase">+2 this month</span>
-</div>
-</div>
-<div class="bg-surface p-lg rounded-xxl soft-elevation border border-outline-variant/10">
-<p class="text-label-md text-on-surface-variant uppercase mb-sm">Participant Pool</p>
-<div class="flex items-baseline gap-sm">
-<span class="font-headline-md text-3xl text-primary">12,482</span>
-<span class="text-on-surface-variant text-body-sm">Global</span>
-</div>
-</div>
-<div class="bg-surface p-lg rounded-xxl soft-elevation border border-outline-variant/10">
-<p class="text-label-md text-on-surface-variant uppercase mb-sm">Hypothesis Validity</p>
-<div class="flex items-baseline gap-sm">
-<span class="font-headline-md text-3xl text-primary">89.4%</span>
-<span class="material-symbols-outlined text-secondary text-sm">trending_up</span>
-</div>
-</div>
-<div class="bg-surface p-lg rounded-xxl soft-elevation border border-outline-variant/10">
-<p class="text-label-md text-on-surface-variant uppercase mb-sm">Data Fidelity</p>
-<div class="flex items-baseline gap-sm">
-<span class="font-headline-md text-3xl text-primary">99.2</span>
-<span class="text-on-surface-variant text-body-sm">Index</span>
-</div>
-</div>
-</section>
-<!-- Main Research Bento Grid -->
-<div class="grid grid-cols-12 gap-lg">
-<!-- Active Research Studies (List/Grid) -->
-<div class="col-span-12 lg:col-span-8 bg-surface rounded-xxl soft-elevation border border-outline-variant/10 p-lg">
-<div class="flex justify-between items-center mb-lg">
-<h3 class="font-headline-sm text-primary">Active Research Studies</h3>
-<button class="text-primary font-label-md hover:underline flex items-center gap-xs">
-                            View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-<div class="space-y-md">
-<!-- Study Item 1 -->
-<div class="group flex items-center justify-between p-md rounded-xl hover:bg-background border border-transparent hover:border-outline-variant/20 transition-all">
-<div class="flex items-center gap-lg">
-<div class="w-12 h-12 bg-primary-fixed rounded-lg flex items-center justify-center text-primary">
-<span class="material-symbols-outlined">visibility</span>
-</div>
-<div>
-<h4 class="font-headline-sm text-body-md text-on-surface group-hover:text-primary transition-colors">Spaced Repetition vs. Massed Practice</h4>
-<div class="flex gap-md mt-1">
-<span class="text-label-sm text-on-surface-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-[14px]">groups</span> 2,400 Participants
-                                        </span>
-<span class="text-label-sm text-on-surface-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-[14px]">calendar_today</span> 12 Days Left
-                                        </span>
-</div>
-</div>
-</div>
-<div class="flex items-center gap-xxl">
-<div class="text-right">
-<p class="text-label-md text-primary font-bold">94.2</p>
-<p class="text-[10px] text-on-surface-variant uppercase">Stability Index</p>
-</div>
-<div class="px-md py-sm bg-secondary-container/30 text-on-secondary-container rounded-full text-label-md border border-secondary-container">
-                                    Active
-                                </div>
-<button class="text-on-surface-variant hover:text-primary p-xs">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</div>
-</div>
-<!-- Study Item 2 -->
-<div class="group flex items-center justify-between p-md rounded-xl hover:bg-background border border-transparent hover:border-outline-variant/20 transition-all">
-<div class="flex items-center gap-lg">
-<div class="w-12 h-12 bg-secondary-fixed rounded-lg flex items-center justify-center text-secondary">
-<span class="material-symbols-outlined">psychology_alt</span>
-</div>
-<div>
-<h4 class="font-headline-sm text-body-md text-on-surface group-hover:text-primary transition-colors">Visual Stimuli Retention Patterns</h4>
-<div class="flex gap-md mt-1">
-<span class="text-label-sm text-on-surface-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-[14px]">groups</span> 5,120 Participants
-                                        </span>
-<span class="text-label-sm text-on-surface-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-[14px]">history</span> Ongoing
-                                        </span>
-</div>
-</div>
-</div>
-<div class="flex items-center gap-xxl">
-<div class="text-right">
-<p class="text-label-md text-primary font-bold">87.5</p>
-<p class="text-[10px] text-on-surface-variant uppercase">Stability Index</p>
-</div>
-<div class="px-md py-sm bg-surface-container-highest text-on-surface-variant rounded-full text-label-md border border-outline-variant">
-                                    Peer Review
-                                </div>
-<button class="text-on-surface-variant hover:text-primary p-xs">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</div>
-</div>
-<!-- Study Item 3 -->
-<div class="group flex items-center justify-between p-md rounded-xl hover:bg-background border border-transparent hover:border-outline-variant/20 transition-all">
-<div class="flex items-center gap-lg">
-<div class="w-12 h-12 bg-tertiary-fixed rounded-lg flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined">neurology</span>
-</div>
-<div>
-<h4 class="font-headline-sm text-body-md text-on-surface group-hover:text-primary transition-colors">Circadian Rhythm &amp; Consolidation</h4>
-<div class="flex gap-md mt-1">
-<span class="text-label-sm text-on-surface-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-[14px]">groups</span> 840 Participants
-                                        </span>
-<span class="text-label-sm text-on-surface-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-[14px]">timer</span> Final Phase
-                                        </span>
-</div>
-</div>
-</div>
-<div class="flex items-center gap-xxl">
-<div class="text-right">
-<p class="text-label-md text-primary font-bold">78.1</p>
-<p class="text-[10px] text-on-surface-variant uppercase">Stability Index</p>
-</div>
-<div class="px-md py-sm bg-secondary-container/30 text-on-secondary-container rounded-full text-label-md border border-secondary-container">
-                                    Active
-                                </div>
-<button class="text-on-surface-variant hover:text-primary p-xs">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Stimuli Analysis Card -->
-<div class="col-span-12 lg:col-span-4 bg-surface rounded-xxl soft-elevation border border-outline-variant/10 p-lg">
-<h3 class="font-headline-sm text-primary mb-lg">Stimuli Analysis</h3>
-<p class="text-body-sm text-on-surface-variant mb-xl">Performance across population cohorts based on learning material type.</p>
-<div class="space-y-xl">
-<!-- Visual -->
-<div>
-<div class="flex justify-between items-center mb-sm">
-<span class="text-label-md text-on-surface flex items-center gap-sm">
-<span class="material-symbols-outlined text-secondary">image</span> Visual
-                                </span>
-<span class="text-headline-sm text-body-sm text-primary">82%</span>
-</div>
-<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
-<div class="bg-primary h-full rounded-full" style="width: 82%"></div>
-</div>
-</div>
-<!-- Audio -->
-<div>
-<div class="flex justify-between items-center mb-sm">
-<span class="text-label-md text-on-surface flex items-center gap-sm">
-<span class="material-symbols-outlined text-secondary">headset</span> Audio
-                                </span>
-<span class="text-headline-sm text-body-sm text-primary">64%</span>
-</div>
-<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
-<div class="bg-secondary h-full rounded-full" style="width: 64%"></div>
-</div>
-</div>
-<!-- Text -->
-<div>
-<div class="flex justify-between items-center mb-sm">
-<span class="text-label-md text-on-surface flex items-center gap-sm">
-<span class="material-symbols-outlined text-secondary">article</span> Textual
-                                </span>
-<span class="text-headline-sm text-body-sm text-primary">45%</span>
-</div>
-<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
-<div class="bg-outline h-full rounded-full" style="width: 45%"></div>
-</div>
-</div>
-</div>
-<div class="mt-xxl p-md bg-background rounded-xl border border-outline-variant/20">
-<p class="text-label-sm text-on-surface-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-sm">info</span>
-                            Insight: Multi-modal stimuli show 14% higher retention in ages 18-24.
-                        </p>
-</div>
-</div>
-<!-- Research Cohorts (Visualization) -->
-<div class="col-span-12 bg-surface rounded-xxl soft-elevation border border-outline-variant/10 p-lg">
-<div class="flex flex-col md:flex-row justify-between md:items-center gap-lg mb-xl">
-<div>
-<h3 class="font-headline-sm text-primary">Research Cohorts</h3>
-<p class="text-body-sm text-on-surface-variant">Demographic and cognitive distribution of 12,482 participants.</p>
-</div>
-<div class="flex gap-md">
-<button class="px-md py-sm bg-surface border border-outline-variant/30 rounded-lg text-label-md text-on-surface-variant hover:border-primary hover:text-primary transition-colors">By Age</button>
-<button class="px-md py-sm bg-primary text-on-primary rounded-lg text-label-md">By Cognitive Profile</button>
-<button class="px-md py-sm bg-surface border border-outline-variant/30 rounded-lg text-label-md text-on-surface-variant hover:border-primary hover:text-primary transition-colors">By Region</button>
-</div>
-</div>
-<!-- Visual Cohort Map (Simplified abstract visualization) -->
-<div class="grid grid-cols-1 md:grid-cols-5 gap-md">
-<div class="bg-primary/5 rounded-xl p-md flex flex-col items-center justify-center text-center border border-primary/10">
-<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary mb-md">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
-</div>
-<p class="font-headline-sm text-body-md text-primary">Hyper-Learners</p>
-<p class="text-label-sm text-on-surface-variant">15% Distribution</p>
-</div>
-<div class="bg-secondary/5 rounded-xl p-md flex flex-col items-center justify-center text-center border border-secondary/10">
-<div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-on-primary mb-md">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">speed</span>
-</div>
-<p class="font-headline-sm text-body-md text-secondary">Rapid Decayers</p>
-<p class="text-label-sm text-on-surface-variant">22% Distribution</p>
-</div>
-<div class="bg-surface-container-high rounded-xl p-md flex flex-col items-center justify-center text-center border border-outline-variant/20">
-<div class="w-12 h-12 bg-outline rounded-full flex items-center justify-center text-on-surface mb-md">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">adjust</span>
-</div>
-<p class="font-headline-sm text-body-md text-on-surface">Standard Baseline</p>
-<p class="text-label-sm text-on-surface-variant">42% Distribution</p>
-</div>
-<div class="bg-primary/5 rounded-xl p-md flex flex-col items-center justify-center text-center border border-primary/10">
-<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container mb-md">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">history_edu</span>
-</div>
-<p class="font-headline-sm text-body-md text-primary">Deep Retention</p>
-<p class="text-label-sm text-on-surface-variant">12% Distribution</p>
-</div>
-<div class="bg-tertiary/5 rounded-xl p-md flex flex-col items-center justify-center text-center border border-tertiary/10">
-<div class="w-12 h-12 bg-tertiary rounded-full flex items-center justify-center text-on-tertiary mb-md">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">all_inclusive</span>
-</div>
-<p class="font-headline-sm text-body-md text-tertiary">Anomalous</p>
-<p class="text-label-sm text-on-surface-variant">9% Distribution</p>
-</div>
-</div>
-<!-- Abstract distribution graph area -->
-<div class="mt-lg h-32 w-full relative bg-background/50 rounded-xl overflow-hidden border border-outline-variant/10">
-<!-- Abstract Wave Representation -->
-<svg class="absolute bottom-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 100">
-<path d="M0,80 Q100,20 200,70 T400,50 T600,85 T800,40 T1000,60 L1000,100 L0,100 Z" fill="rgba(67, 102, 75, 0.1)"></path>
-<path d="M0,70 Q150,10 300,60 T500,40 T700,75 T900,30 T1000,50 L1000,100 L0,100 Z" fill="rgba(30, 66, 44, 0.1)"></path>
-<path d="M0,85 C150,85 350,15 500,15 C650,15 850,85 1000,85" fill="none" stroke="#1e422c" stroke-dasharray="5,5" stroke-width="2"></path>
-</svg>
-<div class="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
-<span class="text-label-md uppercase tracking-widest text-primary">Cross-Cohort Signal Stability Map</span>
-</div>
-</div>
-</div>
-</div>
-</div>
+  <div class="px-xxl py-xl max-w-content_max_width mx-auto">
+
+    <!-- Hero Header -->
+    <section class="mb-xxl">
+      <h2 class="font-headline-md text-[32px] text-primary mb-xs">Research Hub</h2>
+      <p class="text-body-lg text-on-surface-variant max-w-2xl">
+        Data quality management, session review, and research export for the RecallBot study.
+      </p>
+    </section>
+
+    <!-- Summary Cards -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg mb-xxl">
+      <div class="bg-surface p-lg rounded-xxl soft-elevation border border-outline-variant/10">
+        <p class="text-label-md text-on-surface-variant uppercase mb-sm">Total Participants</p>
+        <span id="res-total-students" class="font-headline-md text-3xl text-primary">—</span>
+      </div>
+      <div class="bg-surface p-lg rounded-xxl soft-elevation border border-outline-variant/10">
+        <p class="text-label-md text-on-surface-variant uppercase mb-sm">Sessions Collected</p>
+        <span id="res-total-sessions" class="font-headline-md text-3xl text-primary">—</span>
+      </div>
+      <div class="bg-surface p-lg rounded-xxl soft-elevation border border-outline-variant/10">
+        <p class="text-label-md text-on-surface-variant uppercase mb-sm">Flagged Sessions</p>
+        <span id="res-flagged" class="font-headline-md text-3xl text-error">—</span>
+      </div>
+      <div class="bg-surface p-lg rounded-xxl soft-elevation border border-outline-variant/10">
+        <p class="text-label-md text-on-surface-variant uppercase mb-sm">Excluded from Training</p>
+        <span id="res-excluded" class="font-headline-md text-3xl text-error">—</span>
+      </div>
+    </section>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-12 gap-lg">
+
+      <!-- Flagged Sessions Review Queue -->
+      <div class="col-span-12 lg:col-span-8 bg-surface rounded-xxl soft-elevation border border-outline-variant/10 p-lg">
+        <div class="flex justify-between items-center mb-lg">
+          <div>
+            <h3 class="font-headline-sm text-primary">Flagged Sessions Review Queue</h3>
+            <p class="text-body-sm text-on-surface-variant mt-1">
+              Review suspicious sessions and decide whether to exclude them from training data.
+            </p>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="border-b border-surface-container">
+              <tr>
+                <th class="pb-md font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">User</th>
+                <th class="pb-md font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Topic</th>
+                <th class="pb-md font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Score</th>
+                <th class="pb-md font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Reason</th>
+                <th class="pb-md font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Status</th>
+                <th class="pb-md font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Action</th>
+              </tr>
+            </thead>
+            <tbody id="flagged-tbody" class="divide-y divide-surface-container">
+              <tr>
+                <td colspan="6" class="py-xl text-center text-on-surface-variant">
+                  Loading flagged sessions...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
+
+        <!-- Consent Tracking -->
+        <div class="bg-surface rounded-xxl soft-elevation border border-outline-variant/10 p-lg">
+          <h3 class="font-headline-sm text-primary mb-md">Consent Tracking</h3>
+          <p class="text-body-sm text-on-surface-variant mb-lg">
+            Users who completed the assessment have implicitly consented to data collection.
+          </p>
+          <div class="space-y-md">
+            <div>
+              <div class="flex justify-between text-body-sm mb-1">
+                <span>Consented</span>
+                <span id="res-consented" class="font-bold text-primary">—</span>
+              </div>
+              <div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+                <div id="res-consented-bar" class="bg-primary h-full rounded-full transition-all duration-700" style="width:0%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-body-sm mb-1">
+                <span>Not Yet</span>
+                <span id="res-not-consented" class="font-bold text-on-surface-variant">—</span>
+              </div>
+              <div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+                <div id="res-not-consented-bar" class="bg-outline h-full rounded-full transition-all duration-700" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Export Data -->
+        <div class="bg-surface rounded-xxl soft-elevation border border-outline-variant/10 p-lg">
+          <h3 class="font-headline-sm text-primary mb-md">Export Research Data</h3>
+          <p class="text-body-sm text-on-surface-variant mb-lg">
+            Download raw data for analysis in your research paper. Excluded sessions are marked in the export.
+          </p>
+          <div class="flex flex-col gap-md">
+            <button onclick="exportAllData()"
+              class="w-full py-3 bg-primary text-on-primary font-semibold rounded-xl flex items-center justify-center gap-2 hover:bg-primary-container transition-all">
+              <span class="material-symbols-outlined text-sm">download</span>
+              Export All Revision Data
+            </button>
+            <button onclick="exportProfiles()"
+              class="w-full py-3 border border-outline-variant text-on-surface-variant font-semibold rounded-xl flex items-center justify-center gap-2 hover:bg-surface-container transition-all">
+              <span class="material-symbols-outlined text-sm">person</span>
+              Export Memory Profiles
+            </button>
+          </div>
+        </div>
+
+        <!-- Data Quality Score -->
+        <div class="bg-surface rounded-xxl soft-elevation border border-outline-variant/10 p-lg">
+          <h3 class="font-headline-sm text-primary mb-md">Data Quality</h3>
+          <div class="flex flex-col items-center justify-center py-md">
+            <span id="res-quality-score" class="font-headline-md text-[48px] text-primary font-bold">—</span>
+            <span class="text-label-sm text-on-surface-variant uppercase tracking-wider">Quality Index</span>
+          </div>
+          <p id="res-quality-note" class="text-body-sm text-on-surface-variant text-center mt-md"></p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </main>
 <!-- FAB for New Study -->
 <button class="fixed bottom-lg right-lg w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
