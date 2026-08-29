@@ -166,7 +166,7 @@ export const createTopic = async (req, res) => {
       notesContent: relevant.text,
       sourceNote: noteId || null,
       endDate,
-      initialMemoryProfile: user.memoryProfile,
+      initialMemoryProfile: user.memoryProfile || "MEDIUM",
       revisions,
       nextRevisionAt,
     });
