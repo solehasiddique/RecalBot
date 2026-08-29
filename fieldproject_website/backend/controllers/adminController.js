@@ -353,3 +353,184 @@ export const getMemoryAnalytics = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+// ===============================
+// GET /api/admin/research/summary
+// Summary numbers for the Research page header cards
+// ===============================
+export const getResearchSummary = async (req, res) => {
+  try {
+    // Total students in the study
+    const totalStudents = await User.countDocuments({ role: "student" });
+
+    // Total revision sessions collected across all topics
+    const sessionData = await Topic.aggregate([
+      { $unwind: "$revisions" },
+      { $count: "total" }
+    ]);
+    const totalSessions = sessionData[0]?.total || 0;
+
+    // Flagged sessions — marked as suspicious
+    const flaggedData = await Topic.aggregate([
+      { $unwind: "$revisions" },
+      { $match: { "revisions.flagged": true } },
+      { $count: "total" }
+    ]);
+    const flaggedSessions = flaggedData[0]?.total || 0;
+
+    // Excluded sessions — removed from training data
+    const excludedData = await Topic.aggregate([
+      { $unwind: "$revisions" },
+      { $match: { "revisions.excludedFromTraining": true } },
+      { $count: "total" }
+    ]);
+    const excludedSessions = excludedData[0]?.total || 0;
+
+    // Consent tracking — how many users have completed assessment
+    // We use hasCompletedAssessment as proxy for consent for now
+    const consented = await User.countDocuments({
+      role: "student",
+      hasCompletedAssessment: true
+    });
+
+    res.json({
+      totalStudents,
+      totalSessions,
+      flaggedSessions,
+      excludedSessions,
+      consented,
+      notConsented: totalStudents - consented
+    });
+
+  } catch (err) {
+    console.error("Research summary error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ===============================
+// GET /api/admin/research/flagged
+// Returns all flagged revision sessions for the review queue
+// ===============================
+export const getFlaggedSessions = async (req, res) => {
+  try {
+    const topics = await Topic.aggregate([
+      // Unwind revisions so each revision becomes its own document
+      { $unwind: "$revisions" },
+      // Only keep flagged ones
+      { $match: { "revisions.flagged": true } },
+      // Join with users collection to get user name
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "userInfo"
+        }
+      },
+      { $unwind: "$userInfo" },
+      // Shape the output — only return what the frontend needs
+      {
+        $project: {
+          topicId: "$_id",
+          topicTitle: "$title",
+          revisionNumber: "$revisions.revisionNumber",
+          revisionId: "$revisions._id",
+          status: "$revisions.status",
+          score: "$revisions.scoreAfterRevision",
+          flagReason: "$revisions.flagReason",
+          excludedFromTraining: "$revisions.excludedFromTraining",
+          completedAt: "$revisions.completedAt",
+          profileAtTest: "$revisions.profileAtTest",
+          userName: "$userInfo.name",
+          userEmail: "$userInfo.email",
+          userId: "$userInfo._id"
+        }
+      },
+      { $sort: { completedAt: -1 } }
+    ]);
+
+    res.json({ flaggedSessions: topics });
+
+  } catch (err) {
+    console.error("Flagged sessions error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ===============================
+// PATCH /api/admin/research/exclude/:topicId/:revisionNumber
+// Toggles excludedFromTraining on a specific revision
+// Why PATCH: we're partially updating one field, not replacing the whole document
+// ===============================
+export const toggleExcludeSession = async (req, res) => {
+  try {
+    const { topicId, revisionNumber } = req.params;
+    const { exclude } = req.body; // true = exclude, false = keep
+
+    const topic = await Topic.findById(topicId);
+    if (!topic) return res.status(404).json({ message: "Topic not found" });
+
+    const revision = topic.revisions.find(
+      r => r.revisionNumber === parseInt(revisionNumber)
+    );
+    if (!revision) return res.status(404).json({ message: "Revision not found" });
+
+    revision.excludedFromTraining = exclude;
+    await topic.save();
+
+    res.json({
+      message: exclude ? "Session excluded from training" : "Session kept in training",
+      excludedFromTraining: exclude
+    });
+
+  } catch (err) {
+    console.error("Toggle exclude error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ===============================
+// GET /api/admin/research/export
+// Returns all revision data as JSON for CSV export
+// ===============================
+export const exportResearchData = async (req, res) => {
+  try {
+    const topics = await Topic.aggregate([
+      { $unwind: "$revisions" },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "userInfo"
+        }
+      },
+      { $unwind: "$userInfo" },
+      {
+        $project: {
+          userName: "$userInfo.name",
+          userEmail: "$userInfo.email",
+          memoryProfile: "$userInfo.memoryProfile",
+          memoryPercentage: "$userInfo.memoryPercentage",
+          topicTitle: "$title",
+          revisionNumber: "$revisions.revisionNumber",
+          status: "$revisions.status",
+          score: "$revisions.scoreAfterRevision",
+          profileAtTest: "$revisions.profileAtTest",
+          confidenceAtTest: "$revisions.confidenceAtTest",
+          completedAt: "$revisions.completedAt",
+          flagged: "$revisions.flagged",
+          flagReason: "$revisions.flagReason",
+          excludedFromTraining: "$revisions.excludedFromTraining"
+        }
+      },
+      { $sort: { completedAt: -1 } }
+    ]);
+
+    res.json({ data: topics });
+
+  } catch (err) {
+    console.error("Export error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};

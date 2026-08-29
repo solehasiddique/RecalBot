@@ -4,7 +4,11 @@ import {
   getAllUsers,
   getUserDetail,
   getMemoryAnalytics,
-  makeAdmin
+  makeAdmin,
+  getResearchSummary,
+  getFlaggedSessions,
+  toggleExcludeSession,
+  exportResearchData
 } from "../controllers/adminController.js";
 import { protectAdmin } from "../middleware/adminMiddleware.js";
 
@@ -18,5 +22,9 @@ router.get("/users",            getAllUsers);
 router.get("/user/:id",         getUserDetail);
 router.get("/memory-analytics", getMemoryAnalytics);
 router.post("/make-admin",      makeAdmin);
+router.get("/research/summary",                    getResearchSummary);
+router.get("/research/flagged",                    getFlaggedSessions);
+router.patch("/research/exclude/:topicId/:revisionNumber", toggleExcludeSession);
+router.get("/research/export",                     exportResearchData);
 
 export default router;

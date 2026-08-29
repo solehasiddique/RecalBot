@@ -31,6 +31,20 @@ const revisionSchema = new mongoose.Schema(
       type: Number,
       default: null,
     },
+    flagged: {
+  type: Boolean,
+  default: false,
+},
+
+flagReason: {
+  type: String,
+  default: null,
+},
+
+excludedFromTraining: {
+  type: Boolean,
+  default: false,
+},
 
     questions: {
       type: [mongoose.Schema.Types.Mixed],
