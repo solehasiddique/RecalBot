@@ -387,7 +387,7 @@ currentDrawerUser = user; // store for CSV export
     const revisions = topics.flatMap(t =>
       (t.revisions || []).map(r => ({ ...r, topicTitle: t.title }))
     ).sort((a, b) => new Date(b.completedAt || b.scheduledAt) - new Date(a.completedAt || a.scheduledAt))
-     .slice(0, 5); // show latest 5 only
+     .slice(0, 20); // show latest 5 only
 
     if (!revisions.length) {
       activityEl.innerHTML = `
