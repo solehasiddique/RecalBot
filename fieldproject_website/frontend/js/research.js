@@ -6,7 +6,6 @@
 // Depends on admin.js being loaded first.
 // ============================================
 
-const API = window.BASE_URL;
 
 // ── HELPER ──
 function setText(id, val) {
