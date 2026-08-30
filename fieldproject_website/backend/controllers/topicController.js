@@ -106,17 +106,15 @@ export const createTopic = async (req, res) => {
         return res.status(404).json({ message: "Selected note not found" });
       }
 
-      const notePath = note.filePath;
-      const noteExt = (note.fileExt || "").toLowerCase();
+      // Content already extracted and stored in MongoDB at upload time
+// No disk reading needed
+notesContent = note.content || "";
 
-      if (noteExt === "pdf") {
-        const dataBuffer = fs.readFileSync(notePath);
-        notesContent = await extractPdfText(dataBuffer);
-      } else if (
-        ["txt", "md", "csv", "json", "xml", "html"].includes(noteExt)
-      ) {
-        notesContent = fs.readFileSync(notePath, "utf8");
-      } else {
+if (!notesContent) {
+  return res.status(400).json({
+    message: "Note has no content. Please re-upload the note."
+  });
+} else {
         return res.status(400).json({
           message:
             "Selected note format is not supported for topic generation. Use PDF or TXT notes.",
@@ -125,13 +123,13 @@ export const createTopic = async (req, res) => {
     }
 
     if (req.file) {
-      const filePath = req.file.path;
 
       if (req.file.mimetype === "application/pdf") {
-        const dataBuffer = fs.readFileSync(filePath);
-        notesContent = await extractPdfText(dataBuffer);
+
+const dataBuffer = req.file.buffer; // already in memory, no disk read needed
+notesContent = await extractPdfText(dataBuffer);
       } else {
-        notesContent = fs.readFileSync(filePath, "utf8");
+        notesContent = req.file.buffer.toString("utf8");
       }
     }
 

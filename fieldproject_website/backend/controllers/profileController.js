@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import User from "../models/User.js";
 import Note from "../models/Note.js";
+import { extractPdfText } from "../services/aiService.js";
 
 const normalize = (value) => (typeof value === "string" ? value.trim() : "");
 
@@ -152,18 +153,35 @@ export const createNote = async (req, res) => {
 
     const ext = path.extname(req.file.originalname || "").replace(".", "").toLowerCase();
 
-    const note = await Note.create({
-      user: req.user.id,
-      title,
-      subject,
-      description: normalize(req.body?.description),
-      chapter: normalize(req.body?.chapter),
-      fileName: req.file.originalname || "",
-      filePath: req.file.path || "",
-      fileMime: req.file.mimetype || "",
-      fileExt: ext,
-      fileSize: req.file.size || 0,
-    });
+   // Extract text content from the file before saving
+// Why: Render's filesystem is ephemeral — files get wiped on restart
+// Storing content in MongoDB means we never need the file again after upload
+let content = "";
+
+if (req.file.mimetype === "application/pdf") {
+  try {
+    content = await extractPdfText(req.file.buffer);
+  } catch (err) {
+    console.error("PDF extraction error:", err);
+    content = "";
+  }
+} else if (["txt", "md", "csv", "json", "xml", "html"].includes(ext)) {
+  content = req.file.buffer.toString("utf8");
+}
+
+const note = await Note.create({
+  user: req.user.id,
+  title,
+  subject,
+  description: normalize(req.body?.description),
+  chapter: normalize(req.body?.chapter),
+  fileName: req.file.originalname || "",
+  filePath: "",        // no longer needed — content stored in MongoDB
+  fileMime: req.file.mimetype || "",
+  fileExt: ext,
+  fileSize: req.file.size || 0,
+  content,             // extracted text saved here
+});
 
     return res.status(201).json({ ok: true, note, message: "Note uploaded" });
   } catch (error) {
